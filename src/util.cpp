@@ -231,8 +231,7 @@ bool within_range(double value, double base, double range) {
     return ((value <= base + range) && (value >= base - range));
 }
 
-float stop_dist(float current_vel, float accel,
-        float target_vel) {
+float stop_dist(float current_vel, float accel, float target_vel) {
     return -(target_vel * target_vel - current_vel * current_vel) / (2 * accel);
 }
 

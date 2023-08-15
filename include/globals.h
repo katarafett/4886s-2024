@@ -8,9 +8,9 @@
 #define FLY_KP 0.3
 #define FLY_ACCEL 18
 
-#define DRIVE_INSERT TRB_INSERT
+#define DRIVE_INSERT SPD_INSERT
 #define FLYWHEEL_INSERT TRB_INSERT
-#define ROLLER_INSERT TRB_INSERT
+#define INTAKE_INSERT TRB_INSERT
 
 // Autonmous modes
 #define AWP 0
@@ -26,6 +26,7 @@
 #define TNK_REV 3
 #define OSA_REV 4
 #define TSA_REV 5
+#define XDRIVE 6
 
 // Drive
 #define SLOW 0.5

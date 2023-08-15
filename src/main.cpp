@@ -7,17 +7,14 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// ---- END VEXCODE CONFIGURED DEVICES ----
-
 #include "../include/main.h"
 
 vex::competition Competition;
 
 int main() {
-    pre_auton();
+    //pre_auton();
     Competition.autonomous(autonomous);
-    Competition.drivercontrol(opcontrol);
+    Competition.drivercontrol(autonomous);
 
     while (true) {
         vex::task::sleep(20);
