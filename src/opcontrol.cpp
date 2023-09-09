@@ -1,13 +1,11 @@
 #include "../include/main.h"
 
 void opcontrol(void) {
-    // PID fly_pid (0.3, 0, 0, true, false, false);
 
     bool wings_out = false;
 
     while (1) {
-        opdrive(TSA_STD, 1, SENSITIVITY);
-        intake.spin(DIR_FWD, (BTN_R1.pressing() - BTN_R2.pressing()) * BTN__PCT, PCT_PCT);
+        opdrive(TNK_STD, 1, SENSITIVITY);
 
         if (BTN_L2.PRESSED) {
             wings_out = !wings_out;
@@ -47,9 +45,10 @@ void opdrive(int control_mode, float drive_mod, float turn_mod) {
             drive_l.spin(DIR_REV, (LEFT_STICK_Y - RIGHT_STICK_X * turn_mod) * drive_mod, VEL_PCT);
             break;
         case XDRIVE:
-            drive_rf.spin(DIR_FWD, (LEFT_STICK_Y - LEFT_STICK_X) - RIGHT_STICK_X, VEL_PCT);
-            drive_rb.spin(DIR_FWD, (LEFT_STICK_Y + LEFT_STICK_X) - RIGHT_STICK_X, VEL_PCT);
-            drive_lf.spin(DIR_FWD, (LEFT_STICK_Y + LEFT_STICK_X) + RIGHT_STICK_X, VEL_PCT);
-            drive_lb.spin(DIR_FWD, (LEFT_STICK_Y - LEFT_STICK_X) + RIGHT_STICK_X, VEL_PCT);
+            drive_rf.spin(DIR_FWD, LEFT_STICK_Y + LEFT_STICK_X - RIGHT_STICK_X, VEL_PCT);
+            drive_rm.spin(DIR_FWD, LEFT_STICK_Y - LEFT_STICK_X - RIGHT_STICK_X, VEL_PCT);
+            drive_lf.spin(DIR_FWD, LEFT_STICK_Y - LEFT_STICK_X + RIGHT_STICK_X, VEL_PCT);
+            drive_lm.spin(DIR_FWD, LEFT_STICK_Y + LEFT_STICK_X + RIGHT_STICK_X, VEL_PCT);
+            break;
     }
 }

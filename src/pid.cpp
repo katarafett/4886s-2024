@@ -51,6 +51,7 @@ void PID::tune_kD(float stick_mod) {
 
 
 void drive_straight_a(float dist, float max_vel, float accel) {
+    // PID objects (?) for drive sides and steering control
     PID pid_drive_r (0, 0, 0, true, false, true);
     PID pid_drive_l (0, 0, 0, true, false, true);
     PID pid_dir (0, 0, 0, true, false, true);
@@ -66,7 +67,7 @@ void drive_straight_a(float dist, float max_vel, float accel) {
     int tps = 50;
     int current_time = sands_of_time.time(vex::msec);
     
-    int dir_mod = 0;
+    int dir_mod = 0; // directional modifier
 
     if (dist > 0) dir_mod = 1;
     if (dist < 0) dir_mod = -1;

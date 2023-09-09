@@ -35,11 +35,6 @@
 #define POS_DRIVE_R drive_r.position(ROT_REV)
 #define POS_DRIVE_L drive_l.position(ROT_REV)
 
-// Flywheel speeds
-#define IDLE 1000
-#define LOW 1800
-#define HIGH 3050
-
 // Brain
 #define X 0
 #define Y 1
@@ -52,8 +47,6 @@
 #define GYRO_CORRECTION (7218.70 / 7200.0)
 #define CHAR_HI 20
 #define CHAR_WI 12
-#define VEL_FLY_HI rot_flywheel_hi.velocity(VEL_RPM)
-#define VEL_FLY_LO rot_flywheel_lo.velocity(VEL_RPM)
 #define DRIVE_VEL ((drive_r.velocity(VEL_RPM) + drive_l.velocity(VEL_RPM)) / 2)
 #define DRIVE_POS ((drive_r.position(ROT_REV) * DRIVE_REV__IN + drive_l.position(ROT_REV) * DRIVE_REV__IN) / 2)
 #define DEADBAND 5
@@ -71,3 +64,5 @@ extern bool fly_pid_enabled;
 // Selection
 extern const char *control_types[6];
 extern const char *auton_types[4];
+#define VEL_FLY_HI rot_flywheel_hi.velocity(VEL_RPM)
+#define VEL_FLY_LO rot_flywheel_lo.velocity(VEL_RPM)

@@ -16,6 +16,7 @@ extern vex::digital_out wing_l;
 
 extern vex::inertial inrtl;
 extern vex::timer sands_of_time;
+extern vex::rotation rtn;
 
 extern vex::motor_group drive_r;
 extern vex::motor_group drive_l;
