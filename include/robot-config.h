@@ -11,6 +11,8 @@ extern vex::motor drive_lb;
 extern vex::motor intake_l;
 extern vex::motor intake_r;
 
+extern vex::motor cata;
+
 extern vex::digital_out wing_r;
 extern vex::digital_out wing_l;
 

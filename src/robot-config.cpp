@@ -4,16 +4,19 @@ vex::brain Brain;
 vex::controller master;
 
 // Drive
-vex::motor drive_rf (PORT1, DRIVE_INSERT, true);
-vex::motor drive_rm (PORT2, DRIVE_INSERT, true);
+vex::motor drive_rf (PORT3, DRIVE_INSERT, true);
+vex::motor drive_rm (PORT7, DRIVE_INSERT, true);
 vex::motor drive_rb (PORT3, DRIVE_INSERT, true);
 vex::motor drive_lf (PORT4, DRIVE_INSERT, false);
 vex::motor drive_lm (PORT5, DRIVE_INSERT, false);
 vex::motor drive_lb (PORT6, DRIVE_INSERT, false);
 
 // Intake
-vex::motor intake_l (PORT9, INTAKE_INSERT, false);
-vex::motor intake_r (PORT10, INTAKE_INSERT, true);
+vex::motor intake_l (PORT8, INTAKE_INSERT, true);
+vex::motor intake_r (PORT9, INTAKE_INSERT, false);
+
+// Cata
+vex::motor cata (PORT7, TRQ_INSERT, false);
 
 // Wings
 vex::digital_out wing_r (PORTA);
