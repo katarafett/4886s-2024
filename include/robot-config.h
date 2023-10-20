@@ -13,6 +13,9 @@ extern vex::motor intake_r;
 
 extern vex::motor cata;
 
+extern vex::motor flywheel_t;
+extern vex::motor flywheel_b;
+
 extern vex::digital_out wing_r;
 extern vex::digital_out wing_l;
 
@@ -23,3 +26,4 @@ extern vex::rotation rtn;
 extern vex::motor_group drive_r;
 extern vex::motor_group drive_l;
 extern vex::motor_group intake;
+extern vex::motor_group flywheel;

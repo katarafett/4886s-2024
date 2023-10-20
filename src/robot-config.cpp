@@ -18,6 +18,10 @@ vex::motor intake_r (PORT9, INTAKE_INSERT, false);
 // Cata
 vex::motor cata (PORT7, TRQ_INSERT, false);
 
+// Fly
+vex::motor flywheel_t (PORT15, TRB_INSERT, false);
+vex::motor flywheel_b (PORT16, TRB_INSERT, true);
+
 // Wings
 vex::digital_out wing_r (PORTA);
 vex::digital_out wing_l (PORTB);
@@ -30,3 +34,4 @@ vex::rotation rtn (PORT10);
 vex::motor_group drive_r (drive_rf, drive_rm, drive_rb);
 vex::motor_group drive_l (drive_lf, drive_lm, drive_lb);
 vex::motor_group intake (intake_l, intake_r);
+vex::motor_group flywheel (flywheel_t, flywheel_b);

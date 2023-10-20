@@ -2,15 +2,14 @@
 
 PID::PID() {}
 
-PID::PID(double init_kP, double init_kI, double init_kD, bool do_loopP, bool do_loopI,
-        bool do_loopD) {
+PID::PID(double init_kP, double init_kI, double init_kD) {
     kP = init_kP;
     kI = init_kI;
     kD = init_kD;
 
-    do_p = do_loopP;
-    do_i = do_loopI;
-    do_d = do_loopD;
+    do_p = (kP != 0);
+    do_i = (kI != 0);
+    do_d = (kD != 0);
 
     error = 0;
     sum = 0;
@@ -22,13 +21,9 @@ PID::PID(double init_kP, double init_kI, double init_kD, bool do_loopP, bool do_
 
 double PID::pid_adjust(double setpoint, double current_value) {
     error = setpoint - current_value;
-    sum += error;
-    deriv = error - prev_error;
+    if (do_i) sum += error;
+    if (do_d) deriv = error - prev_error;
     prev_error = error;
-
-    if (do_p) kP = 0;
-    if (do_i) sum = 0;
-    if (do_d) deriv = 0;
 
     return (error * kP) + (sum * kI) + (deriv * kD);
 }
@@ -52,9 +47,9 @@ void PID::tune_kD(float stick_mod) {
 
 void drive_straight_a(float dist, float max_vel, float accel) {
     // PID objects (?) for drive sides and steering control
-    PID pid_drive_r (0, 0, 0, true, false, true);
-    PID pid_drive_l (0, 0, 0, true, false, true);
-    PID pid_dir (0, 0, 0, true, false, true);
+    PID pid_drive_r (0.1, 0, 0.1);
+    PID pid_drive_l (0.1, 0, 0.1);
+    PID pid_dir (0.1, 0, 0.1);
     float r_pid_adjustment;
     float l_pid_adjustment;
     float dir_pid_adjustment;

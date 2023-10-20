@@ -19,8 +19,7 @@ class PID {
         bool do_print_val;
     public:
         PID();
-        PID(double init_kP, double init_kI, double init_kD, bool do_loopP, bool do_loopI,
-                bool do_loopD);
+        PID(double init_kP, double init_kI, double init_kD);
         double pid_adjust(double setpoint, double current_value);
         void tune_kP(float stick_mod);
         void tune_kI(float stick_mod);

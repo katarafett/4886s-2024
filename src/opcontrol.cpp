@@ -9,7 +9,7 @@ void opcontrol(void) {
 
         intake.spin(DIR_FWD, (BTN_R1.pressing() - BTN_R2.pressing()) * BTN__PCT, VEL_PCT);
 
-        cata.spin(DIR_FWD, BTN_L2.pressing() * BTN__PCT, VEL_PCT);
+        flywheel.spin(DIR_FWD, 12, VLT_VLT);
 
         if (BTN_L2.PRESSED) {
             wings_out = !wings_out;
