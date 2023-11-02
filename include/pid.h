@@ -3,9 +3,6 @@
  */
 class PID {
     private:
-        double kP;
-        double kI;
-        double kD;
 
         bool do_p;
         bool do_i;
@@ -24,5 +21,9 @@ class PID {
         void tune_kP(float stick_mod);
         void tune_kI(float stick_mod);
         void tune_kD(float stick_mod);
+
+        double kP;
+        double kI;
+        double kD;
 };
 

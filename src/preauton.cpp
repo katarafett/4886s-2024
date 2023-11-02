@@ -6,7 +6,7 @@ void pre_auton(void) {
 
     // Init GUI
     int *sides;
-    const char *autons[5] = {"AWP", "LEFT AWP", "RIGHT AWP", "ROLLER", "SKILLS"};
+    const char *autons[4] = {"AWP", "HALF_AWP_NEAR", "HALF_AWP_FAR", "SKILLS"};
 
     B_SCRN.clearScreen();
     B_SCRN.drawRectangle(B_SCRN_X_MID / 8, 0, B_SCRN_X / 4, B_SCRN_Y_MID, vex::green);
@@ -30,7 +30,7 @@ void pre_auton(void) {
 
         if (sides[X] == LEFT && sides[Y] == UP) {
             auton_mode++;
-            if (auton_mode > 4) auton_mode = 0;
+            if (auton_mode > 3) auton_mode = 0;
             B_SCRN.clearLine();
             B_SCRN.print("%s", autons[auton_mode]);
         }

@@ -4,7 +4,11 @@
 #define WHEEL_TO_WHEEL_DIST 12
 
 #define DRIVE_KP 0.92
+#define DRIVE_KI 0
+#define DRIVE_KD 0
 #define DIR_KP 3.75
+#define DIR_KI 0
+#define DIR_KD 0
 #define FLY_KP 0.3
 #define FLY_ACCEL 18
 
@@ -14,10 +18,9 @@
 
 // Autonmous modes
 #define AWP 0
-#define HALF_AWP_L 1
-#define HALF_AWP_R 2
-#define ROLLER 3
-#define SKILLS 4
+#define HALF_AWP_NEAR 1
+#define HALF_AWP_FAR 2
+#define SKILLS 3
 
 // Control modes
 #define TNK_STD 0

@@ -13,17 +13,17 @@ extern vex::motor intake_r;
 
 extern vex::motor cata;
 
-extern vex::motor flywheel_t;
-extern vex::motor flywheel_b;
-
-extern vex::digital_out wing_r;
-extern vex::digital_out wing_l;
+extern vex::digital_out wings;
+extern vex::digital_out smith;
+extern vex::digital_out balance;
 
 extern vex::inertial inrtl;
 extern vex::timer sands_of_time;
-extern vex::rotation rtn;
+extern vex::rotation rotn;
 
 extern vex::motor_group drive_r;
 extern vex::motor_group drive_l;
 extern vex::motor_group intake;
 extern vex::motor_group flywheel;
+
+extern PID drive_pid;

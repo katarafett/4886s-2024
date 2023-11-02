@@ -3,18 +3,29 @@
 void opcontrol(void) {
 
     bool wings_out = false;
+    bool smith_out = false;
+    bool balance_out = false;
 
     while (1) {
         opdrive(TSA_STD, 1, SENSITIVITY);
 
         intake.spin(DIR_FWD, (BTN_R1.pressing() - BTN_R2.pressing()) * BTN__PCT, VEL_PCT);
 
-        flywheel.spin(DIR_FWD, 12, VLT_VLT);
+        cata.spin(DIR_FWD, BTN_L1.pressing() * BTN__PCT, VEL_PCT);
 
         if (BTN_L2.PRESSED) {
             wings_out = !wings_out;
-            wing_r.set(wings_out);
-            wing_l.set(wings_out);
+            wings.set(wings_out);
+        }
+
+        if (BTN_RIGHT.PRESSED) {
+            smith_out = !smith_out;
+            smith.set(smith_out);
+        }
+
+        if (BTN_Y.PRESSED) {
+            balance_out = !balance_out;
+            balance.set(balance_out);
         }
 
         wait(20, vex::msec);
