@@ -78,8 +78,8 @@ CLEAN = $(RMDIR) $(BUILD) 2> nul || :
 else
 # which flavor of linux
 UNAME := $(shell sh -c 'uname -sm 2>/dev/null || Unknown')
-$(info unix build for platform $(PLATFORM) on $(UNAME))
-MKDIR = mkdir -p "$(@D)" 2> /dev/null || :
+$(info unix build for platform $(PLATFORM) on $(UNAME)) 	# print flavor
+MKDIR = mkdir -p "$(@D)" 2> /dev/null || :					# options for mkdir
 RMDIR = rm -rf
 CLEAN = $(RMDIR) $(BUILD) 2> /dev/null || :
 endif

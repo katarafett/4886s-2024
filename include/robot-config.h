@@ -25,5 +25,3 @@ extern vex::motor_group drive_r;
 extern vex::motor_group drive_l;
 extern vex::motor_group intake;
 extern vex::motor_group flywheel;
-
-extern PID drive_pid;

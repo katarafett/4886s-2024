@@ -13,10 +13,10 @@
 
 #include "stddefs.h"
 #include "globals.h"
-#include "util.h"
-#include "opcontrol.h"
 #include "pid.h"
+#include "util.h"
 #include "robot-config.h"
+#include "opcontrol.h"
 
 // Main function declarations
 void pre_auton(void);

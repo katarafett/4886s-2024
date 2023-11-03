@@ -3,10 +3,10 @@
 #define DRIVE_REV__IN (DRIVE_GEARING * PI * SML_WHEEL_DIAM)
 #define WHEEL_TO_WHEEL_DIST 12
 
-#define DRIVE_KP 0.85
+#define DRIVE_KP 0.70
 #define DRIVE_KI 0
 #define DRIVE_KD 0
-#define DIR_KP 1.45
+#define DIR_KP 1.40
 #define DIR_KI 0
 #define DIR_KD 0
 #define FLY_KP 0.3
@@ -53,7 +53,7 @@
 #define DRIVE_VEL ((drive_r.velocity(VEL_RPM) + drive_l.velocity(VEL_RPM)) / 2)
 #define DRIVE_POS ((drive_r.position(ROT_REV) * DRIVE_REV__IN + drive_l.position(ROT_REV) * DRIVE_REV__IN) / 2)
 #define DEADBAND 5
-#define TIME sands_of_time.time(vex::msec);
+#define TIME sands_of_time.time(vex::msec)
 
 // Control
 #define SENSITIVITY 0.7

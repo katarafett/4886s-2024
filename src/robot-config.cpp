@@ -33,5 +33,3 @@ vex::rotation rotn (PORT10);
 vex::motor_group drive_r (drive_rf, drive_rm, drive_rb);
 vex::motor_group drive_l (drive_lf, drive_lm, drive_lb);
 vex::motor_group intake (intake_l, intake_r);
-
-PID drive_pid (0.1, 0, 0);
