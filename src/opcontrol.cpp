@@ -77,4 +77,7 @@ void opdrive(int control_mode, float drive_mod, float turn_mod) {
             drive_lm.spin(DIR_FWD, LEFT_STICK_Y + LEFT_STICK_X + RIGHT_STICK_X, VEL_PCT);
             break;
     }
+    // Making the compiler shut up — completely useless
+    ly = ry;
+    lx = rx;
 }

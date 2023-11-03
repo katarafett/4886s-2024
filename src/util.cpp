@@ -3,7 +3,7 @@
 
 
 // 4886T PID
-void drive_straight(float dist, float maxVel, float accel) {
+void drive_straight_deprecated(float dist, float maxVel, float accel) {
     float vel_rpm;
 
     float vel = 0;
@@ -37,7 +37,7 @@ void drive_straight(float dist, float maxVel, float accel) {
             // error vals
             r_pos_err = pos - currRight;
             l_pos_err = pos - currLeft;
-            dir_err = (inrtl.rotation(ROT_DEG) * GYRO_CORRECTION) - current_heading;
+            dir_err = (inrtl.rotation(ROT_DEG) * GYRO_CORRECTION) - target_heading;
             vel_rpm = vel / DRIVE_REV__IN * 60;
 
             drive_r.spin(DIR_FWD, DRIVE_KP * r_pos_err + vel_rpm + DIR_KP * dir_err,
@@ -66,7 +66,7 @@ void drive_straight(float dist, float maxVel, float accel) {
 
             r_pos_err = pos - currRight;
             l_pos_err = pos - currLeft;
-            dir_err = (inrtl.rotation(ROT_DEG) * GYRO_CORRECTION) - current_heading;
+            dir_err = (inrtl.rotation(ROT_DEG) * GYRO_CORRECTION) - target_heading;
             vel_rpm = vel / DRIVE_REV__IN * 60;
 
             drive_r.spin(DIR_FWD, DRIVE_KP * r_pos_err - vel_rpm + DIR_KP * dir_err,
@@ -85,11 +85,11 @@ void drive_straight(float dist, float maxVel, float accel) {
 }
 
 // 4886T PID
-void drive_turn(float deg, float outerRadius, float maxVel, float accel,
+void drive_turn_deprecated(float deg, float outerRadius, float maxVel, float accel,
         bool reversed) {
     float radians = deg / RAD__DEG;
     radians = radians +
-        current_heading /
+        target_heading /
         RAD__DEG; // user vex::turns based on relative position, not net pos
 
     float vel_rpm;
@@ -223,8 +223,8 @@ void drive_turn(float deg, float outerRadius, float maxVel, float accel,
     printf("exit drive_turn");
     drive_l.stop(vex::brakeType::coast);
     drive_r.stop(vex::brakeType::coast);
-    current_heading = radians * RAD__DEG;
-    printf("curr_head: %f\n", current_heading);
+    target_heading = radians * RAD__DEG;
+    printf("curr_head: %f\n", target_heading);
 }
 
 bool within_range(double value, double base, double range) {
@@ -254,4 +254,17 @@ int *side_pressed(void) {
         sides[Y] = DOWN;
 
     return sides;
+}
+
+void tune_gyro(void) {
+    inrtl.calibrate();
+    while (inrtl.isCalibrating())
+        wait(20, vex::msec);
+
+    while (1) {
+        B_SCRN.clearScreen();
+        B_SCRN.setCursor(1, 1);
+        B_SCRN.print("%.1f", ROTATION);
+        wait(20, vex::msec);
+    }
 }

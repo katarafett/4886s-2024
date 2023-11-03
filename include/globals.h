@@ -1,18 +1,18 @@
 // Physical bits
-#define DRIVE_GEARING (GEAR_48 / GEAR_72)
-#define DRIVE_REV__IN (DRIVE_GEARING * PI * TRACT_WHEEL_DIAM)
+#define DRIVE_GEARING (1.0)
+#define DRIVE_REV__IN (DRIVE_GEARING * PI * SML_WHEEL_DIAM)
 #define WHEEL_TO_WHEEL_DIST 12
 
-#define DRIVE_KP 0.92
+#define DRIVE_KP 0.85
 #define DRIVE_KI 0
 #define DRIVE_KD 0
-#define DIR_KP 3.75
+#define DIR_KP 1.45
 #define DIR_KI 0
 #define DIR_KD 0
 #define FLY_KP 0.3
 #define FLY_ACCEL 18
 
-#define DRIVE_INSERT SPD_INSERT
+#define DRIVE_INSERT TRB_INSERT
 #define FLYWHEEL_INSERT TRB_INSERT
 #define INTAKE_INSERT TRB_INSERT
 
@@ -35,8 +35,8 @@
 #define SLOW 0.5
 #define FAST 1.0
 
-#define POS_DRIVE_R drive_r.position(ROT_REV)
-#define POS_DRIVE_L drive_l.position(ROT_REV)
+#define POS_DRIVE_R drive_r.position(ROT_REV) * DRIVE_REV__IN
+#define POS_DRIVE_L drive_l.position(ROT_REV) * DRIVE_REV__IN
 
 // Brain
 #define X 0
@@ -47,7 +47,7 @@
 #define DOWN 2
 
 // Misc - defines
-#define GYRO_CORRECTION (7218.70 / 7200.0)
+#define GYRO_CORRECTION (3600.0 / 3579.0)
 #define CHAR_HI 20
 #define CHAR_WI 12
 #define DRIVE_VEL ((drive_r.velocity(VEL_RPM) + drive_l.velocity(VEL_RPM)) / 2)
@@ -60,7 +60,7 @@
 
 // Autonomous
 extern int auton_mode;
-extern float current_heading;
+extern float target_heading;
 extern float fly_rpm;
 extern bool fly_pid_enabled;
 

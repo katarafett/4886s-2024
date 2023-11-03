@@ -8,6 +8,10 @@ class PID {
         bool do_i;
         bool do_d;
 
+        double kP;
+        double kI;
+        double kD;
+
         double error;
         double sum;
         double prev_error;
@@ -22,8 +26,22 @@ class PID {
         void tune_kI(float stick_mod);
         void tune_kD(float stick_mod);
 
-        double kP;
-        double kI;
-        double kD;
+        float get_const(char constant);
+
 };
 
+/**
+ * @param inches distance to travel - postive or negative
+ * @param target_ips goal for velocity - positive
+ * @param ips_per_sec acceleration - positive
+ */
+void drive_straight(float inches, float target_ips, float ips_per_sec);
+
+/**
+ * @param degrees changes target heading
+ * @param turn_radius outer radius of the turn
+ * @param target_ips goal for velocity - positive
+ * @param ips_per_sec acceleration
+ * @param reversed are we moving backwards?
+ */
+void drive_turn(float degrees, float turn_radius, float target_ips, float ips_per_sec, bool reversed = false);

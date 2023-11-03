@@ -3,6 +3,7 @@
 void pre_auton(void) {
     inrtl.calibrate();
     while (inrtl.isCalibrating()) wait(20, vex::msec);
+    master.rumble(".");
 
     // Init GUI
     int *sides;
@@ -25,7 +26,7 @@ void pre_auton(void) {
     B_SCRN.print("%s", autons[auton_mode]);
 
 
-    while (1) {
+    while (!(BTN_A.pressing())) {
         sides = side_pressed();
 
         if (sides[X] == LEFT && sides[Y] == UP) {
@@ -38,8 +39,6 @@ void pre_auton(void) {
             B_SCRN.print(" - LOCKED");
             break;
         }
-
-        if(BTN_A.pressing()) break;
 
         wait(20, vex::msec);
     }
