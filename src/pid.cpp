@@ -105,6 +105,11 @@ void drive_straight(float inches, float target_ips, float ips_per_sec) {
     drive_r.stop(vex::brakeType::coast);
 }
 
+/* Currently bugged
+ * can't arc backwards
+ * to turn right, degrees > 0 and reversed = false
+ * to turn left, degrees < 0 and reversed = true
+ */
 void drive_turn(float degrees, float outer_radius, float target_ips, float ips_per_sec, bool reversed) {
     target_heading += degrees;      // update target heading
 
@@ -142,7 +147,7 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
             ips -= ips_per_sec / 50.0;
         else if (ips < target_ips)
             ips += ips_per_sec / 50.0;   // 50 cycles per second
-        else ips = target_ips; master.rumble(".");
+        else ips = target_ips;
 
         // Translate ips to rpm
         outer_vel_rpm = ips / DRIVE_REV__IN * 60;
