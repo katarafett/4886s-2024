@@ -1,6 +1,4 @@
-# pid.cpp
-
-## PID class
+# PID class
 
 ```cpp
 PID::PID(double init_kP, double init_kI, double init_kD);
@@ -40,7 +38,7 @@ float PID::get_const(char constant);
 Takes the character of the constant.  
 Returns the current value of the constant.
 
-## drive_straight()
+# drive_straight()
 
 ```cpp
 void drive_straight(float inches, float target_ips, float ips_per_sec);
@@ -63,7 +61,7 @@ Handles acceleration
 
 If the current distance travelled plus the distance needed to stop exceeds the target distance, slow down. Otherwise, if the current speed is less than target speed, speed up. Otherwise, set speed to the target speed (to prevent moving faster than the target).
 
-## drive_turn()
+# drive_turn()
 
 ```cpp
 void drive_turn(float degrees, float outer_radius, float target_ips, float ips_per_sec, bool reversed);
@@ -141,5 +139,5 @@ else {      // right is inner side
 
 Currently bugged. Supposed to turn in arc of 1 of 4 directions: forward-left, fwd-right, backward-left, bwd-right. Actually only turns fwd. If turning left, reversed must be true.
 
-Intended behavior:  
+Intended behavior:  c
 Determine which side (left or right) is the outside of the turn. Give that side `outer_vel_rpm`, and the inside `inner_vel_rpm`. Flip PID modifier on the inside of the turn.
