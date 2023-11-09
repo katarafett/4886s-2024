@@ -16,7 +16,8 @@ PID::PID(double init_kP, double init_kI, double init_kD) {
     prev_error = 0;
     deriv = 0;
 
-    do_print_val = true;
+    // For debug and tuning
+    do_print_val = false;
 }
 
 double PID::pid_adjust(double setpoint, double current_value) {
@@ -54,9 +55,9 @@ float PID::get_const(char constant) {
 }
  
 void drive_straight(float inches, float target_ips, float ips_per_sec) {
-    PID pid_drive_l (DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    PID pid_drive_r (DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    PID pid_dir (DIR_KP, DIR_KI, DIR_KD);
+    PID pid_drive_l = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_drive_r = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_dir = PID(DIR_KP, DIR_KI, DIR_KD);
 
     float ips = 0, pos = 0;
     float pos_start_l = POS_DRIVE_L, pos_start_r = POS_DRIVE_R;
@@ -105,6 +106,7 @@ void drive_straight(float inches, float target_ips, float ips_per_sec) {
     drive_r.stop(vex::brakeType::coast);
 }
 
+// TODO: get rid of reversed and just use a negative outer_radius
 /* Currently bugged
  * can't arc backwards
  * to turn right, degrees > 0 and reversed = false

@@ -20,7 +20,9 @@
 #define AWP 0
 #define HALF_AWP_NEAR 1
 #define HALF_AWP_FAR 2
-#define SKILLS 3
+#define NEAR_ELIMS 3
+#define FAR_ELIMS 4
+#define SKILLS 5
 
 // Control modes
 #define TNK_STD 0

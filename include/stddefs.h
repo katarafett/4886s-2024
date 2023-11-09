@@ -9,6 +9,9 @@
 #define SPD_INSERT vex::gearSetting::ratio18_1
 #define TRB_INSERT vex::gearSetting::ratio6_1
 
+// Conversion
+// multiple to convert from first to second
+// divide to convert from second to first
 #define STICK__TRQ (100.0 / 127.0)
 #define STICK__SPD (2 * 100.0 / 127.0)
 #define STICK__TRB (3 * 100.0 / 127.0)
@@ -24,6 +27,16 @@
 #define GEAR_60 60.0
 #define GEAR_72 72.0
 #define GEAR_84 84.0
+
+#define FULL_ROT__DEG 360.0
+#define HALF_ROT__DEG 180.0
+#define QRTR_ROT__DEG 90.0
+
+#define RAD__DEG 57.29578
+
+#define IN__CM 2.54
+#define RAD__DEG 57.29578
+#define SEC__MSEC 1000.0
 
 // Wheels
 #define LRG_OMNI_DIAM 4.0
@@ -41,17 +54,6 @@
 #define MED_WHEEL_CIRC 13.1
 #define SML_WHEEL_CIRC 8.6
 #define TRACT_WHEEL_CIRC 10.2
-
-// Unit Conversions
-#define FULL_ROT__DEG 360.0
-#define HALF_ROT__DEG 180.0
-#define QRTR_ROT__DEG 90.0
-
-#define RAD__DEG 57.29578
-
-#define IN__CM 2.54
-#define RAD__DEG 57.29578
-#define SEC__MSEC 1000.0
 
 // Controller Parts
 // for use with controller named 'master'

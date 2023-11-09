@@ -1,11 +1,12 @@
 #include "../include/main.h"
 
 void pre_auton(void) {
+    // Calibrate inertial
     inrtl.calibrate();
     while (inrtl.isCalibrating()) wait(20, vex::msec);
     master.rumble(".");
 
-    // Init GUI
+    // Create GUI
     int *sides;
     const char *autons[4] = {"AWP", "HALF_AWP_NEAR", "HALF_AWP_FAR", "SKILLS"};
 
@@ -29,12 +30,15 @@ void pre_auton(void) {
     while (!(BTN_A.pressing())) {
         sides = side_pressed();
 
+        // Update auton type
         if (sides[X] == LEFT && sides[Y] == UP) {
             auton_mode++;
-            if (auton_mode > 3) auton_mode = 0;
+            if (auton_mode > 5) auton_mode = 0;
             B_SCRN.clearLine();
             B_SCRN.print("%s", autons[auton_mode]);
         }
+
+        // Lock auton
         if (sides[X] == RIGHT && sides[Y] == UP) {
             B_SCRN.print(" - LOCKED");
             break;
