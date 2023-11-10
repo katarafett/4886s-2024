@@ -1,7 +1,7 @@
 // Physical bits
 #define DRIVE_GEARING (1.0)
 #define DRIVE_REV__IN (DRIVE_GEARING * PI * SML_WHEEL_DIAM)
-#define WHEEL_TO_WHEEL_DIST 12
+#define WHEEL_TO_WHEEL_DIST (12.0)
 
 #define DRIVE_KP 0.70
 #define DRIVE_KI 0
