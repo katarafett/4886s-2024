@@ -20,6 +20,7 @@
 #define BTN__SPD 200.0
 #define BTN__TRB 600.0
 #define BTN__PCT 100.0
+#define BTN__VLT 12.0
 
 #define GEAR_12 12.0
 #define GEAR_36 36.0

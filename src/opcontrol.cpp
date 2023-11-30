@@ -1,21 +1,37 @@
 #include "../include/main.h"
 
-void opcontrol(void) {
+// Driver macros
+#define L1_SHIFTED (BTN_L1.PRESSED && shifted)
+#define R1_SHIFTED (BTN_R1.PRESSED && shifted)
+#define R2_SHIFTED (BTN_R2.PRESSED && shifted)
 
-    bool wings_out = false;
+#define L1_UNSHIFTED (BTN_L1.pressing() && !shifted)
+#define R1_UNSHIFTED (BTN_R1.pressing() && !shifted)
+#define R2_UNSHIFTED (BTN_R2.pressing() && !shifted)
+
+void opcontrol(void) {
+    bool wings_out_l = false;
+    bool wings_out_r = false;
     bool smith_out = false;
     bool balance_out = false;
+    bool shifted = false;
 
     while (1) {
+        shifted = BTN_L2.pressing();
+
         opdrive(TSA_STD, 1, SENSITIVITY);
 
-        intake.spin(DIR_FWD, (BTN_R1.pressing() - BTN_R2.pressing()) * BTN__PCT, VEL_PCT);
+        intake.spin(DIR_FWD, (R1_UNSHIFTED - R2_UNSHIFTED) * BTN__PCT, VEL_PCT);
+        puncher.spin(DIR_FWD, (L1_UNSHIFTED) * BTN__VLT, VLT_VLT);
 
-        cata.spin(DIR_FWD, BTN_L1.pressing() * BTN__PCT, VEL_PCT);
-
-        if (BTN_L2.PRESSED) {
-            wings_out = !wings_out;
-            wings.set(wings_out);
+        // Flip wings
+        if (R2_SHIFTED) {
+            wings_out_l = !wings_out_l;
+            wings_l.set(wings_out_l);
+        }
+        if (R1_SHIFTED) {
+            wings_out_r = !wings_out_r;
+            wings_r.set(wings_out_r);
         }
 
         if (BTN_RIGHT.PRESSED) {
@@ -28,6 +44,8 @@ void opcontrol(void) {
             balance.set(balance_out);
         }
 
+        printf("shift: %i\n", shifted);
+        printf("r1-us: %i\n", R1_UNSHIFTED);
         wait(20, vex::msec);
     }
 }

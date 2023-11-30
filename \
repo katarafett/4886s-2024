@@ -8,9 +8,10 @@ extern vex::motor drive_lf;
 extern vex::motor drive_lm;
 extern vex::motor drive_lb;
 
-extern vex::motor intake;
+extern vex::motor intake_l;
+extern vex::motor intake_r;
 
-extern vex::motor puncher;
+extern vex::motor cata;
 
 extern vex::digital_out wings_r;
 extern vex::digital_out wings_l;
@@ -19,6 +20,9 @@ extern vex::digital_out balance;
 
 extern vex::inertial inrtl;
 extern vex::timer sands_of_time;
+extern vex::rotation rotn;
 
 extern vex::motor_group drive_r;
 extern vex::motor_group drive_l;
+extern vex::motor_group intake;
+extern vex::motor_group flywheel;

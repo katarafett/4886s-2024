@@ -13,7 +13,6 @@
 #define FLY_ACCEL 18
 
 #define DRIVE_INSERT TRB_INSERT
-#define FLYWHEEL_INSERT TRB_INSERT
 #define INTAKE_INSERT TRB_INSERT
 
 // Autonmous modes
@@ -63,11 +62,7 @@
 // Autonomous
 extern int auton_mode;
 extern float target_heading;
-extern float fly_rpm;
-extern bool fly_pid_enabled;
 
 // Selection
 extern const char *control_types[6];
 extern const char *auton_types[4];
-#define VEL_FLY_HI rot_flywheel_hi.velocity(VEL_RPM)
-#define VEL_FLY_LO rot_flywheel_lo.velocity(VEL_RPM)

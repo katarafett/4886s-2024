@@ -53,7 +53,7 @@ void autonomous(void) {
         case FAR_ELIMS:
             break;
         case SKILLS:
-            cata.spin(DIR_FWD, 50, VEL_PCT);
+            puncher.spin(DIR_FWD, 50, VEL_PCT);
             break;
     }
 }
