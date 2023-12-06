@@ -25,7 +25,7 @@ void opcontrol(void) {
         puncher.spin(DIR_FWD, (L1_UNSHIFTED) * BTN__VLT, VLT_VLT);
 
         // Flip wings
-        if (R2_SHIFTED) {
+        if (L1_SHIFTED) {
             wings_out_l = !wings_out_l;
             wings_l.set(wings_out_l);
         }
@@ -44,8 +44,6 @@ void opcontrol(void) {
             balance.set(balance_out);
         }
 
-        printf("shift: %i\n", shifted);
-        printf("r1-us: %i\n", R1_UNSHIFTED);
         wait(20, vex::msec);
     }
 }
@@ -95,7 +93,4 @@ void opdrive(int control_mode, float drive_mod, float turn_mod) {
             drive_lm.spin(DIR_FWD, LEFT_STICK_Y + LEFT_STICK_X + RIGHT_STICK_X, VEL_PCT);
             break;
     }
-    // Making the compiler shut up — completely useless
-    ly = ry;
-    lx = rx;
 }

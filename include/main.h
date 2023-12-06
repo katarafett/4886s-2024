@@ -17,6 +17,7 @@
 #include "util.h"
 #include "robot-config.h"
 #include "opcontrol.h"
+#include "tune_pid.h"
 
 // Main function declarations
 void pre_auton(void);

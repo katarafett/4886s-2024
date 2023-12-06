@@ -3,7 +3,7 @@
 #define DRIVE_REV__IN (DRIVE_GEARING * PI * SML_WHEEL_DIAM)
 #define WHEEL_TO_WHEEL_DIST (12.0)
 
-#define DRIVE_KP 0.70
+#define DRIVE_KP 0.10
 #define DRIVE_KI 0
 #define DRIVE_KD 0
 #define DIR_KP 1.40
@@ -33,11 +33,10 @@
 #define XDRIVE 6
 
 // Drive
-#define SLOW 0.5
-#define FAST 1.0
-
-#define POS_DRIVE_R drive_r.position(ROT_REV) * DRIVE_REV__IN
-#define POS_DRIVE_L drive_l.position(ROT_REV) * DRIVE_REV__IN
+#define POS_DRIVE_R (drive_r.position(ROT_REV) * DRIVE_REV__IN)
+#define POS_DRIVE_L (drive_l.position(ROT_REV) * DRIVE_REV__IN)
+#define VEL_DRIVE_R (drive_r.velocity(VEL_RPM) * DRIVE_REV__IN / 60.0)
+#define VEL_DRIVE_L (drive_l.velocity(VEL_RPM) * DRIVE_REV__IN / 60.0)
 
 // Brain
 #define X 0

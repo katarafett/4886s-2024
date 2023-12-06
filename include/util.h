@@ -34,3 +34,17 @@ int *side_pressed(void);
  * @brief find gyro discrepencies
  */
 void tune_gyro(void);
+
+/**
+ * @brief changes velocity at the acceleration rate
+ *
+ * @param dist disance travelled so far
+ * @param target_dist desired distance to travel
+ * @param vel current velocity
+ * @param max_vel maximum velocity allowed
+ * @param accel rate of acceleration
+ * @param tps number of times this function is called per time unit of accel
+ * @param do_decel whether to decelerate
+ */
+void handle_accel(float dist, float target_dist, float *vel, float max_vel,
+        float accel, int tps, bool do_decel);

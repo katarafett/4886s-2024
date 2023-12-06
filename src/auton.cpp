@@ -5,6 +5,10 @@ void release_antenna(void);
 void autonomous(void) {
     switch (auton_mode) {
         case AWP:
+            /* tune pid */
+            drive_straight(3 * 24, 64, 52);
+            master.rumble(".");
+            drive_turn(90, WHEEL_TO_WHEEL_DIST * 2, 64, 52);
             break;
         case HALF_AWP_NEAR:
             // Get to triball

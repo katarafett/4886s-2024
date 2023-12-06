@@ -1,4 +1,5 @@
 #include "../include/main.h"
+#include "stddefs.h"
 
 PID::PID() {}
 
@@ -30,18 +31,24 @@ double PID::pid_adjust(double setpoint, double current_value) {
 }
 
 void PID::tune_kP(float stick_mod) {
-    kP += LEFT_STICK_Y * stick_mod;
+    kP += (BTN_UP.pressing() - BTN_DOWN.pressing()) * stick_mod;
     printf("kP: %lf\n", kP);
+    B_SCRN.setCursor(3, 4);
+    B_SCRN.print("kP: %lf", kP);
 }
 
 void PID::tune_kI(float stick_mod) {
-    kI += RIGHT_STICK_Y * stick_mod;
+    kI += (BTN_RIGHT.pressing() - BTN_LEFT.pressing()) * stick_mod;
     printf("kI: %lf\n", kI);
+    B_SCRN.setCursor(5, 4);
+    B_SCRN.print("kI: %lf", kI);
 }
 
 void PID::tune_kD(float stick_mod) {
-    kD += RIGHT_STICK_X * stick_mod;
+    kD += (BTN_X.pressing() - BTN_B.pressing()) * stick_mod;
     printf("kD: %lf\n", kD);
+    B_SCRN.setCursor(7, 4);
+    B_SCRN.print("kD: %lf", kD);
 }
 
 float PID::get_const(char constant) {
@@ -115,8 +122,8 @@ void drive_straight(float inches, float target_ips, float ips_per_sec) {
 void drive_turn(float degrees, float outer_radius, float target_ips, float ips_per_sec, bool reversed) {
     target_heading += degrees;      // update target heading
 
-    PID pid_drive_l (DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    PID pid_drive_r (DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_drive_l  = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_drive_r = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
 
     float pid_adjustment_l;
     float pid_adjustment_r;
@@ -182,6 +189,65 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
 
         target_time += 20;
         while (sands_of_time.time(vex::msec) < target_time);    // wait for next cycle
+    }
+    drive_l.stop(vex::brakeType::coast);
+    drive_r.stop(vex::brakeType::coast);
+}
+
+// In testing
+void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel) {
+    const int TPS = 50;     // ticks per second
+
+    // Initialize PID objects
+    PID pid_r = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_l = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_dir = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    float pid_r_adj, pid_l_adj, pid_dir_adj;
+
+    // Various positions in inches
+    float start_pos_r = POS_DRIVE_R;
+    float start_pos_l = POS_DRIVE_L;
+    float current_pos_r = POS_DRIVE_R - start_pos_r;
+    float current_pos_l = POS_DRIVE_L - start_pos_l;
+    float avg_pos = (current_pos_r + current_pos_l) / 2.0;
+
+    // Velocities
+    float target_vel_r = VEL_DRIVE_R;
+    float target_vel_l = VEL_DRIVE_L;
+    float r_vel_rpm;
+    float l_vel_rpm;
+
+    // Direction of travel
+    int dir_mod = (inches > 0) ? 1 : -1;
+
+    float start_time = sands_of_time.time(vex::msec);
+    float next_cycle = start_time;      // tracks time between cycles
+
+    while (std::abs(avg_pos) < std::abs(inches)) {      // cuts if we've reached target position
+        // Update positions
+        current_pos_r = POS_DRIVE_R - start_pos_r;
+        current_pos_l = POS_DRIVE_L - start_pos_l;
+        avg_pos = (current_pos_r + current_pos_l) / 2.0;
+
+        // Handle accelerations
+        handle_accel(current_pos_r, inches, &target_vel_r, max_ips, ips_per_sec, TPS, do_decel);
+        handle_accel(current_pos_l, inches, &target_vel_l, max_ips, ips_per_sec, TPS, do_decel);
+
+        // Get PID values
+        pid_r_adj = pid_r.pid_adjust(target_vel_r, VEL_DRIVE_R);
+        pid_l_adj = pid_l.pid_adjust(target_vel_l, VEL_DRIVE_L);
+        pid_dir_adj = pid_dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION);
+
+        r_vel_rpm = target_vel_r / DRIVE_REV__IN * 60;
+        l_vel_rpm = target_vel_l / DRIVE_REV__IN * 60;
+
+        // Move drive
+        drive_r.spin(DIR_FWD, dir_mod * r_vel_rpm + pid_r_adj + pid_dir_adj, VEL_RPM);
+        drive_l.spin(DIR_FWD, dir_mod * l_vel_rpm + pid_l_adj - pid_dir_adj, VEL_RPM);
+
+        // Wait for next cycle
+        next_cycle += 1000.0 / TPS;
+        while (sands_of_time.time(vex::msec) < next_cycle);     // wait for next cycle
     }
     drive_l.stop(vex::brakeType::coast);
     drive_r.stop(vex::brakeType::coast);

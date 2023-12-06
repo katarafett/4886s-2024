@@ -268,3 +268,12 @@ void tune_gyro(void) {
         wait(20, vex::msec);
     }
 }
+
+void handle_accel(float dist, float target_dist, float *vel, float max_vel,
+        float accel, int tps, bool do_decel) {
+    if (std::abs(dist) + stop_dist(*vel, accel) >= std::abs(target_dist) && do_decel)
+        *vel -= accel / tps;
+    else if (*vel < max_vel)
+        *vel += accel / tps;
+    else *vel = max_vel;
+}

@@ -23,7 +23,7 @@ void pre_auton(void) {
 
     B_SCRN.setFillColor(vex::black);
     B_SCRN.setPenColor(vex::white);
-    B_SCRN.setCursor(B_SCRN_Y * 3 / 2, B_SCRN_X / 72);
+    B_SCRN.setCursor(B_SCRN_Y * 3 / 2, 1);
     B_SCRN.print("%s", autons[auton_mode]);
 
 
@@ -33,7 +33,8 @@ void pre_auton(void) {
         // Update auton type
         if (sides[X] == LEFT && sides[Y] == UP) {
             auton_mode++;
-            if (auton_mode > 5) auton_mode = 0;
+            // Not good; if auton count changes, memory errors
+            if (auton_mode > 3) auton_mode = 0;
             B_SCRN.clearLine();
             B_SCRN.print("%s", autons[auton_mode]);
         }
