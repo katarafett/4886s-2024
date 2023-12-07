@@ -1,5 +1,6 @@
 #include "../include/main.h"
 #include "stddefs.h"
+#include "vex_units.h"
 
 PID::PID() {}
 
@@ -109,8 +110,8 @@ void drive_straight(float inches, float target_ips, float ips_per_sec) {
         target_time += 20;
         while (sands_of_time.time(vex::msec) < target_time);   // wait for next iteration;
     }
-    drive_l.stop(vex::brakeType::coast);
-    drive_r.stop(vex::brakeType::coast);
+    drive_l.stop(vex::brakeType::brake);
+    drive_r.stop(vex::brakeType::brake);
 }
 
 // TODO: get rid of reversed and just use a negative outer_radius
@@ -190,8 +191,8 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
         target_time += 20;
         while (sands_of_time.time(vex::msec) < target_time);    // wait for next cycle
     }
-    drive_l.stop(vex::brakeType::coast);
-    drive_r.stop(vex::brakeType::coast);
+    drive_l.stop(vex::brakeType::brake);
+    drive_r.stop(vex::brakeType::brake);
 }
 
 // In testing
@@ -200,7 +201,7 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
 
     // Initialize PID objects
     PID pid_r = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    PID pid_l = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_l = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);      // needs a seperate controller because they'll rack up error at different rates
     PID pid_dir = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
     float pid_r_adj, pid_l_adj, pid_dir_adj;
 
@@ -214,10 +215,9 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
     // Velocities
     float target_vel_r = VEL_DRIVE_R;
     float target_vel_l = VEL_DRIVE_L;
-    float r_vel_rpm;
-    float l_vel_rpm;
+    float r_vel_rpm, l_vel_rpm;
 
-    // Direction of travel
+    // Direction of travel - 1 for fwd, -1 for bwd
     int dir_mod = (inches > 0) ? 1 : -1;
 
     float start_time = sands_of_time.time(vex::msec);
@@ -249,6 +249,12 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
         next_cycle += 1000.0 / TPS;
         while (sands_of_time.time(vex::msec) < next_cycle);     // wait for next cycle
     }
-    drive_l.stop(vex::brakeType::coast);
-    drive_r.stop(vex::brakeType::coast);
+    if (do_decel) {
+        drive_l.stop(vex::brakeType::brake);
+        drive_r.stop(vex::brakeType::brake);
+    }
+    else {
+        drive_l.stop(vex::brakeType::coast);
+        drive_r.stop(vex::brakeType::coast);
+    }
 }
