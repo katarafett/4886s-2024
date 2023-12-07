@@ -1,4 +1,5 @@
 #include "../include/main.h"
+#include "stddefs.h"
 
 // Driver macros
 #define L1_SHIFTED (BTN_L1.PRESSED && shifted)
@@ -49,6 +50,7 @@ void opcontrol(void) {
 }
 
 void opdrive(int control_mode, float drive_mod, float turn_mod) {
+    printf("rsy: %ld", RIGHT_STICK_X);
     drive_mod *= STICK__PCT;     // Adjust for percentage units
     double ry = RIGHT_STICK_Y, ly = LEFT_STICK_Y, rx = RIGHT_STICK_X, lx = LEFT_STICK_X;
     float rspeed, lspeed;
@@ -70,8 +72,10 @@ void opdrive(int control_mode, float drive_mod, float turn_mod) {
         case TSA_STD:
             // lspeed = (ly - rx) * (ly - rx) / 100 * (((ly - rx) > 0) - ((ly - rx) < 0));
             // rspeed = (ly + rx) * (ly + rx) / 100 * (((ly + rx) > 0) - ((ly + rx) < 0));
-            drive_r.spin(DIR_FWD, (LEFT_STICK_Y - RIGHT_STICK_X * turn_mod) * drive_mod, VEL_PCT);
-            drive_l.spin(DIR_FWD, (LEFT_STICK_Y + RIGHT_STICK_X * turn_mod) * drive_mod, VEL_PCT);
+            lspeed = (ly * ly * ly / 16129.0);
+            rspeed = (rx * rx * rx / 16129.0);
+            drive_r.spin(DIR_FWD, lspeed - rspeed, VEL_PCT);
+            drive_l.spin(DIR_FWD, lspeed + rspeed, VEL_PCT);
             break;
 
         case TNK_REV:

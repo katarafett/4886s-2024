@@ -6,11 +6,9 @@
 #define DRIVE_KP 0.10
 #define DRIVE_KI 0
 #define DRIVE_KD 0
-#define DIR_KP 1.40
-#define DIR_KI 0
-#define DIR_KD 0
-#define FLY_KP 0.3
-#define FLY_ACCEL 18
+#define DIR_KP 2.33
+#define DIR_KI 0.025
+#define DIR_KD 0.0
 
 #define DRIVE_INSERT TRB_INSERT
 #define INTAKE_INSERT TRB_INSERT

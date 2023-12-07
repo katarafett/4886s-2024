@@ -10,10 +10,13 @@ void tune_pid() {
     while (true) {
         opdrive(TSA_STD, 1, SENSITIVITY);
         if (BTN_Y.PRESSED) {
+            target_heading = ROTATION * GYRO_CORRECTION;
             while (!BTN_Y.PRESSED) {
-                target_heading = ROTATION * GYRO_CORRECTION;
                 drive_r.spin(DIR_FWD, 250 + rd.pid_adjust(250, drive_r.velocity(VEL_RPM)) - dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION), VEL_RPM);
                 drive_l.spin(DIR_FWD, 250 + ld.pid_adjust(250, drive_l.velocity(VEL_RPM)) + dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION), VEL_RPM);
+                printf("\ngyro: %.1lf", ROTATION);
+                printf("\ncorrection: %.1lf", ROTATION * GYRO_CORRECTION);
+                printf("\npid_bit: %.1lf", dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION));
                 wait(20, vex::msec);
             }
         }
@@ -21,7 +24,6 @@ void tune_pid() {
         dir.tune_kI(TUNER);
         dir.tune_kD(TUNER);
 
-        printf("\ngyro: %.1lf\n\n\n", ROTATION * GYRO_CORRECTION);
         wait(20, vex::msec);
     }
 }
