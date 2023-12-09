@@ -63,6 +63,9 @@ float PID::get_const(char constant) {
 }
  
 void drive_straight(float inches, float target_ips, float ips_per_sec) {
+    drive_r.stop(vex::brakeType::coast);
+    drive_l.stop(vex::brakeType::coast);
+
     PID pid_drive_l = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
     PID pid_drive_r = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
     PID pid_dir = PID(DIR_KP, DIR_KI, DIR_KD);
@@ -121,6 +124,8 @@ void drive_straight(float inches, float target_ips, float ips_per_sec) {
  * to turn left, degrees < 0 and reversed = true
  */
 void drive_turn(float degrees, float outer_radius, float target_ips, float ips_per_sec, bool reversed) {
+    drive_r.stop(vex::brakeType::coast);
+    drive_l.stop(vex::brakeType::coast);
     target_heading += degrees;      // update target heading
 
     PID pid_drive_l  = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
@@ -153,15 +158,16 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
         degrees_remaining = target_heading - ROTATION * GYRO_CORRECTION;
 
         // Handle acceleration
-        if (std::abs(degrees_remaining / RAD__DEG * outer_radius) - stop_dist(ips, ips_per_sec) <= 0)
+        if (std::abs(degrees_remaining / RAD__DEG * outer_radius) - stop_dist(ips, ips_per_sec) <= 0) {
             ips -= ips_per_sec / 50.0;
+        }
         else if (ips < target_ips)
             ips += ips_per_sec / 50.0;   // 50 cycles per second
         else ips = target_ips;
 
         // Translate ips to rpm
-        outer_vel_rpm = ips / DRIVE_REV__IN * 60;
-        inner_vel_rpm = outer_vel_rpm * radius_ratio;
+        outer_vel_rpm = ips / DRIVE_REV__IN * 60 * ((reversed) ? -1 : 1);         // fixes the stupid thing;
+        inner_vel_rpm = outer_vel_rpm * radius_ratio * ((reversed) ? -1 : 1);     // try not to touch
 
         // Track position
         outer_pos += ips / 50;    // 50 cycles per second
@@ -173,21 +179,21 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
             pid_adjustment_l = -1 * pid_drive_l.pid_adjust(inner_pos, pos_l);
             pid_adjustment_r = pid_drive_r.pid_adjust(outer_pos, pos_r);
 
-            drive_l.spin(DIR_FWD, dir_mod * inner_vel_rpm + pid_adjustment_l, VEL_RPM);
-            drive_r.spin(DIR_FWD, dir_mod * outer_vel_rpm + pid_adjustment_r, VEL_RPM);
+            drive_l.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_l, VEL_RPM);
+            drive_r.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_r, VEL_RPM);
         }
         else {      // right is inner side
             pid_adjustment_l = pid_drive_l.pid_adjust(outer_pos, pos_l);
             pid_adjustment_r = -1 * pid_drive_r.pid_adjust(inner_pos, pos_r);
 
-            drive_l.spin(DIR_FWD, dir_mod * outer_vel_rpm + pid_adjustment_l, VEL_RPM);
-            drive_r.spin(DIR_FWD, dir_mod * inner_vel_rpm + pid_adjustment_r, VEL_RPM);
+            drive_l.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_l, VEL_RPM);
+            drive_r.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_r, VEL_RPM);
         }
 
         // Exit if we're past the desired angle
         if (degrees_remaining * dir_mod < 0)
             break;
-
+        
         target_time += 20;
         while (sands_of_time.time(vex::msec) < target_time);    // wait for next cycle
     }

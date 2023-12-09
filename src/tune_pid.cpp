@@ -14,9 +14,6 @@ void tune_pid() {
             while (!BTN_Y.PRESSED) {
                 drive_r.spin(DIR_FWD, 250 + rd.pid_adjust(250, drive_r.velocity(VEL_RPM)) - dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION), VEL_RPM);
                 drive_l.spin(DIR_FWD, 250 + ld.pid_adjust(250, drive_l.velocity(VEL_RPM)) + dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION), VEL_RPM);
-                printf("\ngyro: %.1lf", ROTATION);
-                printf("\ncorrection: %.1lf", ROTATION * GYRO_CORRECTION);
-                printf("\npid_bit: %.1lf", dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION));
                 wait(20, vex::msec);
             }
         }

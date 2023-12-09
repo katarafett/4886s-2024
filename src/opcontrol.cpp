@@ -11,10 +11,11 @@
 #define R2_UNSHIFTED (BTN_R2.pressing() && !shifted)
 
 void opcontrol(void) {
+    drive_l.stop(vex::brakeType::coast);
+    drive_r.stop(vex::brakeType::coast);
     bool wings_out_l = false;
     bool wings_out_r = false;
     bool smith_out = false;
-    bool balance_out = false;
     bool shifted = false;
 
     while (1) {
@@ -34,15 +35,16 @@ void opcontrol(void) {
             wings_out_r = !wings_out_r;
             wings_r.set(wings_out_r);
         }
+        if (R2_SHIFTED) {
+            wings_out_r = true;
+            wings_out_l = true;
+            wings_l.set(1);
+            wings_r.set(1);
+        }
 
         if (BTN_RIGHT.PRESSED) {
             smith_out = !smith_out;
             smith.set(smith_out);
-        }
-
-        if (BTN_Y.PRESSED) {
-            balance_out = !balance_out;
-            balance.set(balance_out);
         }
 
         wait(20, vex::msec);

@@ -20,10 +20,9 @@ vex::motor intake = vex::motor(PORT10, INTAKE_INSERT, false);
 // Wings
 vex::digital_out wings_r = vex::digital_out(PORTA);
 vex::digital_out wings_l = vex::digital_out(PORTB);
+
 // Slapper
-vex::digital_out smith = vex::digital_out(PORTB);
-// Elevation
-vex::digital_out balance = vex::digital_out(PORTC);
+vex::digital_out smith = vex::digital_out(PORTC);
 
 // Sensors
 vex::inertial inrtl = vex::inertial(PORT20);

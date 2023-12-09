@@ -48,3 +48,5 @@ void tune_gyro(void);
  */
 void handle_accel(float dist, float target_dist, float *vel, float max_vel,
         float accel, int tps, bool do_decel);
+
+void release_intake(void);
