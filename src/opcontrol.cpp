@@ -11,7 +11,6 @@
 #define R2_UNSHIFTED (BTN_R2.pressing() && !shifted)
 
 void opcontrol(void) {
-    // test comment
     drive_l.stop(vex::brakeType::coast);
     drive_r.stop(vex::brakeType::coast);
     bool wings_out_l = false;
