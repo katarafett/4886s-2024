@@ -55,7 +55,7 @@
 #define TIME sands_of_time.time(vex::msec)
 
 // Control
-#define SENSITIVITY 0.7
+#define SENSITIVITY 0.3
 
 // Autonomous
 extern int auton_mode;
