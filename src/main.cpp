@@ -12,7 +12,7 @@
 vex::competition Competition;
 
 int main() {
-    // pre_auton();
+    pre_auton();
     Competition.autonomous(autonomous);
     Competition.drivercontrol(opcontrol);
 

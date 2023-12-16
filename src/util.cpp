@@ -280,6 +280,6 @@ void handle_accel(float dist, float target_dist, float *vel, float max_vel,
 
 void release_intake() {
     intake.spin(DIR_FWD, -50, PCT_PCT);
-    wait(250, vex::msec);
+    wait(300, vex::msec);
     intake.stop();
 }
