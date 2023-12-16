@@ -42,7 +42,7 @@ void opcontrol(void) {
             wings_r.set(1);
         }
 
-        if (BTN_RIGHT.PRESSED) {
+        if (BTN_Y.PRESSED) {
             smith_out = !smith_out;
             smith.set(smith_out);
         }
