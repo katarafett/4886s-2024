@@ -4,12 +4,22 @@ vex::brain Brain;
 vex::controller master;
 
 // Drive
-vex::motor drive_rf = vex::motor(PORT1, DRIVE_INSERT, true);
-vex::motor drive_rm = vex::motor(PORT2, DRIVE_INSERT, true);
+#define STACKED
+#ifdef STACKED
+vex::motor drive_rf = vex::motor(PORT1, DRIVE_INSERT, false);
+vex::motor drive_rm = vex::motor(PORT2, DRIVE_INSERT, false);
+vex::motor drive_rb = vex::motor(PORT3, DRIVE_INSERT, false);
+vex::motor drive_lf = vex::motor(PORT4, DRIVE_INSERT, true);
+vex::motor drive_lm = vex::motor(PORT5, DRIVE_INSERT, true);
+vex::motor drive_lb = vex::motor(PORT6, DRIVE_INSERT, true);
+#else
+vex::motor drive_rf = vex::motor(PORT1, DRIVE_INSERT, false);
+vex::motor drive_rm = vex::motor(PORT2, DRIVE_INSERT, false);
 vex::motor drive_rb = vex::motor(PORT3, DRIVE_INSERT, true);
-vex::motor drive_lf = vex::motor(PORT4, DRIVE_INSERT, false);
-vex::motor drive_lm = vex::motor(PORT5, DRIVE_INSERT, false);
+vex::motor drive_lf = vex::motor(PORT4, DRIVE_INSERT, true);
+vex::motor drive_lm = vex::motor(PORT5, DRIVE_INSERT, true);
 vex::motor drive_lb = vex::motor(PORT6, DRIVE_INSERT, false);
+#endif      // STACKED
 
 // Cata
 vex::motor puncher = vex::motor(PORT7, TRQ_INSERT, false);
