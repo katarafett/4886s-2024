@@ -1,5 +1,6 @@
 #include "../include/main.h"
 #include "stddefs.h"
+#include "vex_global.h"
 #include "vex_units.h"
 
 PID::PID() {}
@@ -62,7 +63,7 @@ float PID::get_const(char constant) {
     else return '\0';
 }
  
-void drive_straight(float inches, float target_ips, float ips_per_sec) {
+void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_decel) {
     drive_r.stop(vex::brakeType::coast);
     drive_l.stop(vex::brakeType::coast);
 
@@ -85,9 +86,9 @@ void drive_straight(float inches, float target_ips, float ips_per_sec) {
 
     float vel_rpm;
 
-    while (ips >= 0) {
+    while (ips >= 0 && std::abs(POS_DRIVE_L - pos_start_l) < std::abs(inches)) {
         // Handles getting to speed
-        if (std::abs(pos) + stop_dist(ips, ips_per_sec) >= std::abs(inches))
+        if (std::abs(pos) + stop_dist(ips, ips_per_sec) >= std::abs(inches) && do_decel)
             ips -= ips_per_sec / 50;    // 50 hz
         else if (ips < target_ips)
             ips += target_ips / 50;
@@ -113,8 +114,14 @@ void drive_straight(float inches, float target_ips, float ips_per_sec) {
         target_time += 20;
         while (sands_of_time.time(vex::msec) < target_time);   // wait for next iteration;
     }
-    drive_l.stop(vex::brakeType::brake);
-    drive_r.stop(vex::brakeType::brake);
+    if (do_decel) {
+        drive_r.stop(vex::brakeType::brake);
+        drive_l.stop(vex::brakeType::brake);
+    }
+    else {
+        drive_r.stop(vex::brakeType::coast);
+        drive_l.stop(vex::brakeType::coast);
+    }
 }
 
 // TODO: get rid of reversed and just use a negative outer_radius
@@ -123,12 +130,11 @@ void drive_straight(float inches, float target_ips, float ips_per_sec) {
  * to turn right, degrees > 0 and reversed = false
  * to turn left, degrees < 0 and reversed = true
  */
+        // if ((reversed && degrees > 0) || (!reversed && !(degrees > 0))) {      // left is inner side
 void drive_turn(float degrees, float outer_radius, float target_ips, float ips_per_sec, bool reversed) {
-    drive_r.stop(vex::brakeType::coast);
-    drive_l.stop(vex::brakeType::coast);
     target_heading += degrees;      // update target heading
 
-    PID pid_drive_l  = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_drive_l = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
     PID pid_drive_r = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
 
     float pid_adjustment_l;
@@ -263,4 +269,70 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
         drive_l.stop(vex::brakeType::coast);
         drive_r.stop(vex::brakeType::coast);
     }
+}
+
+void drive_arc(float degrees, float max_ips, float ips_per_sec, bool outer_radius, bool do_decel, bool reversed) {
+    target_heading += degrees;
+    vex::motor_group outer_drive;
+    vex::motor_group inner_drive;
+
+    // Check which side of the drive will be on the inside of the turn
+    if ((reversed && degrees > 0) || (!reversed && !(degrees > 0))) {
+        vex::motor_group outer_drive = vex::motor_group(drive_rf, drive_rm, drive_rb);
+        vex::motor_group inner_drive = vex::motor_group(drive_lf, drive_lm, drive_lb);
+    }
+    else {
+        vex::motor_group outer_drive = vex::motor_group(drive_lf, drive_lm, drive_lb);
+        vex::motor_group inner_drive = vex::motor_group(drive_rf, drive_rm, drive_rb);
+    }
+
+    PID pid_drive_o = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_drive_i = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    float pid_adjustment_o;
+    float pid_adjustment_i;
+
+    float outer_ips = 0;
+    float outer_vel_rpm, inner_vel_rpm;
+    float pos_start_o = outer_drive.position(ROT_REV) * DRIVE_REV__IN;
+    float pos_start_i = inner_drive.position(ROT_REV) * DRIVE_REV__IN;     // start positions
+
+    float outer_pos, inner_pos;
+    float trg_outer_pos = 0, trg_inner_pos;     // distance sides have travelled along circle
+
+    float degrees_remaining = target_heading - ROTATION * GYRO_CORRECTION;
+
+    float inner_radius = outer_radius - WHEEL_TO_WHEEL_DIST;
+    float radius_ratio = inner_radius / outer_radius;
+
+    while (std::abs(degrees_remaining) > 0) {
+        // Update values
+        outer_pos = outer_drive.position(ROT_REV) * DRIVE_REV__IN - pos_start_o;
+        inner_pos = inner_drive.position(ROT_REV) * DRIVE_REV__IN - pos_start_i;
+
+        degrees_remaining = target_heading - ROTATION * GYRO_CORRECTION;
+
+        // Handle acceleration
+        if (std::abs(degrees_remaining / RAD__DEG * outer_radius) - stop_dist(outer_ips, ips_per_sec) <= 0 && do_decel)
+            outer_ips -= ips_per_sec / 50.0;
+        else if (outer_ips < max_ips)
+            outer_ips += ips_per_sec / 50.0;   // 50 cycles per second
+        else outer_ips = max_ips;
+
+        trg_outer_pos += outer_ips / 50;
+        trg_inner_pos = trg_outer_pos * radius_ratio;
+
+        outer_vel_rpm = outer_ips / DRIVE_REV__IN * 60 * ((reversed) ? -1 : 1);
+        inner_vel_rpm = outer_vel_rpm * radius_ratio * ((reversed) ? -1 : 1);
+
+        pid_adjustment_i = -1 * pid_drive_i.pid_adjust(trg_inner_pos, inner_pos);
+        pid_adjustment_o = pid_drive_o.pid_adjust(trg_outer_pos, outer_pos);
+
+        inner_drive.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_i, VEL_RPM);
+        outer_drive.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_o, VEL_RPM);
+
+        vex::wait(20, vex::msec);
+    }
+    if (do_decel)
+        drive_full.stop(vex::brake);
+    else drive_full.stop(vex::coast);
 }

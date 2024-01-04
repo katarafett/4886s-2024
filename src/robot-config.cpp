@@ -4,8 +4,8 @@ vex::brain Brain;
 vex::controller master;
 
 // Drive
-#define STACKED
-#ifdef STACKED
+// #define RPM_450
+#ifdef RPM_450
 vex::motor drive_rf = vex::motor(PORT1, DRIVE_INSERT, false);
 vex::motor drive_rm = vex::motor(PORT2, DRIVE_INSERT, false);
 vex::motor drive_rb = vex::motor(PORT3, DRIVE_INSERT, false);
@@ -13,11 +13,11 @@ vex::motor drive_lf = vex::motor(PORT4, DRIVE_INSERT, true);
 vex::motor drive_lm = vex::motor(PORT5, DRIVE_INSERT, true);
 vex::motor drive_lb = vex::motor(PORT6, DRIVE_INSERT, true);
 #else
-vex::motor drive_rf = vex::motor(PORT1, DRIVE_INSERT, false);
-vex::motor drive_rm = vex::motor(PORT2, DRIVE_INSERT, false);
+vex::motor drive_rf = vex::motor(PORT1, DRIVE_INSERT, true);
+vex::motor drive_rm = vex::motor(PORT2, DRIVE_INSERT, true);
 vex::motor drive_rb = vex::motor(PORT3, DRIVE_INSERT, true);
-vex::motor drive_lf = vex::motor(PORT4, DRIVE_INSERT, true);
-vex::motor drive_lm = vex::motor(PORT5, DRIVE_INSERT, true);
+vex::motor drive_lf = vex::motor(PORT4, DRIVE_INSERT, false);
+vex::motor drive_lm = vex::motor(PORT5, DRIVE_INSERT, false);
 vex::motor drive_lb = vex::motor(PORT6, DRIVE_INSERT, false);
 #endif      // STACKED
 
@@ -40,3 +40,4 @@ vex::timer sands_of_time;
 
 vex::motor_group drive_r = vex::motor_group(drive_rf, drive_rm, drive_rb);
 vex::motor_group drive_l = vex::motor_group(drive_lf, drive_lm, drive_lb);
+vex::motor_group drive_full = vex::motor_group(drive_rf, drive_rm, drive_rb, drive_lf, drive_lb, drive_lm, drive_lb);

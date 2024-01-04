@@ -35,7 +35,7 @@ class PID {
  * @param target_ips goal for velocity - positive
  * @param ips_per_sec acceleration - positive
  */
-void drive_straight(float inches, float target_ips, float ips_per_sec);
+void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_decel = true);
 
 /**
  * @param degrees changes target heading
@@ -61,4 +61,4 @@ void drive_linear(float inches, float target_ips, float ips_per_sec, float do_de
  * @param turn_radius outer radius of the arc
  * @param reversed are we moving backwards?
  */
-void drive_arc(float degrees, float target_ips, float ips_per_sec, float turn_radius = WHEEL_TO_WHEEL_DIST / 2, bool reversed = false);
+void drive_arc(float degrees, float max_ips, float ips_per_sec, float turn_radius, bool do_decel, bool reversed);

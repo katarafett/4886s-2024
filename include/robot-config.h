@@ -22,3 +22,4 @@ extern vex::timer sands_of_time;
 
 extern vex::motor_group drive_r;
 extern vex::motor_group drive_l;
+extern vex::motor_group drive_full;

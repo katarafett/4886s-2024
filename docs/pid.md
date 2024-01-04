@@ -50,6 +50,16 @@ Moves the drive along one heading according to those values.
 ### Explanation
 
 ```cpp
+float dir_mod = (inches > 0) ? 1 : -1;
+```
+
+Fancy way of saying `if (inches > 0) dir_mod = 1; else dir_mod = -1;`
+
+Used to make sure the robot travels in the same direction as distance. The same thing could be accomplished by passing negative velocity and acceleration values.
+
+---
+
+```cpp
 if (std::abs(pos) + stop_dist(ips, ips_per_sec) >= std::abs(inches))
     ips -= ips_per_sec / 50;    // 50 hz
 else if (ips < target_ips)
@@ -60,6 +70,40 @@ else ips = target_ips;
 Handles acceleration
 
 If the current distance travelled plus the distance needed to stop exceeds the target distance, slow down. Otherwise, if the current speed is less than target speed, speed up. Otherwise, set speed to the target speed (to prevent moving faster than the target).
+
+---
+
+```cpp
+pos += ips / 50 * dir_mod;    // divide by 50 bc loop occurs 50 times a second; dir_mod adjusts for fwd/bwd
+```
+
+If speed is 50 inches per second, then after 1 second, position should have increased 50 inches. Likewise, after a 50th of a second, speed should have increased by a 50th of 50 inches. This tracks the target position, accounting for the fact that the loop iterates every 20 milliseconds.
+
+---
+
+```cpp
+pid_adjustment_l = pid_drive_l.pid_adjust(pos, pos_l);
+pid_adjustment_r = pid_drive_r.pid_adjust(pos, pos_r);
+```
+
+Figure out how we should change what values are sent to the motors, based on the target position and actual position of the motors.
+
+---
+
+```cpp
+pid_adjustment_dir = pid_dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION);
+```
+
+Same as prior, but based on the direction the robot is facing. The value of the inertial sensor is multiplied by some constant, because when turning 360 degrees, it actually reads something like 358 degrees. The correction constant will be different for every sensor (I think).
+
+---
+
+```cpp
+target_time += 20;
+while (sands_of_time.time(vex::msec) < target_time);   // wait for next iteration;
+```
+
+Tate used this because he thought it was more accurate than using `vex::wait()`. Either he was wrong, or the function has since been updated, because there doesn't seem to be difference.
 
 # drive_turn()
 
@@ -84,8 +128,7 @@ To maintain the target heading between function calls, it is stored as a global 
 int dir_mod = (degrees > 0) ? 1 : -1;
 ```
 
-If turning right, dir_mod = 1. Otherwise, it's -1.  
-Used to flip some values depending on the direction being turned.
+Used instead of `std::abs()` because I forgot that function existed when I wrote this. Could easily be replaced.
 
 ---
 
@@ -112,11 +155,22 @@ First, `degrees_remaining` is converted to radians to get the number of radii le
 ---
 
 ```cpp
+outer_vel_rpm = ips / DRIVE_REV__IN * 60 * ((reversed) ? -1 : 1);         // fixes the stupid thing;
+inner_vel_rpm = outer_vel_rpm * radius_ratio * ((reversed) ? -1 : 1);     // try not to touch
+```
+
+Converts inches per second to rpm.  
+The conditional checks if the robot should be moving backwards, and if it should be, it makes the rpm negative.
+
+---
+
+```cpp
 outer_pos += ips / 50;
 inner_pos = outer_pos * radius_ratio;
 ```
 
-Updates the distance each side should have traveled.
+Updates the distance each side should have traveled. Same concept as `drive_straight()`.  
+The inner circle of the turn is a fraction of the outer circle, represented by the ratio of their radii. To convert the distance travelled as a percentage along one circle, we take the inches travelled and multiply by the radius ratio.
 
 ---
 
@@ -132,12 +186,10 @@ else {      // right is inner side
     pid_adjustment_l = pid_drive_l.pid_adjust(outer_pos, pos_l);
     pid_adjustment_r = -1 * pid_drive_r.pid_adjust(inner_pos, pos_r);
 
-    drive_l.spin(DIR_FWD, dir_mod * outer_vel_rpm + pid_adjustment_l, VEL_RPM);
-    drive_r.spin(DIR_FWD, dir_mod * inner_vel_rpm + pid_adjustment_r, VEL_RPM);
+    drive_l.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_l, VEL_RPM);
+    drive_r.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_r, VEL_RPM);
 }
 ```
 
-Currently bugged. Supposed to turn in arc of 1 of 4 directions: forward-left, fwd-right, backward-left, bwd-right. Actually only turns fwd. If turning left, reversed must be true.
-
-Intended behavior:  c
-Determine which side (left or right) is the outside of the turn. Give that side `outer_vel_rpm`, and the inside `inner_vel_rpm`. Flip PID modifier on the inside of the turn.
+The if statement decides which side of the drive is on the outside.  
+To determine the drive speeds and PID adjustments, it basically follows the same logic as `drive_straight()`.
