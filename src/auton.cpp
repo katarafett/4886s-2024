@@ -91,7 +91,7 @@ void autonomous(void) {
 
         case FAR_ELIMS:
             drive_straight(36, 60, 60, false);
-            drive_turn(90, WHEEL_TO_WHEEL_DIST * 1.5, 60, 60);
+            drive_arc(90, WHEEL_TO_WHEEL_DIST * 1.5, 60, 60, false, true);
 
 
             break;

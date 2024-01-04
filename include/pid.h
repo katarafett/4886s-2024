@@ -61,4 +61,4 @@ void drive_linear(float inches, float target_ips, float ips_per_sec, float do_de
  * @param turn_radius outer radius of the arc
  * @param reversed are we moving backwards?
  */
-void drive_arc(float degrees, float max_ips, float ips_per_sec, float turn_radius, bool do_decel, bool reversed);
+void drive_arc(float degrees, float outer_radius, float max_ips, float ips_per_sec, bool do_decel, bool reversed);

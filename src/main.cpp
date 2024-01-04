@@ -54,10 +54,12 @@ void rot_test(void) {
 }
 
 int main() {
-    std::system("echo hello, world!");
+
+printf("please work");
     pre_auton();
+
     Competition.autonomous(autonomous);
-    Competition.drivercontrol(opcontrol);
+    Competition.drivercontrol(autonomous);
     // master.ButtonA.pressed(testing);
 
     while (true) {
