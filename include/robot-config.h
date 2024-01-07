@@ -15,7 +15,7 @@ extern vex::motor puncher;
 extern vex::digital_out wings_r;
 extern vex::digital_out wings_l;
 extern vex::digital_out smith;
-extern vex::digital_out balance;
+extern vex::digital_out hang;
 
 extern vex::inertial inrtl;
 extern vex::timer sands_of_time;
@@ -23,3 +23,5 @@ extern vex::timer sands_of_time;
 extern vex::motor_group drive_r;
 extern vex::motor_group drive_l;
 extern vex::motor_group drive_full;
+
+extern vex::digital_in selector;

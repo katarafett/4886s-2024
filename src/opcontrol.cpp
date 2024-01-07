@@ -16,6 +16,7 @@ void opcontrol(void) {
     bool wings_out_l = false;
     bool wings_out_r = false;
     bool smith_out = false;
+    bool hang_out = false;
     bool shifted = false;
 
     while (1) {
@@ -42,9 +43,14 @@ void opcontrol(void) {
             wings_r.set(1);
         }
 
-        if (BTN_Y.PRESSED) {
+        if (BTN_RIGHT.PRESSED) {
             smith_out = !smith_out;
             smith.set(smith_out);
+        }
+
+        if (BTN_Y.PRESSED) {
+            hang_out = !hang_out;
+            hang.set(hang_out);
         }
 
         wait(20, vex::msec);
@@ -52,7 +58,6 @@ void opcontrol(void) {
 }
 
 void opdrive(int control_mode, float drive_mod, float turn_mod) {
-    printf("rsy: %ld", RIGHT_STICK_X);
     drive_mod *= STICK__PCT;     // Adjust for percentage units
     double ry = RIGHT_STICK_Y, ly = LEFT_STICK_Y, rx = RIGHT_STICK_X, lx = LEFT_STICK_X;
     float rspeed, lspeed;
@@ -64,7 +69,6 @@ void opdrive(int control_mode, float drive_mod, float turn_mod) {
             // drive_l.spin(DIR_FWD, lspeed, VEL_PCT);
             drive_r.spin(DIR_FWD, RIGHT_STICK_Y, VEL_PCT);
             drive_l.spin(DIR_FWD, LEFT_STICK_Y, VEL_PCT);
-            printf("lspeed: %.2f\n", lspeed);
             break;
         case OSA_STD:
             drive_r.spin(DIR_FWD, (LEFT_STICK_Y - LEFT_STICK_X * turn_mod) * drive_mod, VEL_PCT);

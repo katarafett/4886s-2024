@@ -25,8 +25,8 @@ PID::PID(double init_kP, double init_kI, double init_kD) {
 
 double PID::pid_adjust(double setpoint, double current_value) {
     error = setpoint - current_value;
-    if (do_i) sum += error;
-    if (do_d) deriv = error - prev_error;
+    // if (do_i) sum += error;
+    // if (do_d) deriv = error - prev_error;
     prev_error = error;
 
     return (error * kP) + (sum * kI) + (deriv * kD);
@@ -64,7 +64,7 @@ float PID::get_const(char constant) {
 }
  
 void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_decel) {
-    printf("0");
+    printf("enter drive straight\n");
     drive_r.stop(vex::brakeType::coast);
     drive_l.stop(vex::brakeType::coast);
 
@@ -75,7 +75,6 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
     float ips = 0, pos = 0;
     float pos_start_l = POS_DRIVE_L, pos_start_r = POS_DRIVE_R;
     float pos_l, pos_r;
-    printf("0");
 
     // adjusts velocity for positive/negative distances
     float dir_mod = (inches > 0) ? 1 : -1;
@@ -83,9 +82,6 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
     float pid_adjustment_l;
     float pid_adjustment_r;
     float pid_adjustment_dir;
-
-    int target_time = sands_of_time.time(vex::msec);
-    printf("0");
 
     float vel_rpm;
 
@@ -96,7 +92,6 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
         else if (ips < target_ips)
             ips += target_ips / 50;
         else ips = target_ips;
-    printf("0");
 
         // Find expected position
         pos += ips / 50 * dir_mod;    // divide by 50 bc loop occurs 50 times a second; dir_mod adjusts for fwd/bwd
@@ -104,22 +99,17 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
         // Update actual positions
         pos_l = POS_DRIVE_L - pos_start_l;
         pos_r = POS_DRIVE_R - pos_start_r;
-    printf("0");
 
         // Maintain speed
         pid_adjustment_l = pid_drive_l.pid_adjust(pos, pos_l);
         pid_adjustment_r = pid_drive_r.pid_adjust(pos, pos_r);
         pid_adjustment_dir = pid_dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION);
-    printf("0");
 
         vel_rpm = ips / DRIVE_REV__IN * 60;
 
         drive_l.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_l + pid_adjustment_dir, VEL_RPM);
         drive_r.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_r - pid_adjustment_dir, VEL_RPM);
-
-        target_time += 20;
-    printf("0");
-        while (sands_of_time.time(vex::msec) < target_time);   // wait for next iteration;
+        wait(20, vex::msec);
     }
     if (do_decel) {
         drive_r.stop(vex::brakeType::brake);
@@ -279,22 +269,20 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
 }
 
 void drive_arc(float degrees, float outer_radius, float max_ips, float ips_per_sec, bool do_decel, bool reversed) {
-    printf("0");
     target_heading += degrees;
+
     vex::motor_group outer_drive;
     vex::motor_group inner_drive;
-    printf("1");
 
     // Check which side of the drive will be on the inside of the turn
     if ((reversed && degrees > 0) || (!reversed && !(degrees > 0))) {
-        vex::motor_group outer_drive = vex::motor_group(drive_rf, drive_rm, drive_rb);
-        vex::motor_group inner_drive = vex::motor_group(drive_lf, drive_lm, drive_lb);
+        outer_drive = vex::motor_group(drive_rf, drive_rm, drive_rb);
+        inner_drive = vex::motor_group(drive_lf, drive_lm, drive_lb);
     }
     else {
-        vex::motor_group outer_drive = vex::motor_group(drive_lf, drive_lm, drive_lb);
-        vex::motor_group inner_drive = vex::motor_group(drive_rf, drive_rm, drive_rb);
+        outer_drive = vex::motor_group(drive_lf, drive_lm, drive_lb);
+        inner_drive = vex::motor_group(drive_rf, drive_rm, drive_rb);
     }
-    printf("2");
 
     PID pid_drive_o = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
     PID pid_drive_i = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
@@ -305,7 +293,6 @@ void drive_arc(float degrees, float outer_radius, float max_ips, float ips_per_s
     float outer_vel_rpm, inner_vel_rpm;
     float pos_start_o = outer_drive.position(ROT_REV) * DRIVE_REV__IN;
     float pos_start_i = inner_drive.position(ROT_REV) * DRIVE_REV__IN;     // start positions
-    printf("3");
 
     float outer_pos, inner_pos;
     float trg_outer_pos = 0, trg_inner_pos;     // distance sides have travelled along circle
@@ -314,13 +301,11 @@ void drive_arc(float degrees, float outer_radius, float max_ips, float ips_per_s
 
     float inner_radius = outer_radius - WHEEL_TO_WHEEL_DIST;
     float radius_ratio = inner_radius / outer_radius;
-    printf("4");
 
     while (std::abs(degrees_remaining) > 0) {
         // Update values
         outer_pos = outer_drive.position(ROT_REV) * DRIVE_REV__IN - pos_start_o;
         inner_pos = inner_drive.position(ROT_REV) * DRIVE_REV__IN - pos_start_i;
-    printf("5");
 
         degrees_remaining = target_heading - ROTATION * GYRO_CORRECTION;
 
@@ -330,23 +315,18 @@ void drive_arc(float degrees, float outer_radius, float max_ips, float ips_per_s
         else if (outer_ips < max_ips)
             outer_ips += ips_per_sec / 50.0;   // 50 cycles per second
         else outer_ips = max_ips;
-    printf("6");
 
         trg_outer_pos += outer_ips / 50;
         trg_inner_pos = trg_outer_pos * radius_ratio;
-    printf("7");
 
         outer_vel_rpm = outer_ips / DRIVE_REV__IN * 60 * ((reversed) ? -1 : 1);
         inner_vel_rpm = outer_vel_rpm * radius_ratio * ((reversed) ? -1 : 1);
-    printf("8");
 
-        pid_adjustment_i = -1 * pid_drive_i.pid_adjust(trg_inner_pos, inner_pos);
-        pid_adjustment_o = pid_drive_o.pid_adjust(trg_outer_pos, outer_pos);
-    printf("9");
+        pid_adjustment_i = 1 * pid_drive_i.pid_adjust(trg_inner_pos, inner_pos);
+        pid_adjustment_o = 1 * pid_drive_o.pid_adjust(trg_outer_pos, outer_pos);
 
         inner_drive.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_i, VEL_RPM);
         outer_drive.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_o, VEL_RPM);
-    printf("10");
 
         vex::wait(20, vex::msec);
     }
