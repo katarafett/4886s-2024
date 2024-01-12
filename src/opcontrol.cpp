@@ -19,6 +19,8 @@ void opcontrol(void) {
     bool hang_out = false;
     bool shifted = false;
 
+    puncher.setStopping(vex::hold);
+
     while (1) {
         shifted = BTN_L2.pressing();
 
