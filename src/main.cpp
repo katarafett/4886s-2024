@@ -51,7 +51,6 @@ void rot_test(void) {
 
 int main() {
     pre_auton();
-
     Competition.autonomous(autonomous);
     Competition.drivercontrol(opcontrol);
     // master.ButtonA.pressed(testing);

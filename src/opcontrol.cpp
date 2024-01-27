@@ -19,40 +19,16 @@ void opcontrol(void) {
     bool hang_out = false;
     bool shifted = false;
 
-    puncher.setStopping(vex::hold);
-
     while (1) {
         shifted = BTN_L2.pressing();
 
         opdrive(TSA_STD, 1, SENSITIVITY);
 
-        intake.spin(DIR_FWD, (R1_UNSHIFTED - R2_UNSHIFTED) * BTN__PCT, VEL_PCT);
-        puncher.spin(DIR_FWD, (L1_UNSHIFTED) * BTN__VLT, VLT_VLT);
+        sys3.spin(DIR_FWD, (BTN_R1.pressing() - BTN_R2.pressing()) * BTN__VLT, VLT_VLT);
 
-        // Flip wings
-        if (L1_SHIFTED) {
+        if (BTN_L2.PRESSED) {
+            wings.set(wings_out_l);
             wings_out_l = !wings_out_l;
-            wings_l.set(wings_out_l);
-        }
-        if (R1_SHIFTED) {
-            wings_out_r = !wings_out_r;
-            wings_r.set(wings_out_r);
-        }
-        if (R2_SHIFTED) {
-            wings_out_r = true;
-            wings_out_l = true;
-            wings_l.set(1);
-            wings_r.set(1);
-        }
-
-        if (BTN_RIGHT.PRESSED) {
-            smith_out = !smith_out;
-            smith.set(smith_out);
-        }
-
-        if (BTN_Y.PRESSED) {
-            hang_out = !hang_out;
-            hang.set(hang_out);
         }
 
         wait(20, vex::msec);

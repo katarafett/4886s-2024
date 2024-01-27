@@ -12,8 +12,7 @@ void autonomous(void) {
             break;
 
         case HALF_AWP_NEAR:
-            // release_intake();
-            hang.set(1);
+            release_intake();
             // Knock out
             drive_straight(12, 24, 36);
             smith.set(1);
@@ -28,14 +27,13 @@ void autonomous(void) {
             intake.stop(vex::hold);
             drive_straight(26, 36, 36);
             drive_turn(-45, WHEEL_TO_WHEEL_DIST / 2, 24, 24);
-            drive_straight(33, 24, 24);
+            drive_straight(30, 24, 24);
             // Stop
             intake.spin(DIR_FWD, -100, VEL_PCT);
             break;
 
         case HALF_AWP_FAR:
-            // release_intake();
-            hang.set(1);
+            release_intake();
             // Get triball
             intake.spin(DIR_FWD, 50, PCT_PCT);
             drive_straight(3, 24, 24);
@@ -140,17 +138,24 @@ void autonomous(void) {
             break;
 
         case SKILLS:
-            hang.set(1);
-            wait(500, vex::msec);
-            hang.set(0);
+            release_intake();
+            drive_straight(-18, 48, 48);
+            drive_turn(-58, WHEEL_TO_WHEEL_DIST / 2, 48, 48);
+            drive_straight(-2, 48, 48);
+            // wait(500, vex::msec);
             puncher.spin(DIR_FWD, 100, VEL_PCT);
             wait(40, vex::sec);
             puncher.stop();
-            drive_turn(15, WHEEL_TO_WHEEL_DIST / 2, 48, 48);
-            drive_straight(36, 48, 48);
+            drive_straight(4, 48, 48);
+            drive_turn(58, WHEEL_TO_WHEEL_DIST / 2, 48, 48);
+            drive_straight(20, 48, 48);
+            drive_turn(-35, WHEEL_TO_WHEEL_DIST / 2, 48, 48);
+            drive_straight(48, 48, 48);
             drive_straight(-12, 48, 48);
             hang.set(1);
             drive_straight(36, 48, 48);
+            drive_straight(-5, 48, 48);
+            drive_straight(5, 48, 48);
             break;
     }
 }
