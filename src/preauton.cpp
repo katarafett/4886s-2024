@@ -29,7 +29,7 @@ void pre_auton(void) {
         sides = side_pressed();
 
         // Update auton type
-        if (selector.value() == 0) {
+        if (selector.value() == 0 || sides[X] == LEFT) {
             auton_mode++;
             // Not good; if auton count changes, memory errors
             if (auton_mode > 5) auton_mode = 0;
@@ -37,7 +37,12 @@ void pre_auton(void) {
             B_SCRN.print("%s", autons[auton_mode]);
 
             // Wait for it to depress
-            while(selector.value() == 0);
+            while(selector.value() == 0) {
+                int count = 0;
+                wait(1, vex::msec);
+                if(++count > 200)
+                    break;
+            }
         }
 
         // Lock auton

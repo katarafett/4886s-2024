@@ -1,13 +1,13 @@
 // Physical bits
-#define DRIVE_GEARING (1.0)
-#define DRIVE_REV__IN (DRIVE_GEARING * PI * SML_WHEEL_DIAM)
-#define WHEEL_TO_WHEEL_DIST (12.0)
+#define DRIVE_GEARING (GEAR_36 / GEAR_48)
+#define DRIVE_REV__IN (DRIVE_GEARING * PI * MED_WHEEL_DIAM)
+#define WHEEL_TO_WHEEL_DIST (10.75)
 
-#define DRIVE_KP 0.10
-#define DRIVE_KI 0
-#define DRIVE_KD 0
+#define DRIVE_KP 0.03
+#define DRIVE_KI 0.00
+#define DRIVE_KD 0.00
 // #define DIR_KP 2.33
-#define DIR_KP 2.5
+#define DIR_KP 2.6
 #define DIR_KI 0.03
 #define DIR_KD 0.03
 
@@ -46,7 +46,7 @@
 #define DOWN 2
 
 // Misc - defines
-#define GYRO_CORRECTION (3600.0 / 3579.0)
+#define GYRO_CORRECTION (3600.0 / 3596.7)
 #define CHAR_HI 20
 #define CHAR_WI 12
 #define DRIVE_VEL ((drive_r.velocity(VEL_RPM) + drive_l.velocity(VEL_RPM)) / 2)
@@ -55,7 +55,7 @@
 #define TIME sands_of_time.time(vex::msec)
 
 // Control
-#define SENSITIVITY 0.3
+#define SENSITIVITY 0.9
 
 // Autonomous
 extern int auton_mode;

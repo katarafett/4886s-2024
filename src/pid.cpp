@@ -10,9 +10,9 @@ PID::PID(double init_kP, double init_kI, double init_kD) {
     kI = init_kI;
     kD = init_kD;
 
-    do_p = (kP != 0);
-    do_i = (kI != 0);
-    do_d = (kD != 0);
+    do_p = (kP != 0.0);
+    do_i = (kI != 0.0);
+    do_d = (kD != 0.0);
 
     error = 0;
     sum = 0;
@@ -25,8 +25,8 @@ PID::PID(double init_kP, double init_kI, double init_kD) {
 
 double PID::pid_adjust(double setpoint, double current_value) {
     error = setpoint - current_value;
-    // if (do_i) sum += error;
-    // if (do_d) deriv = error - prev_error;
+    if (do_i) sum += error;
+    if (do_d) deriv = error - prev_error;
     prev_error = error;
 
     return (error * kP) + (sum * kI) + (deriv * kD);
@@ -64,6 +64,7 @@ float PID::get_const(char constant) {
 }
  
 void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_decel) {
+    inches *= 1.2;
     printf("enter drive straight\n");
     drive_r.stop(vex::brakeType::coast);
     drive_l.stop(vex::brakeType::coast);
@@ -276,12 +277,12 @@ void drive_arc(float degrees, float outer_radius, float max_ips, float ips_per_s
 
     // Check which side of the drive will be on the inside of the turn
     if ((reversed && degrees > 0) || (!reversed && !(degrees > 0))) {
-        outer_drive = vex::motor_group(drive_rf, drive_rm, drive_rb);
-        inner_drive = vex::motor_group(drive_lf, drive_lm, drive_lb);
+        outer_drive = vex::motor_group(drive_rf, drive_rb, drive_rt);
+        inner_drive = vex::motor_group(drive_lf, drive_lb, drive_lt);
     }
     else {
-        outer_drive = vex::motor_group(drive_lf, drive_lm, drive_lb);
-        inner_drive = vex::motor_group(drive_rf, drive_rm, drive_rb);
+        outer_drive = vex::motor_group(drive_lf, drive_lb, drive_lt);
+        inner_drive = vex::motor_group(drive_rf, drive_rb, drive_rt);
     }
 
     PID pid_drive_o = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
