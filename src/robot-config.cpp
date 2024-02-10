@@ -11,8 +11,8 @@ vex::motor drive_rf = vex::motor(PORT1, DRIVE_INSERT, false);
 vex::motor drive_rb = vex::motor(PORT2, DRIVE_INSERT, false);
 vex::motor drive_rt = vex::motor(PORT3, DRIVE_INSERT, true);
 vex::motor drive_lf = vex::motor(PORT4, DRIVE_INSERT, true);
-vex::motor drive_lm = vex::motor(PORT5, DRIVE_INSERT, true);
-vex::motor drive_lb = vex::motor(PORT6, DRIVE_INSERT, false);
+vex::motor drive_lb = vex::motor(PORT5, DRIVE_INSERT, true);
+vex::motor drive_lt = vex::motor(PORT6, DRIVE_INSERT, false);
 
 // Subsystem 3
 vex::motor cata = vex::motor(PORT8, TRQ_INSERT, false);

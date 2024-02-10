@@ -5,10 +5,6 @@
  */
 class PID {
     private:
-        bool do_p;
-        bool do_i;
-        bool do_d;
-
         double kP;
         double kI;
         double kD;

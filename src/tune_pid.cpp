@@ -12,8 +12,8 @@ void tune_pid() {
         if (BTN_Y.PRESSED) {
             target_heading = ROTATION * GYRO_CORRECTION;
             while (!BTN_Y.PRESSED) {
-                drive_r.spin(DIR_FWD, 250 + rd.pid_adjust(250, drive_r.velocity(VEL_RPM)) - dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION), VEL_RPM);
-                drive_l.spin(DIR_FWD, 250 + ld.pid_adjust(250, drive_l.velocity(VEL_RPM)) + dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION), VEL_RPM);
+                drive_r.spin(DIR_FWD, 400 + rd.pid_adjust(400, drive_r.velocity(VEL_RPM)) - dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION), VEL_RPM);
+                drive_l.spin(DIR_FWD, 400 + ld.pid_adjust(400, drive_l.velocity(VEL_RPM)) + dir.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION), VEL_RPM);
                 wait(20, vex::msec);
             }
         }

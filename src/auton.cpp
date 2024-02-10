@@ -6,6 +6,9 @@
 void release_antenna(void);
 
 void autonomous(void) {
+    // Ensure inerital is calibrated
+    while (inrtl.isCalibrating())
+        wait(20, vex::msec);
     switch (auton_mode) {
         case AWP:
             release_intake();
@@ -21,15 +24,37 @@ void autonomous(void) {
             break;
 
         case HALF_AWP_NEAR:
-            release_intake();
+            intake.spin(DIR_FWD, -100, VEL_PCT);
+            //  Slap into goal
+            wing_fl.set(1);
+            wait(200, vex::msec);
+            wing_fl.set(0);
             // Knock out
-            // wing_l.set(1);
-            drive_turn(-45, WHEEL_TO_WHEEL_DIST / 2.0, 36, 24, false);
-            // wing_l.set(0);
-            drive_straight(2, 48, 48);
-            drive_straight(-6, 48, 48);
-            drive_turn(-45, WHEEL_TO_WHEEL_DIST, 36, 24, true);
-            drive_straight(-28, 48, 48);
+            wing_bl.set(1);
+            drive_turn(-45, WHEEL_TO_WHEEL_DIST / 2.0, 58, 48, false);
+            wing_bl.set(0);
+            // Path to center triball
+            intake.spin(DIR_FWD, 100, VEL_PCT);
+            drive_turn(95, WHEEL_TO_WHEEL_DIST / 1.5, 60, 60, false);
+            drive_turn(-50, WHEEL_TO_WHEEL_DIST * 3.5, 76, 72, false);
+            drive_straight(10, 72, 200);
+            // Grab triball
+            wait(400, vex::msec);
+            intake.stop(vex::brakeType::hold);
+            // Path to flip
+            drive_straight(-4, 72, 72);
+            drive_turn(90, WHEEL_TO_WHEEL_DIST / 2.0, 72, 60, false);
+            // Flip
+            wing_fl.set(1);
+            drive_straight(4, 72, 72);
+            intake.spin(DIR_REV, 100, VEL_PCT);
+            drive_l.spin(DIR_FWD, 12, VLT_VLT);
+            drive_r.spin(DIR_FWD, 12, VLT_VLT);
+            wait(300, vex::msec);
+            wing_fl.set(0);
+            // Path to goal
+            drive_turn(-45, WHEEL_TO_WHEEL_DIST * 1.5, 72, 72, true);
+            // drive_straif
             break;
 
         case HALF_AWP_FAR:
