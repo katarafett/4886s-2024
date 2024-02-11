@@ -29,6 +29,7 @@
 #define NEAR_ELIMS 3
 #define FAR_ELIMS 4
 #define SKILLS 5
+#define SKILLS_DRIVER 6
 
 // Control modes
 #define TNK_STD 0

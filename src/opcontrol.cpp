@@ -33,7 +33,7 @@ void opcontrol(void) {
         // Intake
         intake.spin(DIR_FWD, (R1_UNSHIFTED - R2_UNSHIFTED) * BTN__PCT, VEL_PCT);
 
-        // Puncher
+       // Puncher
         cata.spin(DIR_FWD, L1_UNSHIFTED * BTN__PCT, VEL_PCT);
 
         // Toggle wings

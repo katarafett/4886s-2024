@@ -204,5 +204,24 @@ void autonomous(void) {
             drive_straight(-5, 48, 48);
             drive_straight(5, 48, 48);
             break;
+
+        case SKILLS_DRIVER:
+            intake.spin(DIR_FWD, 100, VEL_PCT);
+            // Shove under
+            drive_turn(45, WHEEL_TO_WHEEL_DIST * 0.75, 72, 72, true);
+            drive_l.spin(DIR_FWD, -12, VLT_VLT);
+            drive_r.spin(DIR_FWD, -12, VLT_VLT);
+            wait(600, vex::msec);
+            // Line up
+            drive_straight(12, 72, 72);
+            turn_pid(-120, -1, 1);
+            target_heading = -60;    // Ensure turn is proper
+            drive_straight(-6, 72, 72);
+            turn_pid(0, -1, 1);
+            drive_l.stop();
+            drive_r.stop();
+            wing_br.set(1);
+            wing_bl.set(1);
+            opcontrol();
     }
 }

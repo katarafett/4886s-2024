@@ -6,7 +6,7 @@ void pre_auton(void) {
 
     // Create GUI
     int *sides;
-    const char *autons[6] = {"AWP", "HALF_AWP_NEAR", "HALF_AWP_FAR", "NEAR_ELIMS", "FAR_ELIMS", "SKILLS"};
+    const char *autons[7] = {"AWP", "HALF_AWP_NEAR", "HALF_AWP_FAR", "NEAR_ELIMS", "FAR_ELIMS", "SKILLS", "SKILLS_DRIVER"};
 
     B_SCRN.clearScreen();
     B_SCRN.drawRectangle(B_SCRN_X_MID / 8, 0, B_SCRN_X / 4, B_SCRN_Y_MID, vex::green);
@@ -32,7 +32,7 @@ void pre_auton(void) {
         if (selector.value() == 0 || sides[X] == LEFT) {
             auton_mode++;
             // Not good; if auton count changes, memory errors
-            if (auton_mode > 5) auton_mode = 0;
+            if (auton_mode > SKILLS_DRIVER) auton_mode = 0;
             B_SCRN.clearLine();
             B_SCRN.print("%s", autons[auton_mode]);
 

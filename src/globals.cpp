@@ -1,7 +1,7 @@
 #include "../include/main.h"
 
 // Autonomous
-int auton_mode = HALF_AWP_NEAR;
+int auton_mode = SKILLS_DRIVER;
 float target_heading = 0;
 
 float turn_kp_l = 1.05;
