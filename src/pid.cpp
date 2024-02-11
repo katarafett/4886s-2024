@@ -367,3 +367,7 @@ void turn_pid (float degrees, float ratio, int direction) {
         wait(20, vex::msec);
     }
 }
+
+void straight_pid (float dist) {
+    PID drive_pid = PID(0, 0, 0);
+}
