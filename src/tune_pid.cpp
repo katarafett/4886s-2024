@@ -50,3 +50,43 @@ void tune_drive_pid() {
         wait(20, vex::msec);
     }
 }
+
+void tune_simple_pid() {
+    const float TUNER = 0.025;
+    PID rd = PID(turn_kp_r, turn_ki_r, turn_kd_r);
+    PID ld = PID(turn_kp_l, turn_ki_l, turn_kd_l);
+    while (true) {
+        opdrive(TSA_STD, 1, SENSITIVITY);
+        if (BTN_R1.PRESSED) {
+            target_heading = ROTATION * GYRO_CORRECTION;
+            turn_pid(90, -1, 1);
+        }
+        if (BTN_R2.PRESSED) {
+            target_heading = ROTATION * GYRO_CORRECTION;
+            turn_pid(90, 0.5, 1);
+        }
+        if (BTN_L1.PRESSED) {
+            target_heading = ROTATION * GYRO_CORRECTION;
+            turn_pid(-90, -1, 1);
+        }
+        if (BTN_L2.PRESSED) {
+            target_heading = ROTATION * GYRO_CORRECTION;
+            turn_pid(90, -1, 1);
+        }
+        // ld.tune_kP(TUNER);
+        // ld.tune_kI(TUNER);
+        // ld.tune_kD(TUNER);
+        // rd.tune_kP(TUNER);
+        // rd.tune_kI(TUNER);
+        // rd.tune_kD(TUNER);
+
+        // turn_kp_r = rd.get_const('p');
+        // turn_ki_r = rd.get_const('i');
+        // turn_kd_r = rd.get_const('d');
+        // turn_kp_l = ld.get_const('p');
+        // turn_ki_l = ld.get_const('i');
+        // turn_kd_l = ld.get_const('d');
+
+        wait(20, vex::msec);
+    }
+}

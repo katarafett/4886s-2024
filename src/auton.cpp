@@ -24,37 +24,61 @@ void autonomous(void) {
             break;
 
         case HALF_AWP_NEAR:
-            intake.spin(DIR_FWD, -100, VEL_PCT);
+            intake.spin(DIR_FWD, 100, VEL_PCT);
             //  Slap into goal
             wing_fl.set(1);
-            wait(200, vex::msec);
+            wait(250, vex::msec);
             wing_fl.set(0);
             // Knock out
             wing_bl.set(1);
-            drive_turn(-45, WHEEL_TO_WHEEL_DIST / 2.0, 58, 48, false);
+            wait(100, vex::msec);
+            turn_pid(-45, -1, 1);
             wing_bl.set(0);
             // Path to center triball
             intake.spin(DIR_FWD, 100, VEL_PCT);
-            drive_turn(95, WHEEL_TO_WHEEL_DIST / 1.5, 60, 60, false);
-            drive_turn(-50, WHEEL_TO_WHEEL_DIST * 3.5, 76, 72, false);
-            drive_straight(10, 72, 200);
+            drive_turn(95, WHEEL_TO_WHEEL_DIST / 1.5, 72, 72, false);
+            drive_turn(-50, WHEEL_TO_WHEEL_DIST * 2.8, 76, 72, false);
+            drive_straight(17.5, 72, 200);
             // Grab triball
             wait(400, vex::msec);
             intake.stop(vex::brakeType::hold);
             // Path to flip
-            drive_straight(-4, 72, 72);
-            drive_turn(90, WHEEL_TO_WHEEL_DIST / 2.0, 72, 60, false);
+            drive_straight(-1.75, 72, 72);
+            turn_pid(90, -1, 1);
+            drive_l.stop();
+            drive_r.stop();
             // Flip
             wing_fl.set(1);
-            drive_straight(4, 72, 72);
-            intake.spin(DIR_REV, 100, VEL_PCT);
-            drive_l.spin(DIR_FWD, 12, VLT_VLT);
-            drive_r.spin(DIR_FWD, 12, VLT_VLT);
-            wait(300, vex::msec);
+            wait(200, vex::msec);
+            drive_l.spin(DIR_FWD, 9, VLT_VLT);
+            drive_r.spin(DIR_FWD, 9, VLT_VLT);
+            wait(400, vex::msec);
             wing_fl.set(0);
+            // Intake-flip
+            intake.spin(DIR_FWD, -100, VEL_PCT);
+            drive_straight(-7, 72, 72);
+            drive_l.spin(DIR_FWD, 5, VLT_VLT);
+            drive_r.spin(DIR_FWD, 5, VLT_VLT);
+            wait(450, vex::msec);
+            drive_straight(-4, 72, 72);
             // Path to goal
             drive_turn(-45, WHEEL_TO_WHEEL_DIST * 1.5, 72, 72, true);
-            // drive_straif
+            drive_straight(-38, 72, 72);
+            // drive_turn(45, WHEEL_TO_WHEEL_DIST * 0.8, 72, 72, true);
+            // turn_pid(270, -1, 1);
+            // drive_l.stop();
+            // drive_r.stop();
+            // Slap in
+            // wing_fl.set(1);
+            // wait(200, vex::msec);
+            // wing_fl.set(0);
+            intake.stop(vex::brakeType::coast);
+            // Push under bar
+            drive_turn(-135, WHEEL_TO_WHEEL_DIST * 0.74, 72, 72, true);
+            drive_straight(-36, 72, 72);
+            drive_straight(6, 72, 72);
+            wing_br.set(1);
+            drive_turn(20, WHEEL_TO_WHEEL_DIST, 48, 48, true);
             break;
 
         case HALF_AWP_FAR:

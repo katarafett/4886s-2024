@@ -72,3 +72,11 @@ extern float target_heading;
 // Selection
 extern const char *control_types[6];
 extern const char *auton_types[4];
+
+extern float turn_kp_l;
+extern float turn_ki_l;
+extern float turn_kd_l;
+
+extern float turn_kp_r;
+extern float turn_ki_r;
+extern float turn_kd_r;

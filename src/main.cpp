@@ -44,21 +44,21 @@ void rot_test(void) {
 
 // #define TESTING
 #ifdef TESTING
-const int do_testing = true;
+const bool do_testing = true;
 #else
-int do_testing = false;
+const bool do_testing = false;
 #endif
 
 int main() {
     pre_auton();
     if (!do_testing) {
         Competition.autonomous(autonomous);
-        Competition.drivercontrol(opcontrol);
+        Competition.drivercontrol(autonomous);
     } else {
-        master.ButtonA.pressed(testing);
-        master.ButtonB.pressed(rot_test);
-        master.ButtonX.pressed(tune_gyro);
-        master.ButtonY.pressed(tune_drive_pid);
+        // master.ButtonA.pressed(testing);
+        // master.ButtonB.pressed(rot_test);
+        // master.ButtonX.pressed(tune_gyro);
+        master.ButtonY.pressed(tune_simple_pid);
     }
 
     while (true) {

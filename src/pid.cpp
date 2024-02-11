@@ -124,7 +124,6 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
  * to turn right, degrees > 0 and reversed = false
  * to turn left, degrees < 0 and reversed = true
  */
-        // if ((reversed && degrees > 0) || (!reversed && !(degrees > 0))) {      // left is inner side
 void drive_turn(float degrees, float outer_radius, float target_ips, float ips_per_sec, bool reversed) {
     target_heading += degrees;      // update target heading
 
@@ -332,4 +331,39 @@ void drive_arc(float degrees, float outer_radius, float max_ips, float ips_per_s
     if (do_decel)
         drive_full.stop(vex::brake);
     else drive_full.stop(vex::coast);
+}
+
+void turn_pid (float degrees, float ratio, int direction) {
+    target_heading += degrees;
+    PID drive_pid = PID(turn_kp_l, turn_ki_l, turn_kd_l);
+
+    float speed_l;
+    float speed_r;
+
+    int time_still = 0;
+    while (1) {
+        if (time_still >= 80)
+            break;
+        if (within_range(ROTATION * GYRO_CORRECTION, target_heading, 3))
+            time_still += 20;
+        else
+            time_still = 0;
+
+        speed_l = drive_pid.pid_adjust(target_heading, ROTATION * GYRO_CORRECTION) * direction;
+        speed_r = speed_l * ratio;
+
+        // Limit to max speed
+        if (speed_l > 12)
+            speed_l = 12;
+        else if (speed_l < -12)
+            speed_l = -12;
+        if (speed_r > 12 * std::abs(ratio))
+            speed_r = 12 * std::abs(ratio);
+        else if (speed_r < -12 * std::abs(ratio))
+            speed_r = -12 * std::abs(ratio);
+
+        drive_l.spin(DIR_FWD, speed_l, VLT_VLT);
+        drive_r.spin(DIR_FWD, speed_r, VLT_VLT);
+        wait(20, vex::msec);
+    }
 }
