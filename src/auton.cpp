@@ -64,14 +64,7 @@ void autonomous(void) {
             // Path to goal
             drive_turn(-45, WHEEL_TO_WHEEL_DIST * 1.5, 72, 72, true);
             drive_straight(-38, 72, 72);
-            // drive_turn(45, WHEEL_TO_WHEEL_DIST * 0.8, 72, 72, true);
-            // turn_pid(270, -1, 1);
-            // drive_l.stop();
-            // drive_r.stop();
             // Slap in
-            // wing_fl.set(1);
-            // wait(200, vex::msec);
-            // wing_fl.set(0);
             intake.stop(vex::brakeType::coast);
             // Push under bar
             drive_turn(-135, WHEEL_TO_WHEEL_DIST * 0.74, 72, 72, true);
@@ -189,20 +182,36 @@ void autonomous(void) {
             break;
 
         case SKILLS:
-            release_intake();
-            // // sys3.spin(DIR_FWD, 68, VEL_PCT);
-            wait(60, vex::sec);
-            // puncher.stop();
-            drive_straight(4, 48, 48);
-            drive_turn(58, WHEEL_TO_WHEEL_DIST / 2, 48, 48);
-            drive_straight(20, 48, 48);
-            drive_turn(-35, WHEEL_TO_WHEEL_DIST / 2, 48, 48);
-            drive_straight(48, 48, 48);
-            drive_straight(-12, 48, 48);
-            hang.set(1);
-            drive_straight(36, 48, 48);
-            drive_straight(-5, 48, 48);
-            drive_straight(5, 48, 48);
+            target_heading = 45;
+            intake.spin(DIR_FWD, 100, VEL_PCT);
+            // Shove under
+            drive_turn(45, WHEEL_TO_WHEEL_DIST * 0.77, 72, 72, true);
+            drive_l.spin(DIR_FWD, -12, VLT_VLT);
+            drive_r.spin(DIR_FWD, -12, VLT_VLT);
+            wait(600, vex::msec);
+            // Line up
+            drive_straight(12, 72, 80);
+            turn_pid(-107, -1, 1);
+            drive_straight(-5, 72, 80);
+            turn_pid(0, -1, 1);
+            drive_l.stop();
+            drive_r.stop();
+            wing_br.set(1);
+            // Shoot
+            cata.spin(DIR_FWD, 100, VEL_PCT);
+            wait(3, vex::sec);
+            cata.stop();
+            // cata.spinFor(46, ROT_REV, 100, VEL_PCT, true);
+            wing_br.set(0);
+            // Run through alley
+            drive_turn(107, WHEEL_TO_WHEEL_DIST * 1.65, 72, 84, false);
+            drive_straight(3, 72, 200);
+            turn_pid(90, -1, 1);
+            drive_straight(-66, 84, 200);
+            // Ram under goal
+            // Wings 1
+            // Wings 2
+            // Ram 2
             break;
 
         case SKILLS_DRIVER:
@@ -223,5 +232,6 @@ void autonomous(void) {
             wing_br.set(1);
             wing_bl.set(1);
             opcontrol();
+            break;
     }
 }

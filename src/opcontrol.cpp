@@ -74,8 +74,8 @@ void opdrive(int control_mode, float drive_mod, float turn_mod) {
         case TSA_STD:
             // lspeed = (ly - rx) * (ly - rx) / 100 * (((ly - rx) > 0) - ((ly - rx) < 0));
             // rspeed = (ly + rx) * (ly + rx) / 100 * (((ly + rx) > 0) - ((ly + rx) < 0));
-            lspeed = (ly * ly * ly / 16129.0);
-            rspeed = (rx * rx * rx / 16129.0) * turn_mod;
+            lspeed = LEFT_STICK_Y;
+            rspeed = RIGHT_STICK_X * turn_mod;
             drive_r.spin(DIR_FWD, (lspeed - rspeed) * drive_mod, VEL_PCT);
             drive_l.spin(DIR_FWD, (lspeed + rspeed) * drive_mod, VEL_PCT);
             break;
