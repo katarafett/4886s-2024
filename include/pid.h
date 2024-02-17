@@ -18,7 +18,7 @@ class PID {
     public:
         PID();
         PID(double init_kP, double init_kI, double init_kD);
-        double pid_adjust(double setpoint, double current_value);
+        double get_adjustment(double setpoint, double sensor_value);
         void tune_kP(float stick_mod);
         void tune_kI(float stick_mod);
         void tune_kD(float stick_mod);
@@ -60,3 +60,5 @@ void drive_linear(float inches, float target_ips, float ips_per_sec, float do_de
 void drive_arc(float degrees, float outer_radius, float max_ips, float ips_per_sec, bool do_decel, bool reversed);
 
 void turn_pid(float degrees, float ratio, int direction);
+
+void straight_pid(float dist);

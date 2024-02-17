@@ -13,22 +13,13 @@
 void opcontrol(void) {
     drive_l.stop(vex::brakeType::coast);
     drive_r.stop(vex::brakeType::coast);
-    bool autofire_enabled = false;
-    bool wings_out_l = false;
-    bool wings_out_r = false;
-    bool hang_out = false;
     bool shifted = false;
-    float drive_mod = 1.0;
 
     while (1) {
         shifted = BTN_L2.pressing();
-        // Slow down drive if hang is active
-        if (hang.value())
-            drive_mod = 0.5;
-        else drive_mod = 1.0;
 
         // Drive control
-        opdrive(TSA_STD, drive_mod, SENSITIVITY);
+        opdrive(TSA_STD, 1.0, SENSITIVITY);
 
         // Intake
         intake.spin(DIR_FWD, (R1_UNSHIFTED - R2_UNSHIFTED) * BTN__PCT, VEL_PCT);

@@ -6,6 +6,8 @@
 void release_antenna(void);
 
 void autonomous(void) {
+    float ram1_dir;
+    float ram2_dir;
     // Ensure inerital is calibrated
     while (inrtl.isCalibrating())
         wait(20, vex::msec);
@@ -188,30 +190,70 @@ void autonomous(void) {
             drive_turn(45, WHEEL_TO_WHEEL_DIST * 0.77, 72, 72, true);
             drive_l.spin(DIR_FWD, -12, VLT_VLT);
             drive_r.spin(DIR_FWD, -12, VLT_VLT);
-            wait(600, vex::msec);
+            wait(650, vex::msec);
             // Line up
             drive_straight(12, 72, 80);
             turn_pid(-107, -1, 1);
-            drive_straight(-5, 72, 80);
+            drive_straight(-6, 72, 80);
             turn_pid(0, -1, 1);
-            drive_l.stop();
-            drive_r.stop();
+            drive_l.stop(vex::brakeType::hold);
+            drive_r.stop(vex::brakeType::hold);
             wing_br.set(1);
             // Shoot
-            cata.spin(DIR_FWD, 100, VEL_PCT);
-            wait(3, vex::sec);
-            cata.stop();
-            // cata.spinFor(46, ROT_REV, 100, VEL_PCT, true);
+            // cata.spin(DIR_FWD, 100, VEL_PCT);
+            // wait(3, vex::sec);
+            // cata.stop();
+            cata.spinFor(46, ROT_REV, 100, VEL_PCT, true);
             wing_br.set(0);
             // Run through alley
             drive_turn(107, WHEEL_TO_WHEEL_DIST * 1.65, 72, 84, false);
-            drive_straight(3, 72, 200);
+            drive_straight(7, 72, 200);
             turn_pid(90, -1, 1);
-            drive_straight(-66, 84, 200);
+            drive_straight(-76, 84, 200);
+            turn_pid(-45, -1, 1);
+            drive_straight(-24, 84, 200);
+            turn_pid(-45, -1, 1);
             // Ram under goal
+            drive_l.spin(DIR_FWD, -12, VLT_VLT);
+            drive_r.spin(DIR_FWD, -12, VLT_VLT);
+            wait(700, vex::msec);
+            drive_straight(6, 72, 80);
             // Wings 1
+            turn_pid(100, -1, 1);
+            drive_straight(48, 72, 200);
+            turn_pid(-45, -1, 1);
+            wing_br.set(1);
+            wing_bl.set(1);
+            drive_l.spin(DIR_FWD, -12, VLT_VLT);
+            drive_r.spin(DIR_FWD, -12, VLT_VLT);
+            ram1_dir = ROTATION * GYRO_CORRECTION + 35;
+            do {
+                wait(10, vex::msec);
+            } while (ROTATION * GYRO_CORRECTION < ram1_dir);
+            target_heading += 35;
+            drive_straight(6, 72, 200);
+            wing_br.set(0);
+            wing_bl.set(0);
             // Wings 2
-            // Ram 2
+            turn_pid(-30, -1, 1);
+            drive_straight(30, 72, 200);
+            turn_pid(120, -1, 1);
+            drive_straight(54, 72, 200);
+            turn_pid(-55, -1, 1);
+            wing_br.set(1);
+            wing_bl.set(1);
+            drive_l.spin(DIR_FWD, -12, VLT_VLT);
+            drive_r.spin(DIR_FWD, -12, VLT_VLT);
+            ram1_dir = ROTATION * GYRO_CORRECTION - 35;
+            do {
+                wait(10, vex::msec);
+            } while (ROTATION * GYRO_CORRECTION > ram1_dir);
+            target_heading -= 35;
+            drive_straight(6, 72, 200);
+            wing_br.set(0);
+            wing_bl.set(0);
+            drive_straight(12, 72, 200);
+            turn_pid(360, -1, 1);
             break;
 
         case SKILLS_DRIVER:

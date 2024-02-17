@@ -64,7 +64,7 @@
 #define TIME sands_of_time.time(vex::msec)
 
 // Control
-#define SENSITIVITY 0.75
+#define SENSITIVITY 0.85
 
 // Autonomous
 extern int auton_mode;
@@ -81,3 +81,5 @@ extern float turn_kd_l;
 extern float turn_kp_r;
 extern float turn_ki_r;
 extern float turn_kd_r;
+
+extern float move_kp, move_ki, move_kd;

@@ -53,7 +53,7 @@ int main() {
     pre_auton();
     if (!do_testing) {
         Competition.autonomous(autonomous);
-        Competition.drivercontrol(opcontrol);
+        Competition.drivercontrol(autonomous);
     } else {
         // master.ButtonA.pressed(testing);
         // master.ButtonB.pressed(rot_test);
