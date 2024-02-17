@@ -13,6 +13,12 @@
 void opcontrol(void) {
     drive_l.stop(vex::brakeType::coast);
     drive_r.stop(vex::brakeType::coast);
+    if (auton_mode != SKILLS_DRIVER) {
+        wing_br.set(0);
+        wing_bl.set(0);
+        wing_fr.set(0);
+        wing_fl.set(0);
+    }
     bool shifted = false;
 
     while (1) {

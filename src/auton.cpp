@@ -8,21 +8,28 @@ void release_antenna(void);
 void autonomous(void) {
     float ram1_dir;
     float ram2_dir;
+    int timer = 0;
     // Ensure inerital is calibrated
     while (inrtl.isCalibrating())
         wait(20, vex::msec);
     switch (auton_mode) {
         case AWP:
-            release_intake();
-            drive_r.spin(DIR_FWD, -100, VEL_PCT);
-            drive_l.spin(DIR_FWD, -100, VEL_PCT);
-            wait(1500, vex::msec);
-            drive_r.spin(DIR_FWD, 100, VEL_PCT);
-            drive_l.spin(DIR_FWD, 100, VEL_PCT);
-            wait(500, vex::msec);
-            drive_l.stop();
-            drive_r.stop();
-            /* tune pid */
+            intake.spin(DIR_FWD, 100, VEL_PCT);
+            //  Slap into goal | Knock out
+            wing_fl.set(1);
+            wing_bl.set(1);
+            wait(250, vex::msec);
+            wing_fl.set(0);
+            turn_pid(-45, -1, 1);
+            wing_bl.set(0);
+            intake.stop();
+            // Touch bar
+            drive_straight(-6, 72, 200);
+            turn_pid(-45, -1, 1);
+            drive_straight(-30, 72, 200);
+            drive_straight(6, 72, 72);
+            wing_br.set(1);
+            drive_turn(20, WHEEL_TO_WHEEL_DIST, 48, 48, true);
             break;
 
         case HALF_AWP_NEAR:
@@ -66,53 +73,26 @@ void autonomous(void) {
             // Path to goal
             drive_turn(-45, WHEEL_TO_WHEEL_DIST * 1.5, 72, 72, true);
             drive_straight(-38, 72, 72);
-            // Slap in
             intake.stop(vex::brakeType::coast);
             // Push under bar
-            drive_turn(-135, WHEEL_TO_WHEEL_DIST * 0.74, 72, 72, true);
-            drive_straight(-36, 72, 72);
+            drive_turn(-135, WHEEL_TO_WHEEL_DIST * 0.78, 72, 72, true);
+            drive_straight(-35, 72, 72);
             drive_straight(6, 72, 72);
             wing_br.set(1);
             drive_turn(20, WHEEL_TO_WHEEL_DIST, 48, 48, true);
             break;
 
         case HALF_AWP_FAR:
-            // release_intake();
-            // Get triball
-            // // sys3.spin(DIR_FWD, 50, PCT_PCT);
-            drive_straight(3, 24, 24);
-            wait(300, vex::msec);
-            // // sys3.stop(vex::brakeType::hold);
-            // Position for next
-            drive_straight(-31, 72, 54);
-            drive_turn(-45, WHEEL_TO_WHEEL_DIST, 48, 36, true);
-            drive_straight(-12, 48, 36);
-            // Slap it out
-            // smith.set(1);
-            drive_turn(-45, WHEEL_TO_WHEEL_DIST, 36, 24, true);
-            drive_straight(-8, 54, 48);
-            // Line up
-            drive_l.spin(DIR_FWD, -50, PCT_PCT);
-            wait(650, vex::msec);
-            target_heading -= 15;       // effectively turn 15 degrees left
-            drive_straight(13, 60, 48);
-            // smith.set(0);
-            drive_turn(-165, WHEEL_TO_WHEEL_DIST / 2, 54, 36);
-            drive_straight(1, 48, 24);      // tries to correct angle
-            // Slam stuff in
-            // sys3.spin(DIR_FWD, -100, PCT_PCT);
-            drive_r.spin(DIR_FWD, 100, PCT_PCT);
-            drive_l.spin(DIR_FWD, 100, PCT_PCT);
-            wait(650, vex::msec);
-            drive_straight(-14, 60, 48);
-            drive_r.spin(DIR_FWD, 100, PCT_PCT);
-            drive_l.spin(DIR_FWD, 100, PCT_PCT);
-            wait(650, vex::msec);
-            // sys3.stop(vex::brakeType::coast);
-            drive_straight(-10, 60, 48);
-            // Pzth to one of the middle triballs
-            drive_turn(-90, WHEEL_TO_WHEEL_DIST / 2, 48, 48);
-            drive_straight(46, 84, 56);
+            intake.spin(DIR_FWD, 100, VEL_PCT);
+            drive_r.spin(DIR_FWD, -100, VEL_PCT);
+            drive_l.spin(DIR_FWD, -100, VEL_PCT);
+            wait(1500, vex::msec);
+            drive_r.spin(DIR_FWD, 100, VEL_PCT);
+            drive_l.spin(DIR_FWD, 100, VEL_PCT);
+            wait(500, vex::msec);
+            drive_l.stop();
+            drive_r.stop();
+            intake.stop();
             break;
 
         case NEAR_ELIMS:
@@ -203,6 +183,7 @@ void autonomous(void) {
             // cata.spin(DIR_FWD, 100, VEL_PCT);
             // wait(3, vex::sec);
             // cata.stop();
+            intake.stop();
             cata.spinFor(46, ROT_REV, 100, VEL_PCT, true);
             wing_br.set(0);
             // Run through alley
@@ -228,8 +209,9 @@ void autonomous(void) {
             drive_r.spin(DIR_FWD, -12, VLT_VLT);
             ram1_dir = ROTATION * GYRO_CORRECTION + 35;
             do {
+                timer += 10;
                 wait(10, vex::msec);
-            } while (ROTATION * GYRO_CORRECTION < ram1_dir);
+            } while (ROTATION * GYRO_CORRECTION < ram1_dir && timer < 1500);
             target_heading += 35;
             drive_straight(6, 72, 200);
             wing_br.set(0);
@@ -238,16 +220,18 @@ void autonomous(void) {
             turn_pid(-30, -1, 1);
             drive_straight(30, 72, 200);
             turn_pid(120, -1, 1);
-            drive_straight(54, 72, 200);
+            drive_straight(52, 72, 200);
             turn_pid(-55, -1, 1);
             wing_br.set(1);
             wing_bl.set(1);
             drive_l.spin(DIR_FWD, -12, VLT_VLT);
             drive_r.spin(DIR_FWD, -12, VLT_VLT);
+            timer = 0;
             ram1_dir = ROTATION * GYRO_CORRECTION - 35;
             do {
+                timer += 10;
                 wait(10, vex::msec);
-            } while (ROTATION * GYRO_CORRECTION > ram1_dir);
+            } while (ROTATION * GYRO_CORRECTION > ram1_dir && timer < 1500);
             target_heading -= 35;
             drive_straight(6, 72, 200);
             wing_br.set(0);
