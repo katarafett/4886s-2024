@@ -10,25 +10,22 @@ void autonomous(void) {
     float ram2_dir;
     int timer = 0;
     // Ensure inerital is calibrated
-    while (inrtl.isCalibrating())
+    while (imu.isCalibrating())
         wait(20, vex::msec);
     switch (auton_mode) {
         case AWP:
             intake.spin(DIR_FWD, 100, VEL_PCT);
             //  Slap into goal | Knock out
             wing_fl.set(1);
-            wing_bl.set(1);
             wait(250, vex::msec);
             wing_fl.set(0);
             turn_pid(-45, -1, 1);
-            wing_bl.set(0);
             intake.stop();
             // Touch bar
             drive_straight(-6, 72, 200);
             turn_pid(-45, -1, 1);
             drive_straight(-30, 72, 200);
             drive_straight(6, 72, 72);
-            wing_br.set(1);
             drive_turn(20, WHEEL_TO_WHEEL_DIST, 48, 48, true);
             break;
 
@@ -39,10 +36,8 @@ void autonomous(void) {
             wait(250, vex::msec);
             wing_fl.set(0);
             // Knock out
-            wing_bl.set(1);
             wait(100, vex::msec);
             turn_pid(-45, -1, 1);
-            wing_bl.set(0);
             // Path to center triball
             intake.spin(DIR_FWD, 100, VEL_PCT);
             drive_turn(95, WHEEL_TO_WHEEL_DIST / 1.5, 72, 72, false);
@@ -78,7 +73,6 @@ void autonomous(void) {
             drive_turn(-135, WHEEL_TO_WHEEL_DIST * 0.78, 72, 72, true);
             drive_straight(-35, 72, 72);
             drive_straight(6, 72, 72);
-            wing_br.set(1);
             drive_turn(20, WHEEL_TO_WHEEL_DIST, 48, 48, true);
             break;
 
@@ -178,14 +172,12 @@ void autonomous(void) {
             turn_pid(0, -1, 1);
             drive_l.stop(vex::brakeType::hold);
             drive_r.stop(vex::brakeType::hold);
-            wing_br.set(1);
             // Shoot
             // cata.spin(DIR_FWD, 100, VEL_PCT);
             // wait(3, vex::sec);
             // cata.stop();
             intake.stop();
-            cata.spinFor(46, ROT_REV, 100, VEL_PCT, true);
-            wing_br.set(0);
+            // cata.spinFor(46, ROT_REV, 100, VEL_PCT, true);
             // Run through alley
             drive_turn(107, WHEEL_TO_WHEEL_DIST * 1.65, 72, 84, false);
             drive_straight(7, 72, 200);
@@ -203,8 +195,6 @@ void autonomous(void) {
             turn_pid(100, -1, 1);
             drive_straight(48, 72, 200);
             turn_pid(-45, -1, 1);
-            wing_br.set(1);
-            wing_bl.set(1);
             drive_l.spin(DIR_FWD, -12, VLT_VLT);
             drive_r.spin(DIR_FWD, -12, VLT_VLT);
             ram1_dir = ROTATION * GYRO_CORRECTION + 35;
@@ -214,16 +204,12 @@ void autonomous(void) {
             } while (ROTATION * GYRO_CORRECTION < ram1_dir && timer < 1500);
             target_heading += 35;
             drive_straight(6, 72, 200);
-            wing_br.set(0);
-            wing_bl.set(0);
             // Wings 2
             turn_pid(-30, -1, 1);
             drive_straight(30, 72, 200);
             turn_pid(120, -1, 1);
             drive_straight(52, 72, 200);
             turn_pid(-55, -1, 1);
-            wing_br.set(1);
-            wing_bl.set(1);
             drive_l.spin(DIR_FWD, -12, VLT_VLT);
             drive_r.spin(DIR_FWD, -12, VLT_VLT);
             timer = 0;
@@ -234,8 +220,6 @@ void autonomous(void) {
             } while (ROTATION * GYRO_CORRECTION > ram1_dir && timer < 1500);
             target_heading -= 35;
             drive_straight(6, 72, 200);
-            wing_br.set(0);
-            wing_bl.set(0);
             drive_straight(12, 72, 200);
             turn_pid(360, -1, 1);
             break;
@@ -255,8 +239,6 @@ void autonomous(void) {
             turn_pid(0, -1, 1);
             drive_l.stop();
             drive_r.stop();
-            wing_br.set(1);
-            wing_bl.set(1);
             opcontrol();
             break;
     }

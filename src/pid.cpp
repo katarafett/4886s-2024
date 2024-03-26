@@ -150,7 +150,6 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
     // adjusts for different outer wheel sides
     int dir_mod = (degrees > 0) ? 1 : -1;
 
-    int target_time = sands_of_time.time(vex::msec);
 
     while (ips >= 0) {
         // Update values
@@ -195,9 +194,7 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
         if (degrees_remaining * dir_mod < 0)
             break;
 
-        target_time += 20;
-        while (sands_of_time.time(vex::msec) < target_time)
-            ; // wait for next cycle
+        wait(20, vex::msec);
     }
     drive_l.stop(vex::brakeType::brake);
     drive_r.stop(vex::brakeType::brake);
@@ -228,9 +225,6 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
     // Direction of travel - 1 for fwd, -1 for bwd
     int dir_mod = (inches > 0) ? 1 : -1;
 
-    float start_time = sands_of_time.time(vex::msec);
-    float next_cycle = start_time; // tracks time between cycles
-
     while (std::abs(avg_pos) < std::abs(inches)) { // cuts if we've reached target position
         // Update positions
         current_pos_r = POS_DRIVE_R - start_pos_r;
@@ -238,8 +232,8 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
         avg_pos = (current_pos_r + current_pos_l) / 2.0;
 
         // Handle accelerations
-        handle_accel(current_pos_r, inches, &target_vel_r, max_ips, ips_per_sec, TPS, do_decel);
-        handle_accel(current_pos_l, inches, &target_vel_l, max_ips, ips_per_sec, TPS, do_decel);
+        handle_acceleration(current_pos_r, inches, &target_vel_r, max_ips, ips_per_sec, TPS, do_decel);
+        handle_acceleration(current_pos_l, inches, &target_vel_l, max_ips, ips_per_sec, TPS, do_decel);
 
         // Get PID values
         pid_r_adj = pid_r.get_adjustment(target_vel_r, VEL_DRIVE_R);
@@ -254,9 +248,7 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
         drive_l.spin(DIR_FWD, dir_mod * l_vel_rpm + pid_l_adj - pid_dir_adj, VEL_RPM);
 
         // Wait for next cycle
-        next_cycle += 1000.0 / TPS;
-        while (sands_of_time.time(vex::msec) < next_cycle)
-            ; // wait for next cycle
+        wait(20, vex::msec);
     }
     if (do_decel) {
         drive_l.stop(vex::brakeType::brake);
@@ -265,75 +257,6 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
         drive_l.stop(vex::brakeType::coast);
         drive_r.stop(vex::brakeType::coast);
     }
-}
-
-void drive_arc(float degrees, float outer_radius, float max_ips, float ips_per_sec, bool do_decel, bool reversed) {
-    target_heading += degrees;
-
-    vex::motor_group outer_drive;
-    vex::motor_group inner_drive;
-
-    // Check which side of the drive will be on the inside of the turn
-    // If moving backward and turning left or going forward and turning right
-    if ((reversed && degrees > 0) || (!reversed && !(degrees > 0))) {
-        outer_drive = vex::motor_group(drive_rf, drive_rb, drive_rt);
-        inner_drive = vex::motor_group(drive_lf, drive_lb, drive_lt);
-    } else {
-        outer_drive = vex::motor_group(drive_lf, drive_lb, drive_lt);
-        inner_drive = vex::motor_group(drive_rf, drive_rb, drive_rt);
-    }
-
-    PID pid_drive_o = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    PID pid_drive_i = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    float pid_adjustment_o;
-    float pid_adjustment_i;
-
-    float outer_ips = 0;
-    float outer_vel_rpm, inner_vel_rpm;
-    float pos_start_o = outer_drive.position(ROT_REV) * DRIVE_REV__IN;
-    float pos_start_i = inner_drive.position(ROT_REV) * DRIVE_REV__IN; // start positions
-
-    float outer_pos, inner_pos;
-    float trg_outer_pos = 0, trg_inner_pos; // distance sides have travelled along circle
-
-    float degrees_remaining = target_heading - ROTATION * GYRO_CORRECTION;
-
-    float inner_radius = outer_radius - WHEEL_TO_WHEEL_DIST;
-    float radius_ratio = inner_radius / outer_radius;
-
-    while (std::abs(degrees_remaining) > 0) {
-        // Update values
-        outer_pos = outer_drive.position(ROT_REV) * DRIVE_REV__IN - pos_start_o;
-        inner_pos = inner_drive.position(ROT_REV) * DRIVE_REV__IN - pos_start_i;
-
-        degrees_remaining = target_heading - ROTATION * GYRO_CORRECTION;
-
-        // Handle acceleration
-        if (std::abs(degrees_remaining / RAD__DEG * outer_radius) - stop_dist(outer_ips, ips_per_sec) <= 0 && do_decel)
-            outer_ips -= ips_per_sec / 50.0;
-        else if (outer_ips < max_ips)
-            outer_ips += ips_per_sec / 50.0; // 50 cycles per second
-        else
-            outer_ips = max_ips;
-
-        trg_outer_pos += outer_ips / 50;
-        trg_inner_pos = trg_outer_pos * radius_ratio;
-
-        outer_vel_rpm = outer_ips / DRIVE_REV__IN * 60 * ((reversed) ? -1 : 1);
-        inner_vel_rpm = outer_vel_rpm * radius_ratio * ((reversed) ? -1 : 1);
-
-        pid_adjustment_i = 1 * pid_drive_i.get_adjustment(trg_inner_pos, inner_pos);
-        pid_adjustment_o = 1 * pid_drive_o.get_adjustment(trg_outer_pos, outer_pos);
-
-        inner_drive.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_i, VEL_RPM);
-        outer_drive.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_o, VEL_RPM);
-
-        vex::wait(20, vex::msec);
-    }
-    if (do_decel)
-        drive_full.stop(vex::brake);
-    else
-        drive_full.stop(vex::coast);
 }
 
 void turn_pid(float degrees, float ratio, int direction) {
@@ -365,6 +288,7 @@ void turn_pid(float degrees, float ratio, int direction) {
 
         drive_l.spin(DIR_FWD, speed_l, VLT_VLT);
         drive_r.spin(DIR_FWD, speed_r, VLT_VLT);
+
         wait(20, vex::msec);
     }
 }

@@ -4,11 +4,6 @@
 // Important Numbers
 #define PI 3.1415926535897932384626433832795
 
-// Ratios
-#define TRQ_INSERT vex::gearSetting::ratio36_1
-#define SPD_INSERT vex::gearSetting::ratio18_1
-#define TRB_INSERT vex::gearSetting::ratio6_1
-
 // Conversion
 // multiple to convert from first to second
 // divide to convert from second to first
@@ -90,12 +85,12 @@
 #define B_SCRN_Y_MID (B_SCRN_Y / 2)
 
 // Sensor Values
-// for use with inertial sensor named 'inrtl' and vision sensor names 'vis'
-#define HEADING inrtl.heading()
-#define ROTATION inrtl.rotation()
-#define YAW inrtl.yaw()
-#define ROLL inrtl.roll()
-#define PITCH inrtl.pitch()
+// for use with inertial sensor named 'imu' and vision sensor names 'vis'
+#define HEADING imu.heading()
+#define ROTATION imu.rotation()
+#define YAW imu.yaw()
+#define ROLL imu.roll()
+#define PITCH imu.pitch()
 
 // Ports
 #define PORTA Brain.ThreeWirePort.A

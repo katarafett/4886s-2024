@@ -1,26 +1,21 @@
 /**
- * @brief drives straight using pid
+ * @brief detects when a value is within range of a base value
  *
- * @param dist inches to travel
- * @param maxVel max in/sec
- * @param accel in/sec/sec to accelerate
+ * @param value value to check against
+ * @param base_value center of valid range
+ * @param range distance from base that returns true
+ * @return whether it is within range of base
  */
-void drive_straight_deprecated(float dist, float maxVel, float accel);
+bool within_range(double value, double base_value, double range);
 
 /**
- * @brief turns in an arc
+ * @brief finds distance to reach a target velocity given a certain acceleraion
  *
- * @param radians turns to this angle - does NOT increase by this angle
- * @param outerRadius outer radius of turn
- * @param maxVel max velocity in in/sec of turn
- * @param accel acceleration in in/sec/sec of turn
- * @param reversed turning backwards?
+ * @param current_vel the current velocity
+ * @param accel the expected acceleration
+ * @param target_vel the target velocity to reach
+ * @return the distance to reach target velocity
  */
-void drive_turn_deprecated(float deg, float outerRadius, float maxVel, float accel,
-        bool reversed = true);
-
-bool within_range(double value, double base, double range);
-
 float stop_dist(float current_vel, float accel, float target_vel = 0);
 
 /**
@@ -46,7 +41,5 @@ void tune_gyro(void);
  * @param tps number of times this function is called per time unit of accel
  * @param do_decel whether to decelerate
  */
-void handle_accel(float dist, float target_dist, float *vel, float max_vel,
+void handle_acceleration(float dist, float target_dist, float *vel, float max_vel,
         float accel, int tps, bool do_decel);
-
-void release_intake(void);

@@ -2,7 +2,7 @@
 
 void pre_auton(void) {
     // Calibrate inertial
-    inrtl.calibrate();
+    imu.calibrate();
 
     // Create GUI
     int *sides;
@@ -29,7 +29,7 @@ void pre_auton(void) {
         sides = side_pressed();
 
         // Update auton type
-        if (selector.value() == 0 || sides[X] == LEFT) {
+        if (auto_selector.value() == 0 || sides[X] == LEFT) {
             auton_mode++;
             // Not good; if auton count changes, memory errors
             if (auton_mode > SKILLS_DRIVER) auton_mode = 0;
@@ -37,7 +37,7 @@ void pre_auton(void) {
             B_SCRN.print("%s", autons[auton_mode]);
 
             // Wait for it to depress
-            while(selector.value() == 0) {
+            while(auto_selector.value() == 0) {
                 int count = 0;
                 wait(1, vex::msec);
                 if(++count > 200)

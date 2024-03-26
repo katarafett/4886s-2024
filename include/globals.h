@@ -19,9 +19,6 @@
 #define TURN_KI_R 0.0
 #define TURN_KD_R 0.1
 
-#define DRIVE_INSERT TRB_INSERT
-#define INTAKE_INSERT TRB_INSERT
-
 // Autonmous modes
 #define AWP 0
 #define HALF_AWP_NEAR 1
