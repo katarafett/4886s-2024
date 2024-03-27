@@ -52,7 +52,7 @@
 #define DOWN 2
 
 // Misc - defines
-#define GYRO_CORRECTION (3600 / 3593.6)
+#define IMU_CORRECTION (3600 / 3593.6)
 #define CHAR_HI 20
 #define CHAR_WI 12
 #define DRIVE_VEL ((drive_r.velocity(VEL_RPM) + drive_l.velocity(VEL_RPM)) / 2)

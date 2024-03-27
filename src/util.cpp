@@ -65,10 +65,56 @@ double pos_drive_r() {
 double pos_drive_l() {
     return drive_l.position(vex::rotationUnits::rev) * DRIVE_REV__IN;
 }
-// Velocity in inches per minute
+// Velocity in inches per second
 double vel_drive_r() {
-    return drive_r.velocity(vex::rpm) * DRIVE_REV__IN;
+    return drive_r.velocity(vex::rpm) * DRIVE_REV__IN * 60;
 }
 double vel_drive_l() {
-    return drive_l.velocity(vex::rpm) * DRIVE_REV__IN;
+    return drive_l.velocity(vex::rpm) * DRIVE_REV__IN * 60;
+}
+
+// Heading in degrees
+double imu_rotation() {
+    return imu.rotation() * IMU_CORRECTION;
+}
+
+// Controller joystick shorthand
+double axis_rx() {
+    return master.Axis1.position();
+}
+double axis_ry() {
+    return master.Axis2.position();
+}
+double axis_lx() {
+    return master.Axis3.position();
+}
+double axis_ly() {
+    return master.Axis4.position();
+}
+
+// Controller button shorthand
+double btn_r1() {
+    return master.ButtonR1.pressing();
+}
+double btn_r2() {
+    return master.ButtonR2.pressing();
+}
+double btn_l1() {
+    return master.ButtonL1.pressing();
+}
+double btn_l2() {
+    return master.ButtonL2.pressing();
+}
+
+double btn_a() {
+    return master.ButtonA.pressing();
+}
+double btn_b() {
+    return master.ButtonB.pressing();
+}
+double btn_x() {
+    return master.ButtonX.pressing();
+}
+double btn_y() {
+    return master.ButtonY.pressing();
 }

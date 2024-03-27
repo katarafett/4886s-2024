@@ -43,3 +43,101 @@ void tune_gyro(void);
  */
 void handle_acceleration(float dist, float target_dist, float *vel, float max_vel,
         float accel, int tps, bool do_decel);
+
+
+
+// Shorthand functions
+
+/**
+ * @brief Gets position of right drive side in inches
+ */
+double pos_drive_r(void);
+
+/**
+ * @brief Gets position of left drive side in inches
+ */
+double pos_drive_l(void);
+
+/**
+ * @brief Gets velocity of right drive side in inches per second
+ */
+double vel_drive_r(void);
+
+/**
+ * @brief Gets velocity of left drive side in inches per second
+ */
+double vel_drive_l(void);
+
+/**
+ * @brief Gets heading of drive in degrees
+ */
+double imu_rotation(void);
+
+/**
+ * @brief Get right stick horizontal axis value
+ *
+ * @return Return value between -100 and 100
+ */
+double axis_rx(void);
+
+/**
+ * @brief Get right stick vertical axis value
+ *
+ * @return Return value between -100 and 100
+ */
+double axis_ry(void);
+
+/**
+ * @brief Get left stick horizontal axis value
+ *
+ * @return Return value between -100 and 100
+ */
+double axis_lx(void);
+
+/**
+ * @brief Get left stick vertical axis value
+ *
+ * @return Return value between -100 and 100
+ */
+double axis_ly(void);
+
+/**
+ * @brief Get state of button R1
+ */
+double btn_r1(void);
+
+/**
+ * @brief Get state of button R2
+ */
+double btn_r2(void);
+
+/**
+ * @brief Get state of button L1
+ */
+double btn_l1(void);
+
+/**
+ * @brief Get state of button L2
+ */
+double btn_l2(void);
+
+/**
+ * @brief Get state of button A
+ */
+double btn_a(void);
+
+/**
+ * @brief Get state of button B
+ */
+double btn_b(void);
+
+/**
+ * @brief Get state of button X
+ */
+double btn_x(void);
+
+/**
+ * @brief Get state of button Y
+ */
+double btn_y(void);
+
