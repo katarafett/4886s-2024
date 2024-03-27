@@ -3,7 +3,7 @@
 
 void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_decel) {
     const int TICKS_PER_SEC = 50;
-    const int MSEC_PER_TICK = 1000.0 / 20.0;
+    const int MSEC_PER_TICK = 1000.0 / TICKS_PER_SEC;
 
     drive_r.stop(vex::brakeType::coast);
     drive_l.stop(vex::brakeType::coast);
@@ -13,7 +13,7 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
     PID pid_dir = PID(DIR_KP, DIR_KI, DIR_KD);
 
     float ips = 0, pos = 0;
-    float pos_start_l = pos_drive_l(), pos_start_r = POS_DRIVE_R;
+    float pos_start_l = pos_drive_l(), pos_start_r = pos_drive_r();
     float pos_l, pos_r;
 
     // adjusts velocity for positive/negative distances
@@ -25,32 +25,32 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
 
     float vel_rpm;
 
-    while (ips >= 0 && std::abs(POS_DRIVE_L - pos_start_l) < std::abs(inches)) {
+    while (ips >= 0 && std::abs(pos_drive_l() - pos_start_l) < std::abs(inches)) {
         // Handles getting to speed
         if (std::abs(pos) + stop_dist(ips, ips_per_sec) >= std::abs(inches) && do_decel)
-            ips -= ips_per_sec / 50; // 50 hz
+            ips -= ips_per_sec / TICKS_PER_SEC;
         else if (ips < target_ips)
-            ips += target_ips / 50;
+            ips += target_ips / TICKS_PER_SEC;
         else
             ips = target_ips;
 
         // Find expected position
-        pos += ips / 50 * dir_mod; // divide by 50 bc loop occurs 50 times a second; dir_mod adjusts for fwd/bwd
+        pos += ips / TICKS_PER_SEC * dir_mod; // dir_mod adjusts for fwd/bwd
 
         // Update actual positions
-        pos_l = POS_DRIVE_L - pos_start_l;
-        pos_r = POS_DRIVE_R - pos_start_r;
+        pos_l = pos_drive_l() - pos_start_l;
+        pos_r = pos_drive_r() - pos_start_r;
 
         // Maintain speed
         pid_adjustment_l = pid_drive_l.adjust(pos, pos_l);
         pid_adjustment_r = pid_drive_r.adjust(pos, pos_r);
-        pid_adjustment_dir = pid_dir.adjust(target_heading, ROTATION * GYRO_CORRECTION);
+        pid_adjustment_dir = pid_dir.adjust(target_heading, imu_rotation());
 
         vel_rpm = ips / DRIVE_REV__IN * 60;
 
         drive_l.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_l + pid_adjustment_dir, VEL_RPM);
         drive_r.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_r - pid_adjustment_dir, VEL_RPM);
-        wait(20, vex::msec);
+        wait(MSEC_PER_TICK, vex::msec);
     }
     if (do_decel) {
         drive_r.stop(vex::brakeType::brake);
@@ -79,7 +79,7 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
     float ips = 0;
     float outer_vel_rpm, inner_vel_rpm;
     float outer_pos = 0, inner_pos;                             // expected distance that outer side has travelled
-    float pos_start_l = POS_DRIVE_L, pos_start_r = POS_DRIVE_R; // start positions
+    float pos_start_l = pos_drive_l(), pos_start_r = pos_drive_r(); // start positions
     float pos_l, pos_r;                                         // current positions for each drive side
 
     float degrees_remaining;
@@ -94,8 +94,8 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
 
     while (ips >= 0) {
         // Update values
-        pos_l = POS_DRIVE_L - pos_start_l;
-        pos_r = POS_DRIVE_R - pos_start_r;
+        pos_l = pos_drive_l() - pos_start_l;
+        pos_r = pos_drive_r() - pos_start_r;
 
         degrees_remaining = target_heading - ROTATION * GYRO_CORRECTION;
 
@@ -152,10 +152,10 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
     float pid_r_adj, pid_l_adj, pid_dir_adj;
 
     // Various positions in inches
-    float start_pos_r = POS_DRIVE_R;
-    float start_pos_l = POS_DRIVE_L;
-    float current_pos_r = POS_DRIVE_R - start_pos_r;
-    float current_pos_l = POS_DRIVE_L - start_pos_l;
+    float start_pos_r = pos_drive_r();
+    float start_pos_l = pos_drive_l();
+    float current_pos_r = pos_drive_r() - start_pos_r;
+    float current_pos_l = pos_drive_l() - start_pos_l;
     float avg_pos = (current_pos_r + current_pos_l) / 2.0;
 
     // Velocities
@@ -168,8 +168,8 @@ void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel)
 
     while (std::abs(avg_pos) < std::abs(inches)) { // cuts if we've reached target position
         // Update positions
-        current_pos_r = POS_DRIVE_R - start_pos_r;
-        current_pos_l = POS_DRIVE_L - start_pos_l;
+        current_pos_r = pos_drive_r() - start_pos_r;
+        current_pos_l = pos_drive_l() - start_pos_l;
         avg_pos = (current_pos_r + current_pos_l) / 2.0;
 
         // Handle accelerations
@@ -240,14 +240,14 @@ void straight_pid(float dist) {
     int time_still = 0;
     float speed_l, speed_r;
     float dir_adjustment;
-    float start_pos_l = POS_DRIVE_L, start_pos_r = POS_DRIVE_R;
+    float start_pos_l = pos_drive_l(), start_pos_r = pos_drive_r();
 
     while (time_still < 80) {
-        speed_l = drive_pid.adjust(dist, POS_DRIVE_L - start_pos_l);
-        speed_r = drive_pid.adjust(dist, POS_DRIVE_R - start_pos_r);
+        speed_l = drive_pid.adjust(dist, pos_drive_l() - start_pos_l);
+        speed_r = drive_pid.adjust(dist, pos_drive_r() - start_pos_r);
         dir_adjustment = dir_pid.adjust(target_heading, ROTATION * GYRO_CORRECTION);
 
-        if (within_range(POS_DRIVE_R - start_pos_r, dist, 0.5)) {
+        if (within_range(pos_drive_r() - start_pos_r, dist, 0.5)) {
             time_still += 20;
             dir_adjustment *= 0.2;
         }

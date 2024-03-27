@@ -60,17 +60,17 @@ void handle_acceleration(float position, float distance, float velocity,
 
 // Position in inches
 double pos_drive_r() {
-    return drive_r.position(vex::rotationUnits::rev) * DRIVE_REV__IN;
+    return drive_r.position(vex::rotationUnits::rev) * DRIVE_REV_TO_IN;
 }
 double pos_drive_l() {
-    return drive_l.position(vex::rotationUnits::rev) * DRIVE_REV__IN;
+    return drive_l.position(vex::rotationUnits::rev) * DRIVE_REV_TO_IN;
 }
 // Velocity in inches per second
 double vel_drive_r() {
-    return drive_r.velocity(vex::rpm) * DRIVE_REV__IN * 60;
+    return drive_r.velocity(vex::rpm) * DRIVE_REV_TO_IN * 60;
 }
 double vel_drive_l() {
-    return drive_l.velocity(vex::rpm) * DRIVE_REV__IN * 60;
+    return drive_l.velocity(vex::rpm) * DRIVE_REV_TO_IN * 60;
 }
 
 // Heading in degrees
@@ -117,4 +117,17 @@ double btn_x() {
 }
 double btn_y() {
     return master.ButtonY.pressing();
+}
+
+double btn_right() {
+    return master.ButtonRight.pressing();
+}
+double btn_left() {
+    return master.ButtonLeft.pressing();
+}
+double btn_up() {
+    return master.ButtonUp.pressing();
+}
+double btn_down() {
+    return master.ButtonDown.pressing();
 }

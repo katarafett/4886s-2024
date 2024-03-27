@@ -41,8 +41,8 @@ void tune_gyro(void);
  * @param tps number of times this function is called per time unit of accel
  * @param do_decel whether to decelerate
  */
-void handle_acceleration(float dist, float target_dist, float *vel, float max_vel,
-        float accel, int tps, bool do_decel);
+void handle_acceleration(float position, float distance, float velocity,
+        float max_velocity, float acceleration, int tick_rate, bool do_decel);
 
 
 
@@ -140,4 +140,24 @@ double btn_x(void);
  * @brief Get state of button Y
  */
 double btn_y(void);
+
+/**
+ * @brief Get state of button Right
+ */
+double btn_right(void);
+
+/**
+ * @brief Get state of button Left
+ */
+double btn_left(void);
+
+/**
+ * @brief Get state of button Up
+ */
+double btn_up(void);
+
+/**
+ * @brief Get state of button Down
+ */
+double btn_down(void);
 
