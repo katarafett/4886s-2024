@@ -4,10 +4,10 @@ void pre_auton(void) {
     // Calibrate inertial
     imu.calibrate();
 
-    // Create GUI
     int *sides;
     const char *autons[7] = {"AWP", "HALF_AWP_NEAR", "HALF_AWP_FAR", "NEAR_ELIMS", "FAR_ELIMS", "SKILLS", "SKILLS_DRIVER"};
 
+    // Create GUI - none of this is important, just for looks
     B_SCRN.clearScreen();
     B_SCRN.drawRectangle(B_SCRN_X_MID / 8, 0, B_SCRN_X / 4, B_SCRN_Y_MID, vex::green);
     B_SCRN.drawRectangle(B_SCRN_X_MID / 8 + B_SCRN_X / 2, 0, B_SCRN_X / 4, B_SCRN_Y_MID, vex::red);
@@ -22,6 +22,8 @@ void pre_auton(void) {
     B_SCRN.setFillColor(vex::black);
     B_SCRN.setPenColor(vex::white);
     B_SCRN.setCursor(B_SCRN_Y * 3 / 2, 1);
+
+    // Print currently selected mode
     B_SCRN.print("%s", autons[auton_mode]);
 
 
@@ -31,12 +33,11 @@ void pre_auton(void) {
         // Update auton type
         if (auto_selector.value() == 0 || sides[X] == LEFT) {
             auton_mode++;
-            // Not good; if auton count changes, memory errors
             if (auton_mode > SKILLS_DRIVER) auton_mode = 0;
             B_SCRN.clearLine();
             B_SCRN.print("%s", autons[auton_mode]);
 
-            // Wait for it to depress
+            // Wait for sensor to depress
             while(auto_selector.value() == 0) {
                 int count = 0;
                 wait(1, vex::msec);

@@ -7,15 +7,15 @@
 // Conversion
 // multiple to convert from first to second
 // divide to convert from second to first
-#define STICK__TRQ (100.0 / 127.0)
-#define STICK__SPD (2 * 100.0 / 127.0)
-#define STICK__TRB (3 * 100.0 / 127.0)
-#define STICK__PCT (100.0 / 127.0)
-#define BTN__TRQ 100.0
-#define BTN__SPD 200.0
-#define BTN__TRB 600.0
-#define BTN__PCT 100.0
-#define BTN__VLT 12.0
+#define STICK_TO_TRQ 1.0
+#define STICK_TO_SPD 2 * 1.0
+#define STICK_TO_TRB 3 * 1.0
+#define STICK_TO_PCT 1.0
+#define BTN_TO_TRQ 100.0
+#define BTN_TO_SPD 200.0
+#define BTN_TO_TRB 600.0
+#define BTN_TO_PCT 100.0
+#define BTN_TO_VLT 12.0
 
 #define GEAR_12 12.0
 #define GEAR_36 36.0
@@ -24,15 +24,13 @@
 #define GEAR_72 72.0
 #define GEAR_84 84.0
 
-#define FULL_ROT__DEG 360.0
-#define HALF_ROT__DEG 180.0
-#define QRTR_ROT__DEG 90.0
+#define FULL_ROT_TO_DEG 360.0
+#define HALF_ROT_TO_DEG 180.0
+#define QRTR_ROT_TO_DEG 90.0
 
-#define RAD__DEG 57.29578
-
-#define IN__CM 2.54
-#define RAD__DEG 57.29578
-#define SEC__MSEC 1000.0
+#define IN_TO_CM 2.54
+#define RAD_TO_DEG 57.29578
+#define SEC_TO_MSEC 1000.0
 
 // Wheels
 #define LRG_OMNI_DIAM 4.0

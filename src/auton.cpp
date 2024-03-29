@@ -90,7 +90,6 @@ void autonomous(void) {
             break;
 
         case NEAR_ELIMS:
-            release_intake();
             // intake.spin(DIR_FWD, -50, VEL_PCT);
             // Push to our OZ
             drive_straight(33, 54, 36);
@@ -108,7 +107,6 @@ void autonomous(void) {
             break;
 
         case FAR_ELIMS:
-            release_intake();
             drive_straight(36, 60, 60, false);
             drive_arc(90, WHEEL_TO_WHEEL_DIST , 60, 60, false, false);
 
@@ -197,11 +195,11 @@ void autonomous(void) {
             turn_pid(-45, -1, 1);
             drive_l.spin(DIR_FWD, -12, VLT_VLT);
             drive_r.spin(DIR_FWD, -12, VLT_VLT);
-            ram1_dir = ROTATION * GYRO_CORRECTION + 35;
+            ram1_dir = imu_rotation() + 35;
             do {
                 timer += 10;
                 wait(10, vex::msec);
-            } while (ROTATION * GYRO_CORRECTION < ram1_dir && timer < 1500);
+            } while (imu_rotation() < ram1_dir && timer < 1500);
             target_heading += 35;
             drive_straight(6, 72, 200);
             // Wings 2
@@ -213,11 +211,11 @@ void autonomous(void) {
             drive_l.spin(DIR_FWD, -12, VLT_VLT);
             drive_r.spin(DIR_FWD, -12, VLT_VLT);
             timer = 0;
-            ram1_dir = ROTATION * GYRO_CORRECTION - 35;
+            ram1_dir = imu_rotation() - 35;
             do {
                 timer += 10;
                 wait(10, vex::msec);
-            } while (ROTATION * GYRO_CORRECTION > ram1_dir && timer < 1500);
+            } while (imu_rotation() > ram1_dir && timer < 1500);
             target_heading -= 35;
             drive_straight(6, 72, 200);
             drive_straight(12, 72, 200);

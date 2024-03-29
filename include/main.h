@@ -14,8 +14,10 @@
 
 #include "stddefs.h"
 #include "globals.h"
+#include "pid_const.h"
 #include "pid.h"
 #include "util.h"
+#include "movement.h"
 #include "robot-config.h"
 #include "opcontrol.h"
 #include "tune_pid.h"

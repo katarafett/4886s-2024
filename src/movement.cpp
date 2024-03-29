@@ -1,16 +1,16 @@
 #include "../include/main.h"
 #include "stddefs.h"
 
-void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_decel) {
+void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
     const int TICKS_PER_SEC = 50;
-    const int MSEC_PER_TICK = 1000.0 / TICKS_PER_SEC;
+    const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
 
     drive_r.stop(vex::brakeType::coast);
     drive_l.stop(vex::brakeType::coast);
 
-    PID pid_drive_l = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    PID pid_drive_r = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    PID pid_dir = PID(DIR_KP, DIR_KI, DIR_KD);
+    PID pid_drive_l = PID(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
+    PID pid_drive_r = PID(DRIVE_STRAIGHT_DR_KP, DRIVE_STRAIGHT_DR_KI, DRIVE_STRAIGHT_DR_KD);
+    PID pid_dir = PID(DRIVE_STRAIGHT_DIR_KP, DRIVE_STRAIGHT_DIR_KI, DRIVE_STRAIGHT_DIR_KD);
 
     float ips = 0, pos = 0;
     float pos_start_l = pos_drive_l(), pos_start_r = pos_drive_r();
@@ -27,8 +27,8 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
 
     while (ips >= 0 && std::abs(pos_drive_l() - pos_start_l) < std::abs(inches)) {
         // Handles getting to speed
-        if (std::abs(pos) + stop_dist(ips, ips_per_sec) >= std::abs(inches) && do_decel)
-            ips -= ips_per_sec / TICKS_PER_SEC;
+        if (std::abs(pos) + stop_dist(ips, ipss) >= std::abs(inches) && do_decel)
+            ips -= ipss / TICKS_PER_SEC;
         else if (ips < target_ips)
             ips += target_ips / TICKS_PER_SEC;
         else
@@ -46,7 +46,7 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
         pid_adjustment_r = pid_drive_r.adjust(pos, pos_r);
         pid_adjustment_dir = pid_dir.adjust(target_heading, imu_rotation());
 
-        vel_rpm = ips / DRIVE_REV__IN * 60;
+        vel_rpm = ips / DRIVE_REV_TO_IN * 60;
 
         drive_l.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_l + pid_adjustment_dir, VEL_RPM);
         drive_r.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_r - pid_adjustment_dir, VEL_RPM);
@@ -67,11 +67,14 @@ void drive_straight(float inches, float target_ips, float ips_per_sec, bool do_d
  * to turn right, degrees > 0 and reversed = false
  * to turn left, degrees < 0 and reversed = true
  */
-void drive_turn(float degrees, float outer_radius, float target_ips, float ips_per_sec, bool reversed) {
+void drive_turn(float degrees, float outer_radius, float target_ips, float ipss, bool reversed) {
+    const int TICKS_PER_SEC = 50;
+    const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
+
     target_heading += degrees; // update target heading
 
-    PID pid_drive_l = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    PID pid_drive_r = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
+    PID pid_drive_l = PID(DRIVE_TURN_DL_KP, DRIVE_TURN_DL_KI, DRIVE_TURN_DL_KD);
+    PID pid_drive_r = PID(DRIVE_TURN_DR_KP, DRIVE_TURN_DR_KI, DRIVE_TURN_DR_KD);
 
     float pid_adjustment_l;
     float pid_adjustment_r;
@@ -97,22 +100,22 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
         pos_l = pos_drive_l() - pos_start_l;
         pos_r = pos_drive_r() - pos_start_r;
 
-        degrees_remaining = target_heading - ROTATION * GYRO_CORRECTION;
+        degrees_remaining = target_heading - imu_rotation();
 
         // Handle acceleration
-        if (std::abs(degrees_remaining / RAD__DEG * outer_radius) - stop_dist(ips, ips_per_sec) <= 0) {
-            ips -= ips_per_sec / 50.0;
+        if (std::abs(degrees_remaining / RAD_TO_DEG * outer_radius) - stop_dist(ips, ipss) <= 0) {
+            ips -= ipss / TICKS_PER_SEC;
         } else if (ips < target_ips)
-            ips += ips_per_sec / 50.0; // 50 cycles per second
+            ips += ipss / TICKS_PER_SEC;
         else
             ips = target_ips;
 
         // Translate ips to rpm
-        outer_vel_rpm = ips / DRIVE_REV__IN * 60 * ((reversed) ? -1 : 1);     // fixes the stupid thing;
+        outer_vel_rpm = ips / DRIVE_REV_TO_IN * 60 * ((reversed) ? -1 : 1);     // fixes the stupid thing;
         inner_vel_rpm = outer_vel_rpm * radius_ratio * ((reversed) ? -1 : 1); // try not to touch
 
         // Track position
-        outer_pos += ips / 50; // 50 cycles per second
+        outer_pos += ips / TICKS_PER_SEC;
         inner_pos = outer_pos * radius_ratio;
 
 
@@ -135,86 +138,30 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ips_p
         if (degrees_remaining * dir_mod < 0)
             break;
 
-        wait(20, vex::msec);
+        wait(MSEC_PER_TICK, vex::msec);
     }
     drive_l.stop(vex::brakeType::brake);
     drive_r.stop(vex::brakeType::brake);
 }
 
-// In testing
-void drive_linear(float inches, float max_ips, float ips_per_sec, bool do_decel) {
-    const int TPS = 50; // ticks per second
-
-    // Initialize PID objects
-    PID pid_r = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    PID pid_l = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD); // needs a seperate controller because they'll rack up error at different rates
-    PID pid_dir = PID(DRIVE_KP, DRIVE_KI, DRIVE_KD);
-    float pid_r_adj, pid_l_adj, pid_dir_adj;
-
-    // Various positions in inches
-    float start_pos_r = pos_drive_r();
-    float start_pos_l = pos_drive_l();
-    float current_pos_r = pos_drive_r() - start_pos_r;
-    float current_pos_l = pos_drive_l() - start_pos_l;
-    float avg_pos = (current_pos_r + current_pos_l) / 2.0;
-
-    // Velocities
-    float target_vel_r = VEL_DRIVE_R;
-    float target_vel_l = VEL_DRIVE_L;
-    float r_vel_rpm, l_vel_rpm;
-
-    // Direction of travel - 1 for fwd, -1 for bwd
-    int dir_mod = (inches > 0) ? 1 : -1;
-
-    while (std::abs(avg_pos) < std::abs(inches)) { // cuts if we've reached target position
-        // Update positions
-        current_pos_r = pos_drive_r() - start_pos_r;
-        current_pos_l = pos_drive_l() - start_pos_l;
-        avg_pos = (current_pos_r + current_pos_l) / 2.0;
-
-        // Handle accelerations
-        handle_acceleration(current_pos_r, inches, &target_vel_r, max_ips, ips_per_sec, TPS, do_decel);
-        handle_acceleration(current_pos_l, inches, &target_vel_l, max_ips, ips_per_sec, TPS, do_decel);
-
-        // Get PID values
-        pid_r_adj = pid_r.adjust(target_vel_r, VEL_DRIVE_R);
-        pid_l_adj = pid_l.adjust(target_vel_l, VEL_DRIVE_L);
-        pid_dir_adj = pid_dir.adjust(target_heading, ROTATION * GYRO_CORRECTION);
-
-        r_vel_rpm = target_vel_r / DRIVE_REV__IN * 60;
-        l_vel_rpm = target_vel_l / DRIVE_REV__IN * 60;
-
-        // Move drive
-        drive_r.spin(DIR_FWD, dir_mod * r_vel_rpm + pid_r_adj + pid_dir_adj, VEL_RPM);
-        drive_l.spin(DIR_FWD, dir_mod * l_vel_rpm + pid_l_adj - pid_dir_adj, VEL_RPM);
-
-        // Wait for next cycle
-        wait(20, vex::msec);
-    }
-    if (do_decel) {
-        drive_l.stop(vex::brakeType::brake);
-        drive_r.stop(vex::brakeType::brake);
-    } else {
-        drive_l.stop(vex::brakeType::coast);
-        drive_r.stop(vex::brakeType::coast);
-    }
-}
-
 void turn_pid(float degrees, float ratio, int direction) {
+    const int TICKS_PER_SEC = 50;
+    const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
+
     target_heading += degrees;
-    PID drive_pid = PID(turn_kp_l, turn_ki_l, turn_kd_l);
+    PID drive_pid = PID(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
 
     float speed_l;
     float speed_r;
 
     int time_still = 0;
     while (time_still < 80) {
-        if (within_range(ROTATION * GYRO_CORRECTION, target_heading, 3))
-            time_still += 20;
+        if (within_range(imu_rotation(), target_heading, 3))
+            time_still += MSEC_PER_TICK;
         else
             time_still = 0;
 
-        speed_l = drive_pid.adjust(target_heading, ROTATION * GYRO_CORRECTION) * direction;
+        speed_l = drive_pid.adjust(target_heading, imu_rotation()) * direction;
         speed_r = speed_l * ratio;
 
         // Limit to max speed
@@ -230,32 +177,35 @@ void turn_pid(float degrees, float ratio, int direction) {
         drive_l.spin(DIR_FWD, speed_l, VLT_VLT);
         drive_r.spin(DIR_FWD, speed_r, VLT_VLT);
 
-        wait(20, vex::msec);
+        wait(MSEC_PER_TICK, vex::msec);
     }
 }
 
 void straight_pid(float dist) {
-    PID drive_pid = PID(move_kp, move_ki, move_kd);
-    PID dir_pid = PID(DIR_KP, DIR_KI, DIR_KD);
+    const int TICKS_PER_SEC = 50;
+    const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
+
+    PID drive_pid = PID(STRAIGHT_PID_KP, STRAIGHT_PID_KI, STRAIGHT_PID_KD);
+    PID dir_pid = PID(STRAIGHT_PID_DIR_KP, STRAIGHT_PID_DIR_KI, STRAIGHT_PID_DIR_KD);
     int time_still = 0;
     float speed_l, speed_r;
     float dir_adjustment;
     float start_pos_l = pos_drive_l(), start_pos_r = pos_drive_r();
 
     while (time_still < 80) {
-        speed_l = drive_pid.adjust(dist, pos_drive_l() - start_pos_l);
-        speed_r = drive_pid.adjust(dist, pos_drive_r() - start_pos_r);
-        dir_adjustment = dir_pid.adjust(target_heading, ROTATION * GYRO_CORRECTION);
-
         if (within_range(pos_drive_r() - start_pos_r, dist, 0.5)) {
-            time_still += 20;
+            time_still += MSEC_PER_TICK;
             dir_adjustment *= 0.2;
         }
         else
             time_still = 0;
 
+        speed_l = drive_pid.adjust(dist, pos_drive_l() - start_pos_l);
+        speed_r = drive_pid.adjust(dist, pos_drive_r() - start_pos_r);
+        dir_adjustment = dir_pid.adjust(target_heading, imu_rotation());
+
         drive_r.spin(DIR_FWD, speed_r - dir_adjustment, VLT_VLT);
         drive_l.spin(DIR_FWD, speed_l + dir_adjustment, VLT_VLT);
-        wait(20, vex::msec);
+        wait(MSEC_PER_TICK, vex::msec);
     }
 }
