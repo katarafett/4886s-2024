@@ -67,7 +67,7 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
  * to turn right, degrees > 0 and reversed = false
  * to turn left, degrees < 0 and reversed = true
  */
-void drive_turn(float degrees, float outer_radius, float target_ips, float ipss, bool reversed) {
+void drive_turn_slow(float degrees, float outer_radius, float target_ips, float ipss, bool reversed) {
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
 
@@ -144,9 +144,11 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ipss,
     drive_r.stop(vex::brakeType::brake);
 }
 
-void turn_pid(float degrees, float ratio, int direction) {
+void swing_turn(float degrees, float radius, int direction) {
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
+
+    float ratio = (radius - WHEEL_TO_WHEEL_DIST) / radius;
 
     target_heading += degrees;
     PID drive_pid = PID(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
@@ -208,4 +210,11 @@ void straight_pid(float dist) {
         drive_l.spin(DIR_FWD, speed_l + dir_adjustment, VLT_VLT);
         wait(MSEC_PER_TICK, vex::msec);
     }
+}
+
+void drive_turn(float x, float y) {
+    // Calculate angle of turn in radians
+    // equations at https://www.desmos.com/calculator/xcsx1pssaq
+    float degrees = 180 - 2 * atan(y / x) * RAD_TO_DEG;
+    float radius = (y*y + x*x) / 2 * x;
 }

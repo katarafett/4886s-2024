@@ -34,3 +34,11 @@ void drive_arc(float degrees, float outer_radius, float max_ips, float ipss, boo
 void turn_pid(float degrees, float ratio, int direction);
 
 void straight_pid(float dist);
+
+/**
+ * @brief Fast PID arcing turn
+ *
+ * @param x horizontal displacement
+ * @param y vertical displacement
+ */
+void swing_turn(float x, float y);
