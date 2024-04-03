@@ -9,7 +9,7 @@ void opcontrol(void) {
 
     while (1) {
         // Drive control
-        opdrive(TNK, 1.0, SENSITIVITY);
+        opdrive(TSA, 1.0, SENSITIVITY);
 
         // Shift button
         shifted = btn_l2();
@@ -18,19 +18,21 @@ void opcontrol(void) {
         if (!shifted) {
             // Intake
             intake.spin(DIR_FWD, (btn_r1() - btn_r2()) * BTN_TO_PCT, VEL_PCT);
+            if (BTN_L1.PRESSED)
+                intake_toggle.set(!intake_toggle.value());
         }
         // Shifted
         else {
             // Toggle wings
-            if (!BTN_L1.PRESSED)
+            if (BTN_L1.PRESSED)
                 wing_fl.set(!wing_fl.value());
-            if (!BTN_R1.PRESSED)
+            if (BTN_R1.PRESSED)
                 wing_fr.set(!wing_fr.value());
         }
         // Both
 
         // Activate PTO
-        if (BTN_Y.PRESSED)
+        if (BTN_RIGHT.PRESSED)
             hang.set(!hang.value());
 
         wait(20, vex::msec);

@@ -20,7 +20,7 @@ const bool do_testing = false;
 
 int main() {
     if (!do_testing) {
-        Competition.autonomous(autonomous);
+        // Competition.autonomous(autonomous);
         Competition.drivercontrol(opcontrol);
     }
     else {
