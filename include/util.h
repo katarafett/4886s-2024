@@ -69,6 +69,16 @@ double vel_drive_r(void);
 double vel_drive_l(void);
 
 /**
+ * @brief Gets velocity of right drive side in motor rpm
+ */
+double raw_vel_dr(void);
+
+/**
+ * @brief Gets velocity of left drive side in motor rpm
+ */
+double raw_vel_dl(void);
+
+/**
  * @brief Gets heading of drive in degrees
  */
 double imu_rotation(void);

@@ -73,6 +73,14 @@ double vel_drive_l() {
     return drive_l.velocity(vex::rpm) * DRIVE_REV_TO_IN * 60;
 }
 
+double raw_vel_dr() {
+    return drive_r.velocity(vex::rpm);
+}
+
+double raw_vel_dl() {
+    return drive_l.velocity(vex::rpm);
+}
+
 // Heading in degrees
 double imu_rotation() {
     return imu.rotation() * IMU_CORRECTION;

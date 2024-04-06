@@ -2,6 +2,7 @@
 #include "stddefs.h"
 
 void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
+    inches *= 27.5 / 24.0;
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
 
@@ -50,6 +51,9 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
 
         drive_l.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_l + pid_adjustment_dir, VEL_RPM);
         drive_r.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_r - pid_adjustment_dir, VEL_RPM);
+
+        // drive_l.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_dir, VEL_RPM);
+        // drive_r.spin(DIR_FWD, dir_mod * vel_rpm - pid_adjustment_dir, VEL_RPM);
         wait(MSEC_PER_TICK, vex::msec);
     }
     if (do_decel) {
@@ -67,7 +71,7 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
  * to turn right, degrees > 0 and reversed = false
  * to turn left, degrees < 0 and reversed = true
  */
-void drive_turn_slow(float degrees, float outer_radius, float target_ips, float ipss, bool reversed) {
+void drive_turn(float degrees, float outer_radius, float target_ips, float ipss, bool reversed) {
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
 
@@ -144,11 +148,11 @@ void drive_turn_slow(float degrees, float outer_radius, float target_ips, float 
     drive_r.stop(vex::brakeType::brake);
 }
 
-void swing_turn(float degrees, float radius, int direction) {
+void turn_pid(float degrees, float ratio, int direction) {
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
 
-    float ratio = (radius - WHEEL_TO_WHEEL_DIST) / radius;
+    // float ratio = (radius - WHEEL_TO_WHEEL_DIST) / radius;
 
     target_heading += degrees;
     PID drive_pid = PID(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
@@ -180,6 +184,8 @@ void swing_turn(float degrees, float radius, int direction) {
         drive_r.spin(DIR_FWD, speed_r, VLT_VLT);
 
         wait(MSEC_PER_TICK, vex::msec);
+        drive_r.stop();
+        drive_l.stop();
     }
 }
 

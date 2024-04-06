@@ -27,7 +27,7 @@
 #define DOWN 2
 
 // Correct inertial sensor error
-#define IMU_CORRECTION (3600 / 3593.6)
+#define IMU_CORRECTION (3600 / 3591.9)
 // Height in pixels of default characters on brain
 #define CHAR_HI 20
 #define CHAR_WI 12

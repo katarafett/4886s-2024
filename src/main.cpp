@@ -19,17 +19,17 @@ const bool do_testing = false;
 #endif
 
 int main() {
+    pre_auton();
+
     if (!do_testing) {
-        // Competition.autonomous(autonomous);
+        Competition.autonomous(autonomous);
         Competition.drivercontrol(opcontrol);
     }
     else {
-        master.ButtonY.pressed(tune_simple_pid);
+        master.ButtonY.pressed(tune_fast_pid);
     }
 
     while (true) {
         vex::task::sleep(20);
     }
-
-    pre_auton();
 }

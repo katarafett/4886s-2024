@@ -18,6 +18,7 @@ void opcontrol(void) {
         if (!shifted) {
             // Intake
             intake.spin(DIR_FWD, (btn_r1() - btn_r2()) * BTN_TO_PCT, VEL_PCT);
+            // Toggle intake
             if (BTN_L1.PRESSED)
                 intake_toggle.set(!intake_toggle.value());
         }
@@ -28,6 +29,10 @@ void opcontrol(void) {
                 wing_fl.set(!wing_fl.value());
             if (BTN_R1.PRESSED)
                 wing_fr.set(!wing_fr.value());
+            if (BTN_R2.PRESSED) {
+                wing_fl.set(0);
+                wing_fr.set(0);
+            }
         }
         // Both
 

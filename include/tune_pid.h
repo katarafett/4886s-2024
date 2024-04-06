@@ -1,3 +1,3 @@
-void tune_pid(void);
-void tune_drive_pid(void);
-void tune_simple_pid(void);
+void tune_dir_pid(void);
+void tune_accel_pid(void);
+void tune_fast_pid(void);

@@ -33,7 +33,7 @@ vex::digital_out hang = vex::digital_out(PORTE);
 vex::digital_out intake_toggle = vex::digital_out(PORTA);
 
 // Sensors
-vex::inertial imu = vex::inertial(PORT20);
+vex::inertial imu = vex::inertial(PORT10);
 
 vex::motor_group drive_r = vex::motor_group(drive_r1, drive_r2, drive_r3);
 vex::motor_group drive_l = vex::motor_group(drive_l1, drive_l2, drive_l3);
