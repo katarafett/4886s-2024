@@ -28,25 +28,19 @@ void autonomous(void) {
             turn_pid(-100, -1, 1);
             wing_fl.set(0);
             drive_straight(4, 72, 72);
-            turn_pid(-165, -1, 1);
+            turn_pid(-155, -1, 1);
             wing_fr.set(1);
             intake.spin(DIR_FWD, -100, VEL_PCT);
-            drive_straight(44, 62, 48);
+            drive_straight(43.5, 62, 48);
             wait(500, vex::msec);
             intake.stop();
             break;
 
         case HALF_AWP_FAR:
-            intake.spin(DIR_FWD, 100, VEL_PCT);
-            drive_r.spin(DIR_FWD, -100, VEL_PCT);
-            drive_l.spin(DIR_FWD, -100, VEL_PCT);
-            wait(1500, vex::msec);
-            drive_r.spin(DIR_FWD, 100, VEL_PCT);
-            drive_l.spin(DIR_FWD, 100, VEL_PCT);
-            wait(500, vex::msec);
-            drive_l.stop();
-            drive_r.stop();
-            intake.stop();
+            // Release intake
+            intake.spinFor(DIR_FWD, 1, ROT_REV, false);
+            drive_straight(-38, 48, 48);
+            drive_straight(12, 48, 48);
             break;
 
         case NEAR_ELIMS:
