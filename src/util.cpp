@@ -60,9 +60,8 @@ void handle_acceleration(float position, float distance, float velocity,
 }
 
 void clear_column(int c) {
-    B_SCRN.setPenColor(vex::black);
     for (int i = 0; i < B_SCRN_Y; i++) {
-        B_SCRN.drawPixel(i, c);
+        draw_colored_pixel(i, c, vex::black);
     }
 }
 

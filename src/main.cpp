@@ -30,7 +30,6 @@ int main() {
         master.ButtonRight.pressed(autonomous);
     }
 
-
     while (true) {
         vex::task::sleep(20);
     }
