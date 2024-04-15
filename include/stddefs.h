@@ -79,8 +79,8 @@
 #define B_SCRN Brain.Screen
 #define B_SCRN_X 480
 #define B_SCRN_Y 272
-#define B_SCRN_X_MID (B_SCRN_X / 2)
-#define B_SCRN_Y_MID (B_SCRN_Y / 2)
+#define B_SCRN_X_MID (B_SCRN_X / 2.0)
+#define B_SCRN_Y_MID (B_SCRN_Y / 2.0)
 
 // Sensor Values
 // for use with inertial sensor named 'imu' and vision sensor names 'vis'

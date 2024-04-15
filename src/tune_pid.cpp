@@ -1,6 +1,6 @@
 #include "main.h"
 #include "stddefs.h"
-#include "vex_global.h"
+#include <thread>
 
 void tune_dir_pid() {
     imu.calibrate();
@@ -71,23 +71,33 @@ void tune_fast_pid() {
     move_ki = TURN_PID_KI;
     move_kd = TURN_PID_KD;
     const float TUNER = 0.025;
+
+
     while (true) {
         opdrive(TSA, 1, SENSITIVITY);
         if (BTN_R1.PRESSED) {
             target_heading = imu_rotation();
+            vex::thread t(graph_pid);
             turn_pid(90, -1, 1);
+            t.interrupt();
         }
         if (BTN_R2.PRESSED) {
             target_heading = imu_rotation();
+            vex::thread t(graph_pid);
             turn_pid(-90, -1, 1);
+            t.interrupt();
         }
         if (BTN_L1.PRESSED) {
             target_heading = imu_rotation();
+            vex::thread t(graph_pid);
             turn_pid(90, -1, -1);
+            t.interrupt();
         }
         if (BTN_L2.PRESSED) {
             target_heading = imu_rotation();
+            vex::thread t(graph_pid);
             turn_pid(-90, -1, -1);
+            t.interrupt();
         }
         move_kp += (btn_up() - btn_down() * TUNER);
         move_ki += (btn_right() - btn_left() * TUNER);

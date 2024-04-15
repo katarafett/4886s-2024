@@ -44,6 +44,25 @@ void tune_gyro(void);
 void handle_acceleration(float position, float distance, float velocity,
         float max_velocity, float acceleration, int tick_rate, bool do_decel);
 
+/**
+ * @brief Clears brain screen column c
+ */
+void clear_column(int c);
+
+/**
+ * @brief like vex::brain::screen::drawPixel(), but inncludes a hue
+ */
+void draw_colored_pixel(int r, int c, vex::color color);
+
+/**
+ * @brief Creates graph for pid turning
+ *
+ * @param setpoint Target value
+ * @param sensor The inertial sensor object
+ * @param correction The correction for the inertial sensor
+ */
+void graph_pid();
+
 
 
 // Shorthand functions

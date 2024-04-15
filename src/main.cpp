@@ -11,7 +11,7 @@
 
 vex::competition Competition;
 
-// #define TESTING
+#define TESTING
 #ifdef TESTING
 const bool do_testing = true;
 #else
@@ -27,7 +27,9 @@ int main() {
     }
     else {
         master.ButtonY.pressed(tune_fast_pid);
+        master.ButtonRight.pressed(autonomous);
     }
+
 
     while (true) {
         vex::task::sleep(20);

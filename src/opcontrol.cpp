@@ -1,5 +1,6 @@
 #include "../include/main.h"
 #include "stddefs.h"
+#include "vex_thread.h"
 
 // Driver macros
 void opcontrol(void) {
@@ -7,9 +8,12 @@ void opcontrol(void) {
     drive_r.stop(vex::brakeType::coast);
     bool shifted = false;
 
+    float spd_mod = 1.0;
+    float sens_mod = 1.0;
+
     while (1) {
         // Drive control
-        opdrive(TSA, 1.0, SENSITIVITY);
+        opdrive(TSA, spd_mod, SENSITIVITY * sens_mod);
 
         // Shift button
         shifted = btn_l2();
@@ -36,10 +40,27 @@ void opcontrol(void) {
         }
         // Both
 
+        // Release hang
+        if (BTN_Y.PRESSED)
+            hang_release.set(!hang_release.value());
         // Activate PTO
-        if (BTN_RIGHT.PRESSED)
-            hang.set(!hang.value());
+        if (BTN_RIGHT.PRESSED) {
+            if (!pto.value()) {
+                hang_release.set(0);
+                intake_toggle.set(1);
+            }
+            pto.set(!pto.value());
+        }
 
+        if (hang_release.value() && !pto.value()) {
+            spd_mod = 0.5;
+            sens_mod = 0.6;
+        }
+        else {
+            spd_mod = 1.0;
+            sens_mod = 1.0;
+        }
+        
         wait(20, vex::msec);
     }
 }
