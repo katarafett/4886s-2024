@@ -2,7 +2,7 @@
 #include "stddefs.h"
 
 void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
-    inches *= 27.5 / 24.0;
+    inches *= 27.5 / 24.0 * 36 / 42.0;
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
 
@@ -31,9 +31,9 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
         if (std::abs(pos) + stop_dist(ips, ipss) >= std::abs(inches) && do_decel)
             ips -= ipss / TICKS_PER_SEC;
         else if (ips < target_ips)
-            ips += target_ips / TICKS_PER_SEC;
+            ips += ipss / TICKS_PER_SEC;
         else
-            ips = target_ips;
+            ips = ipss;
 
         // Find expected position
         pos += ips / TICKS_PER_SEC * dir_mod; // dir_mod adjusts for fwd/bwd
@@ -161,8 +161,8 @@ void turn_pid(float degrees, float ratio, int direction) {
     float speed_r;
 
     int time_still = 0;
-    while (time_still < 80) {
-        if (within_range(imu_rotation(), target_heading, 3))
+    while (time_still < 60) {
+        if (within_range(imu_rotation(), target_heading, 2))
             time_still += MSEC_PER_TICK;
         else
             time_still = 0;
@@ -171,22 +171,22 @@ void turn_pid(float degrees, float ratio, int direction) {
         speed_r = speed_l * ratio;
 
         // Limit to max speed
-        if (speed_l > 12 * std::abs(ratio))
-            speed_l = 12 * std::abs(ratio);
-        else if (speed_l < -12 * std::abs(ratio))
-            speed_l = -12 * std::abs(ratio);
-        if (speed_r > 12 * std::abs(ratio))
-            speed_r = 12 * std::abs(ratio);
-        else if (speed_r < -12 * std::abs(ratio))
-            speed_r = -12 * std::abs(ratio);
+        // if (speed_l > 12 * std::abs(ratio))
+        //     speed_l = 12 * std::abs(ratio);
+        // else if (speed_l < -12 * std::abs(ratio))
+        //     speed_l = -12 * std::abs(ratio);
+        // if (speed_r > 12 * std::abs(ratio))
+        //     speed_r = 12 * std::abs(ratio);
+        // else if (speed_r < -12 * std::abs(ratio))
+        //     speed_r = -12 * std::abs(ratio);
 
         drive_l.spin(DIR_FWD, speed_l, VLT_VLT);
         drive_r.spin(DIR_FWD, speed_r, VLT_VLT);
 
         wait(MSEC_PER_TICK, vex::msec);
-        drive_r.stop();
-        drive_l.stop();
     }
+    drive_r.stop();
+    drive_l.stop();
 }
 
 void straight_pid(float dist) {

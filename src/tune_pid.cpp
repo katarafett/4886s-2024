@@ -67,11 +67,10 @@ void tune_accel_pid() {
 }
 
 void tune_fast_pid() {
-    move_kp = TURN_PID_KP;
-    move_ki = TURN_PID_KI;
-    move_kd = TURN_PID_KD;
+    move_kp = DRIVE_STRAIGHT_DIR_KP;
+    move_ki = DRIVE_STRAIGHT_DIR_KI;
+    move_kd = DRIVE_STRAIGHT_DIR_KD;
     const float TUNER = 0.025;
-
 
     while (true) {
         opdrive(TSA, 1, SENSITIVITY);
@@ -90,20 +89,25 @@ void tune_fast_pid() {
         if (BTN_L1.PRESSED) {
             target_heading = imu_rotation();
             vex::thread t(graph_pid);
-            turn_pid(90, -1, -1);
+            drive_straight(36, 66, 512);
             t.interrupt();
         }
         if (BTN_L2.PRESSED) {
             target_heading = imu_rotation();
             vex::thread t(graph_pid);
-            turn_pid(-90, -1, -1);
+            drive_straight(108, 72, 72);
             t.interrupt();
         }
-        move_kp += (btn_up() - btn_down() * TUNER);
-        move_ki += (btn_right() - btn_left() * TUNER);
-        move_kd += (btn_x() - btn_b() * TUNER);
+        move_kp += (btn_up() - btn_down()) * TUNER;
+        move_ki += (btn_right() - btn_left()) * TUNER;
+        move_kd += (btn_x() - btn_b()) * TUNER;
 
         printf("\nkP: %f\nkI: %f\nkD: %f\n", move_kp, move_ki, move_kd);
+
+        B_SCRN.clearScreen();
+        B_SCRN.printAt(0, 20, "kP: %.3f", move_kp);
+        B_SCRN.printAt(0, 40, "kI: %.3f", move_ki);
+        B_SCRN.printAt(0, 60, "kD: %.3f", move_kd);
 
         wait(20, vex::msec);
     }
