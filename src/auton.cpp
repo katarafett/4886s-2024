@@ -20,24 +20,27 @@ void autonomous(void) {
         break;
 
     case HALF_AWP_NEAR: {
-        vex::timer timer;
+        vex::timer timer;  // debug
         // Release intake
         intake.spinFor(DIR_FWD, 1, ROT_REV, 100, VEL_PCT, false);
         // Prep for alliance triball shove
         wing_fl.set(1);
-        // Rush triball
+
         B_SCRN.clearScreen();
-        timer.reset();
+        timer.reset();  // debug
         B_SCRN.printAt(0, 20, "%.1f", timer.time(vex::msec));
+
+        // Rush triball
         vex::thread t1([] {
             drive_straight(48, 84, 200);
         });
-        while (pos_drive_l() < 10)
+        while (pos_drive_l() < 10)  // wait until we've moved ten inches
             vex::wait(10, vex::msec);
-        B_SCRN.printAt(0, 40, "%.1f", timer.time(vex::msec));
+        B_SCRN.printAt(0, 40, "%.1f", timer.time(vex::msec));  // debug
         intake.spin(DIR_FWD, 100, VEL_PCT);
         wing_fl.set(0);
         t1.join();
+
         // Flip
         drive_straight(-12, 84, 200);
         intake.stop(vex::hold);
@@ -46,12 +49,20 @@ void autonomous(void) {
         vex::thread t2([] {
             drive_straight(20, 84, 200);
         });
-        while(pos_drive_l() < 20)
-            wait(20, vex::msec);
         intake.spin(DIR_FWD, -100, VEL_PCT);
         t2.join();
         intake.stop(vex::coast);
+
+        // Grab other ball
+        drive_straight(-4, 84, 200);
+        turn_pid(-90, -1, 1);
+        intake.spin(DIR_FWD, 100, VEL_PCT);
+        drive_straight(12, 84, 200);
+        drive_straight(-12, 84, 200);
+        turn_pid(90, -1, 1);
+        drive_straight(4, 84, 200);
         break;
+
     }
 
     case HALF_AWP_FAR:
