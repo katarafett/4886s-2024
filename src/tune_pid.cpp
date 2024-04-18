@@ -67,9 +67,9 @@ void tune_accel_pid() {
 }
 
 void tune_fast_pid() {
-    move_kp = DRIVE_STRAIGHT_DIR_KP;
-    move_ki = DRIVE_STRAIGHT_DIR_KI;
-    move_kd = DRIVE_STRAIGHT_DIR_KD;
+    move_kp = DRIVE_TURN_KP;
+    move_ki = DRIVE_TURN_KI;
+    move_kd = DRIVE_TURN_KD;
     const float TUNER = 0.025;
 
     while (true) {

@@ -26,41 +26,58 @@ void autonomous(void) {
         // Prep for alliance triball shove
         wing_fl.set(1);
 
-        B_SCRN.clearScreen();
-        timer.reset();  // debug
-        B_SCRN.printAt(0, 20, "%.1f", timer.time(vex::msec));
-
         // Rush triball
         vex::thread t1([] {
-            drive_straight(48, 84, 200);
+            drive_straight(50, 84, 200);
         });
-        while (pos_drive_l() < 10)  // wait until we've moved ten inches
+        while (pos_drive_l() < 5)  // wait until we've moved ten inches
             vex::wait(10, vex::msec);
-        B_SCRN.printAt(0, 40, "%.1f", timer.time(vex::msec));  // debug
         intake.spin(DIR_FWD, 100, VEL_PCT);
         wing_fl.set(0);
         t1.join();
 
         // Flip
+        wait(100, vex::msec);
         drive_straight(-12, 84, 200);
-        intake.stop(vex::hold);
         turn_pid(85, -1, 1);
-        drive_l.resetPosition();
-        vex::thread t2([] {
-            drive_straight(20, 84, 200);
-        });
         intake.spin(DIR_FWD, -100, VEL_PCT);
-        t2.join();
-        intake.stop(vex::coast);
+        drive_straight(23, 84, 200);
 
         // Grab other ball
-        drive_straight(-4, 84, 200);
-        turn_pid(-90, -1, 1);
+        drive_straight(-6, 84, 200);
+        turn_pid(-82, -1, 1);
         intake.spin(DIR_FWD, 100, VEL_PCT);
-        drive_straight(12, 84, 200);
+        // get it
+        drive_straight(19, 58, 200);
+        wait(100, vex::msec);
         drive_straight(-12, 84, 200);
-        turn_pid(90, -1, 1);
-        drive_straight(4, 84, 200);
+        turn_pid(85, -1, 1);
+        intake.spin(DIR_FWD, -100, VEL_PCT);
+        drive_straight(-2, 84, 200);
+        wait(100, vex::msec);
+        drive_straight(8, 84, 200);
+        wait(100, vex::msec);
+        intake.stop();
+
+        // Reset IMU
+        drive_straight(-12, 84, 200);
+        turn_pid(-60, -1, 1);
+        drive_straight(-29, 84, 200);
+        drive_full.setStopping(vex::brake);
+        turn_pid(55, -1, 1);
+        wait(50, vex::msec);
+        drive_straight(-8, 40, 200, false);
+        drive_full.spin(DIR_FWD, -35, VEL_PCT);
+        wait(800, vex::msec);
+        imu.resetRotation();
+        target_heading = 0;
+        drive_full.stop();
+
+        // AWP
+        drive_straight(6, 84, 200);
+        turn_pid(-90, -1, 1);
+        wing_fl.set(1);
+        drive_straight(-6, 32, 48);
         break;
 
     }

@@ -15,13 +15,9 @@
 
 
 // drive_turn() consts
-#define DRIVE_TURN_DL_KP 4.33
-#define DRIVE_TURN_DL_KI 0.0
-#define DRIVE_TURN_DL_KD 3.4
-
-#define DRIVE_TURN_DR_KP 4.33
-#define DRIVE_TURN_DR_KI 0.0
-#define DRIVE_TURN_DR_KD 3.4
+#define DRIVE_TURN_KP 4.33
+#define DRIVE_TURN_KI 0.0
+#define DRIVE_TURN_KD 3.4
 
 #define DRIVE_TURN_DIR_KP 2.925
 #define DRIVE_TURN_DIR_KI 0.00

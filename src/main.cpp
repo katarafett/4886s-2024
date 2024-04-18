@@ -19,8 +19,6 @@ const bool do_testing = false;
 #endif
 
 int main() {
-    pre_auton();
-
     if (!do_testing) {
         Competition.autonomous(autonomous);
         Competition.drivercontrol(autonomous);
@@ -29,6 +27,8 @@ int main() {
         master.ButtonY.pressed(tune_fast_pid);
         master.ButtonRight.pressed(autonomous);
     }
+
+    pre_auton();
 
     while (true) {
         vex::task::sleep(20);

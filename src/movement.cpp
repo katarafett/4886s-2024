@@ -77,8 +77,8 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ipss,
 
     target_heading += degrees; // update target heading
 
-    PID pid_drive_l = PID(DRIVE_TURN_DL_KP, DRIVE_TURN_DL_KI, DRIVE_TURN_DL_KD);
-    PID pid_drive_r = PID(DRIVE_TURN_DR_KP, DRIVE_TURN_DR_KI, DRIVE_TURN_DR_KD);
+    PID pid_drive_l = PID(move_kp, move_ki, move_kd);
+    PID pid_drive_r = PID(move_kp, move_ki, move_kd);
 
     float pid_adjustment_l;
     float pid_adjustment_r;
