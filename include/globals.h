@@ -5,13 +5,12 @@
 #define WHEEL_TO_WHEEL_DIST (10.75)
 
 // Autonmous paths
-#define AWP 0
-#define HALF_AWP_NEAR 1
-#define HALF_AWP_FAR 2
-#define NEAR_ELIMS 3
-#define FAR_ELIMS 4
+#define TESTING 0
+#define NEAR_HI 1
+#define NEAR_LO 2
+#define FAR_HI 3
+#define FAR_LO 4
 #define SKILLS 5
-#define SKILLS_DRIVER 6
 
 // Operator control modes
 #define TNK 0

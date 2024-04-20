@@ -1,26 +1,23 @@
 #include "../include/main.h"
 #include "stddefs.h"
 #include "vex_global.h"
-#include "vex_timer.h"
 #include "vex_units.h"
 
 void release_antenna(void);
 
 void autonomous(void) {
+    auton_mode = NEAR_LO;
 
     // Ensure inerital is calibrated
     while (imu.isCalibrating())
         wait(20, vex::msec);
+    imu.resetRotation();
 
     switch (auton_mode) {
-    case AWP:
-        drive_straight(24, 72, 96);
-        vex::wait(2000, vex::msec);
-        drive_straight(-24, 72, 96);
+    case TESTING:
         break;
 
-    case HALF_AWP_NEAR: {
-        vex::timer timer;  // debug
+    case NEAR_HI: {
         // Release intake
         intake.spinFor(DIR_FWD, 1, ROT_REV, 100, VEL_PCT, false);
         // Prep for alliance triball shove
@@ -28,9 +25,9 @@ void autonomous(void) {
 
         // Rush triball
         vex::thread t1([] {
-            drive_straight(50, 84, 200);
+            drive_straight(46.5, 84, 200);
         });
-        while (pos_drive_l() < 5)  // wait until we've moved ten inches
+        while (pos_drive_l() < 4) // wait until we've moved ten inches
             vex::wait(10, vex::msec);
         intake.spin(DIR_FWD, 100, VEL_PCT);
         wing_fl.set(0);
@@ -38,35 +35,18 @@ void autonomous(void) {
 
         // Flip
         wait(100, vex::msec);
-        drive_straight(-12, 84, 200);
-        turn_pid(85, -1, 1);
+        drive_straight(-4, 84, 200);
+        turn_pid(80, -1, 1);
         intake.spin(DIR_FWD, -100, VEL_PCT);
-        drive_straight(23, 84, 200);
-
-        // Grab other ball
-        drive_straight(-6, 84, 200);
-        turn_pid(-82, -1, 1);
-        intake.spin(DIR_FWD, 100, VEL_PCT);
-        // get it
-        drive_straight(19, 58, 200);
-        wait(100, vex::msec);
-        drive_straight(-12, 84, 200);
-        turn_pid(85, -1, 1);
-        intake.spin(DIR_FWD, -100, VEL_PCT);
-        drive_straight(-2, 84, 200);
-        wait(100, vex::msec);
-        drive_straight(8, 84, 200);
-        wait(100, vex::msec);
-        intake.stop();
+        drive_straight(18, 84, 200);
+        wait(150, vex::msec);
 
         // Reset IMU
-        drive_straight(-12, 84, 200);
-        turn_pid(-60, -1, 1);
-        drive_straight(-29, 84, 200);
-        drive_full.setStopping(vex::brake);
+        drive_straight(-6, 84, 200);
+        turn_pid(-55, -1, 1);
+        drive_straight(-26, 84, 200);
         turn_pid(55, -1, 1);
-        wait(50, vex::msec);
-        drive_straight(-8, 40, 200, false);
+        drive_straight(-8, 35, 200, false);
         drive_full.spin(DIR_FWD, -35, VEL_PCT);
         wait(800, vex::msec);
         imu.resetRotation();
@@ -74,22 +54,34 @@ void autonomous(void) {
         drive_full.stop();
 
         // AWP
-        drive_straight(6, 84, 200);
+        intake.spin(DIR_FWD, -100, VEL_PCT);
+        drive_straight(5, 84, 200);
         turn_pid(-90, -1, 1);
         wing_fl.set(1);
-        drive_straight(-6, 32, 48);
+        drive_straight(-5, 32, 48);
+        drive_turn(-90, WHEEL_TO_WHEEL_DIST, 60, 60, true);
+        turn_pid(-150, -1, 1);
+        drive_straight(7, 84, 200);
+        turn_pid(-30, -1, 1);
+        drive_straight(28.5, 66, 84);
+        drive_straight(-1.25, 66, 84);
+        wing_fl.set(0);
         break;
-
     }
 
-    case HALF_AWP_FAR:
+    case NEAR_LO:
+        intake.spinFor(DIR_FWD, 1, ROT_REV, 100, VEL_PCT, true);
+        intake.spinFor(DIR_FWD, -2, ROT_REV, 100, VEL_PCT, true);
+        break;
+
+    case FAR_LO:
         // Release intake
         intake.spinFor(DIR_FWD, 1, ROT_REV, false);
         drive_straight(-38, 48, 48);
         drive_straight(12, 48, 48);
         break;
 
-    case NEAR_ELIMS:
+    case FAR_HI:
         // intake.spin(DIR_FWD, -50, VEL_PCT);
         // Push to our OZ
         drive_straight(33, 54, 36);
@@ -104,55 +96,6 @@ void autonomous(void) {
         wait(900, vex::msec);
         drive_l.stop();
         drive_r.stop();
-        break;
-
-    case FAR_ELIMS:
-        drive_straight(36, 60, 60, false);
-        // drive_arc(90, WHEEL_TO_WHEEL_DIST , 60, 60, false, false);
-
-
-        break;
-        // release_intake();
-        // intake.spin(DIR_FWD, 50, PCT_PCT);
-        drive_straight(3, 48, 48);
-        wait(250, vex::msec);
-        // intake.stop(vex::brakeType::hold);
-        // Position for next
-        drive_turn(180, WHEEL_TO_WHEEL_DIST / 2, 48, 48);
-        drive_straight(12, 48, 48);
-        drive_turn(-50, WHEEL_TO_WHEEL_DIST + 2, 48, 48);
-        break;
-
-
-        drive_straight(-31, 72, 54);
-        drive_turn(-45, WHEEL_TO_WHEEL_DIST, 48, 36, true);
-        drive_straight(-12, 48, 36);
-        // Slap it out
-        // smith.set(1);
-        drive_turn(-45, WHEEL_TO_WHEEL_DIST, 36, 24, true);
-        drive_straight(-8, 54, 48);
-        // Line up
-        drive_l.spin(DIR_FWD, -50, PCT_PCT);
-        wait(650, vex::msec);
-        target_heading -= 15; // effectively turn 15 degrees left
-        drive_straight(13, 60, 48);
-        // smith.set(0);
-        drive_turn(-165, WHEEL_TO_WHEEL_DIST / 2, 54, 36);
-        drive_straight(1, 48, 24); // tries to correct angle
-        // Slam stuff in
-        // intake.spin(DIR_FWD, -100, PCT_PCT);
-        drive_r.spin(DIR_FWD, 100, PCT_PCT);
-        drive_l.spin(DIR_FWD, 100, PCT_PCT);
-        wait(650, vex::msec);
-        drive_straight(-14, 60, 48);
-        drive_r.spin(DIR_FWD, 100, PCT_PCT);
-        drive_l.spin(DIR_FWD, 100, PCT_PCT);
-        wait(650, vex::msec);
-        // intake.stop(vex::brakeType::coast);
-        drive_straight(-10, 60, 48);
-        // Pzth to one of the middle triballs
-        drive_turn(-90, WHEEL_TO_WHEEL_DIST / 2, 48, 48);
-        drive_straight(46, 84, 56);
         break;
 
     case SKILLS:

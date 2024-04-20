@@ -73,7 +73,9 @@ void tune_fast_pid() {
     const float TUNER = 0.025;
 
     while (true) {
-        opdrive(TSA, 1, SENSITIVITY);
+        // drive_r.setStopping(vex::coast);
+        // drive_l.setStopping(vex::coast);
+        opdrive(TNK, 1, SENSITIVITY);
         if (BTN_R1.PRESSED) {
             target_heading = imu_rotation();
             vex::thread t(graph_pid);
@@ -89,13 +91,15 @@ void tune_fast_pid() {
         if (BTN_L1.PRESSED) {
             target_heading = imu_rotation();
             vex::thread t(graph_pid);
-            drive_straight(36, 66, 512);
+            drive_turn(-90, WHEEL_TO_WHEEL_DIST, 60, 60, true);
+            // drive_straight(36, 66, 512);
             t.interrupt();
         }
         if (BTN_L2.PRESSED) {
             target_heading = imu_rotation();
             vex::thread t(graph_pid);
-            drive_straight(108, 72, 72);
+            drive_turn(90, WHEEL_TO_WHEEL_DIST, 60, 60, true);
+            // drive_straight(108, 72, 72);
             t.interrupt();
         }
         move_kp += (btn_up() - btn_down()) * TUNER;
@@ -108,6 +112,7 @@ void tune_fast_pid() {
         B_SCRN.printAt(0, 20, "kP: %.3f", move_kp);
         B_SCRN.printAt(0, 40, "kI: %.3f", move_ki);
         B_SCRN.printAt(0, 60, "kD: %.3f", move_kd);
+        B_SCRN.printAt(0, 100, "imu: %.3f", imu_rotation());
 
         wait(20, vex::msec);
     }

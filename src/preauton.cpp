@@ -33,7 +33,7 @@ void pre_auton(void) {
         // Update auton type
         if (auto_selector.value() == 0 || sides[X] == LEFT) {
             auton_mode++;
-            if (auton_mode > SKILLS_DRIVER) auton_mode = 0;
+            if (auton_mode > SKILLS) auton_mode = 0;
             B_SCRN.clearLine();
             B_SCRN.print("%s", autons[auton_mode]);
 
@@ -51,6 +51,9 @@ void pre_auton(void) {
             B_SCRN.print(" - LOCKED");
             break;
         }
+
+        if (!imu.isCalibrating())
+            B_SCRN.printAt(0, B_SCRN_Y - 20, "imu: %.3f", imu_rotation());
 
         wait(20, vex::msec);
     }

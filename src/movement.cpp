@@ -2,7 +2,7 @@
 #include "stddefs.h"
 
 void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
-    inches *= 27.5 / 24.0 * 36 / 42.0;
+    inches *= 27.5 / 24.0 * 36 / 42.0 * 50 / 41.0;
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
 
@@ -33,7 +33,7 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
         else if (ips < target_ips)
             ips += ipss / TICKS_PER_SEC;
         else
-            ips = ipss;
+            ips = target_ips;
 
         // Find expected position
         pos += ips / TICKS_PER_SEC * dir_mod; // dir_mod adjusts for fwd/bwd
@@ -52,8 +52,6 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
         drive_l.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_l + pid_adjustment_dir, VEL_RPM);
         drive_r.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_r - pid_adjustment_dir, VEL_RPM);
 
-        // drive_l.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_dir, VEL_RPM);
-        // drive_r.spin(DIR_FWD, dir_mod * vel_rpm - pid_adjustment_dir, VEL_RPM);
         wait(MSEC_PER_TICK, vex::msec);
     }
     if (do_decel) {
@@ -125,14 +123,14 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ipss,
 
         // Get PID adjustments
         if ((reversed && degrees > 0) || (!reversed && !(degrees > 0))) { // left is inner side
-            pid_adjustment_l = -1 * pid_drive_l.adjust(inner_pos, pos_l);
-            pid_adjustment_r = pid_drive_r.adjust(outer_pos, pos_r);
+            pid_adjustment_l = pid_drive_l.adjust(inner_pos, pos_l);
+            pid_adjustment_r = -1 * pid_drive_r.adjust(outer_pos, pos_r);
 
             drive_l.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_l, VEL_RPM);
             drive_r.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_r, VEL_RPM);
         } else { // right is inner side
-            pid_adjustment_l = pid_drive_l.adjust(outer_pos, pos_l);
-            pid_adjustment_r = -1 * pid_drive_r.adjust(inner_pos, pos_r);
+            pid_adjustment_l = -1 * pid_drive_l.adjust(outer_pos, pos_l);
+            pid_adjustment_r = pid_drive_r.adjust(inner_pos, pos_r);
 
             drive_l.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_l, VEL_RPM);
             drive_r.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_r, VEL_RPM);
@@ -187,6 +185,7 @@ void turn_pid(float degrees, float ratio, int direction) {
     }
     drive_r.stop();
     drive_l.stop();
+    wait(4, vex::msec); // without this, drive_straight() immediately after veers right
 }
 
 void straight_pid(float dist) {
