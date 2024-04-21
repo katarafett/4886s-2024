@@ -75,8 +75,8 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ipss,
 
     target_heading += degrees; // update target heading
 
-    PID pid_drive_l = PID(move_kp, move_ki, move_kd);
-    PID pid_drive_r = PID(move_kp, move_ki, move_kd);
+    // PID pid_drive_l = PID(move_kp, move_ki, move_kd);
+    // PID pid_drive_r = PID(move_kp, move_ki, move_kd);
 
     float pid_adjustment_l;
     float pid_adjustment_r;
@@ -90,7 +90,8 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ipss,
     float degrees_remaining;
 
     // Does what it says. Also, implicity sets inner side negative if turning in place
-    float inner_radius = outer_radius - WHEEL_TO_WHEEL_DIST;
+    int rad_mod = (outer_radius > 0) ? -1 : 1;
+    float inner_radius = outer_radius + rad_mod * WHEEL_TO_WHEEL_DIST;
     float radius_ratio = inner_radius / outer_radius;
 
     // adjusts for different outer wheel sides
@@ -113,27 +114,36 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ipss,
             ips = target_ips;
 
         // Translate ips to rpm
-        outer_vel_rpm = ips / DRIVE_REV_TO_IN * 60 * ((reversed) ? -1 : 1);     // fixes the stupid thing;
-        inner_vel_rpm = outer_vel_rpm * radius_ratio * ((reversed) ? -1 : 1); // try not to touch
+        outer_vel_rpm = ips / DRIVE_REV_TO_IN * 60 * dir_mod * (-rad_mod);
+        inner_vel_rpm = outer_vel_rpm * radius_ratio;
 
         // Track position
         outer_pos += ips / TICKS_PER_SEC;
         inner_pos = outer_pos * radius_ratio;
 
+        printf("rad ratio: %.2f\n", radius_ratio);
+        printf("inner :%.2f\nouter: %.2f\n", inner_vel_rpm, outer_vel_rpm);
+
 
         // Get PID adjustments
-        if ((reversed && degrees > 0) || (!reversed && !(degrees > 0))) { // left is inner side
-            pid_adjustment_l = pid_drive_l.adjust(inner_pos, pos_l);
-            pid_adjustment_r = -1 * pid_drive_r.adjust(outer_pos, pos_r);
+        if (outer_radius < 0) { // left is inner side
+            // pid_adjustment_l = pid_drive_l.adjust(inner_pos, pos_l);
+            // pid_adjustment_r = -1 * pid_drive_r.adjust(outer_pos, pos_r);
 
-            drive_l.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_l, VEL_RPM);
-            drive_r.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_r, VEL_RPM);
+            // drive_l.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_l, VEL_RPM);
+            // drive_r.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_r, VEL_RPM);
+
+            drive_l.spin(DIR_FWD, inner_vel_rpm, VEL_RPM);
+            drive_r.spin(DIR_FWD, outer_vel_rpm, VEL_RPM);
         } else { // right is inner side
-            pid_adjustment_l = -1 * pid_drive_l.adjust(outer_pos, pos_l);
-            pid_adjustment_r = pid_drive_r.adjust(inner_pos, pos_r);
+            // pid_adjustment_l = -1 * pid_drive_l.adjust(outer_pos, pos_l);
+            // pid_adjustment_r = pid_drive_r.adjust(inner_pos, pos_r);
 
-            drive_l.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_l, VEL_RPM);
-            drive_r.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_r, VEL_RPM);
+            // drive_l.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_l, VEL_RPM);
+            // drive_r.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_r, VEL_RPM);
+
+            drive_l.spin(DIR_FWD, outer_vel_rpm, VEL_RPM);
+            drive_r.spin(DIR_FWD, inner_vel_rpm, VEL_RPM);
         }
 
         // Exit if we're past the desired angle

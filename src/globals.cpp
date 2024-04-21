@@ -1,7 +1,7 @@
 #include "../include/main.h"
 
 // Which auton will run
-int auton_mode = HALF_AWP_NEAR;
+int auton_mode = NEAR_HI;
 // Heading robot should follow
 float target_heading = 0;
 

@@ -11,15 +11,15 @@
 
 vex::competition Competition;
 
-// #define TESTING
-#ifdef TESTING
-const bool do_testing = true;
+// #define TEST_FUNCS
+#ifdef TEST_FUNCS
+const bool run_main = false;
 #else
-const bool do_testing = false;
+const bool run_main = true;
 #endif
 
 int main() {
-    if (!do_testing) {
+    if (run_main) {
         Competition.autonomous(autonomous);
         Competition.drivercontrol(autonomous);
     }

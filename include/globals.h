@@ -5,7 +5,7 @@
 #define WHEEL_TO_WHEEL_DIST (10.75)
 
 // Autonmous paths
-#define TESTING 0
+#define TEST_AUTO 0
 #define NEAR_HI 1
 #define NEAR_LO 2
 #define FAR_HI 3

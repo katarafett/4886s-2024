@@ -6,7 +6,7 @@
 void release_antenna(void);
 
 void autonomous(void) {
-    auton_mode = NEAR_LO;
+    auton_mode = FAR_HI;
 
     // Ensure inerital is calibrated
     while (imu.isCalibrating())
@@ -14,7 +14,11 @@ void autonomous(void) {
     imu.resetRotation();
 
     switch (auton_mode) {
-    case TESTING:
+    case TEST_AUTO:
+        drive_turn(-90, WHEEL_TO_WHEEL_DIST, 60, 60);
+        drive_turn(90, WHEEL_TO_WHEEL_DIST, 60, 60);
+        drive_turn(-90, -WHEEL_TO_WHEEL_DIST, 60, 60);
+        drive_turn(90, -WHEEL_TO_WHEEL_DIST, 60, 60);
         break;
 
     case NEAR_HI: {
@@ -59,7 +63,7 @@ void autonomous(void) {
         turn_pid(-90, -1, 1);
         wing_fl.set(1);
         drive_straight(-5, 32, 48);
-        drive_turn(-90, WHEEL_TO_WHEEL_DIST, 60, 60, true);
+        drive_turn(-90, WHEEL_TO_WHEEL_DIST, 60, 60);
         turn_pid(-150, -1, 1);
         drive_straight(7, 84, 200);
         turn_pid(-30, -1, 1);
@@ -70,33 +74,94 @@ void autonomous(void) {
     }
 
     case NEAR_LO:
+        // Eject triball
         intake.spinFor(DIR_FWD, 1, ROT_REV, 100, VEL_PCT, true);
         intake.spinFor(DIR_FWD, -2, ROT_REV, 100, VEL_PCT, true);
+        intake.spin(DIR_FWD, -100, VEL_PCT);
+
+        // De-MLZ triball
+        wing_fl.set(1);
+        drive_straight(-4, 36, 84);
+        turn_pid(-110, -1, 1);
+        turn_pid(-155, -1, 1);
+
+        // Touch bar
+        wing_fl.set(0);
+        drive_straight(30, 84, 200);
         break;
 
     case FAR_LO:
-        // Release intake
-        intake.spinFor(DIR_FWD, 1, ROT_REV, false);
-        drive_straight(-38, 48, 48);
-        drive_straight(12, 48, 48);
+        // idk
         break;
 
-    case FAR_HI:
-        // intake.spin(DIR_FWD, -50, VEL_PCT);
-        // Push to our OZ
-        drive_straight(33, 54, 36);
-        drive_straight(-26, 54, 36);
-        // Line up
-        drive_turn(45, WHEEL_TO_WHEEL_DIST, 36, 24, true);
-        drive_straight(-20, 48, 36);
-        drive_turn(-45, WHEEL_TO_WHEEL_DIST, 36, 24, true);
-        // Back up
-        drive_l.spin(DIR_FWD, -10, VEL_PCT);
-        drive_r.spin(DIR_FWD, -10, VEL_PCT);
-        wait(900, vex::msec);
-        drive_l.stop();
-        drive_r.stop();
+    case FAR_HI: {
+        // Get mid ball
+        intake.spin(DIR_FWD, 100, VEL_PCT);
+        wait(300, vex::msec);
+        drive_straight(-22, 84, 200);
+        turn_pid(-180, -1, 1);
+        intake.stop(vex::brakeType::hold);
+
+        // Flip out of corner
+        wing_fr.set(1);
+        drive_turn(-90, -WHEEL_TO_WHEEL_DIST - 6, 60, 60);  
+        intake.spin(DIR_FWD, -100, VEL_PCT);
+        vex::thread t1([] {  // bad way to do this, but im short on time
+            drive_straight(10, 84, 200);
+        });
+        wait(800, vex::msec);
+        t1.interrupt();
+        drive_straight(-2, 84, 200);
+        wing_fr.set(0);
+        turn_pid(-160, -1, 1);
+        vex::thread t2([] {  // bad way to do this, but im short on time
+            drive_straight(-17, 84, 2000);
+        });
+        wait(850, vex::msec);
+        t2.interrupt();
+        drive_straight(3, 84, 2000);
+        drive_full.spin(DIR_FWD, -100, VEL_PCT);
+        wait(250, vex::msec);
+
+        // Reset imu
+        drive_straight(12, 84, 200);
+        turn_pid(60, -1, 1);
+        drive_full.spin(DIR_FWD, -35, VEL_PCT);
+        wait(850, vex::msec);
+        imu.resetRotation();
+        target_heading = 0;
+
+        // Grab mid-bar
+        drive_straight(6, 84, 200);
+        turn_pid(18, -1, 1);
+        intake.spin(DIR_FWD, 100, VEL_PCT);
+        drive_straight(44, 84, 200);
+        wait(200, vex::msec);
+        drive_straight(-2, 84, 200);
+        // Spit
+        turn_pid(140, -1, 1);
+        intake.spin(DIR_FWD, -50, VEL_PCT);
+        drive_straight(2, 84, 200);
+        wait(250, vex::msec);
+        // Grab mid-bar 2
+        turn_pid(-102, -1, 1);
+        intake.spin(DIR_FWD, 100, VEL_PCT);
+        drive_straight(19, 84, 200);
+        wait(500, vex::msec);
+        drive_straight(-1.5, 84, 200);
+        target_heading = 175;
+        turn_pid(0, -1, 1);
+        // Shove under
+        wing_fr.set(1);
+        wing_fl.set(1);
+        intake.spin(DIR_FWD, -100, VEL_PCT);
+        drive_straight(26, 84, 200);
+        drive_straight(-4, 84, 200);
+        wing_fr.set(0);
+        wing_fl.set(0);
+
         break;
+    }
 
     case SKILLS:
         target_heading = 45;
@@ -154,24 +219,6 @@ void autonomous(void) {
         drive_straight(6, 72, 200);
         drive_straight(12, 72, 200);
         turn_pid(360, -1, 1);
-        break;
-
-    case SKILLS_DRIVER:
-        intake.spin(DIR_FWD, 100, VEL_PCT);
-        // Shove under
-        drive_turn(45, WHEEL_TO_WHEEL_DIST * 0.75, 72, 72, true);
-        drive_l.spin(DIR_FWD, -12, VLT_VLT);
-        drive_r.spin(DIR_FWD, -12, VLT_VLT);
-        wait(600, vex::msec);
-        // Line up
-        drive_straight(12, 72, 72);
-        turn_pid(-120, -1, 1);
-        target_heading = -60; // Ensure turn is proper
-        drive_straight(-6, 72, 72);
-        turn_pid(0, -1, 1);
-        drive_l.stop();
-        drive_r.stop();
-        opcontrol();
         break;
     }
 }

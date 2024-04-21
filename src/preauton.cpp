@@ -5,7 +5,7 @@ void pre_auton(void) {
     imu.calibrate();
 
     int *sides;
-    const char *autons[7] = {"AWP", "HALF_AWP_NEAR", "HALF_AWP_FAR", "NEAR_ELIMS", "FAR_ELIMS", "SKILLS", "SKILLS_DRIVER"};
+    const char *autons[6] = {"TEST_AUTO", "NEAR_HI", "NEAR_LO", "FAR_HI", "FAR_LO", "SKILLS"};
 
     // Create GUI - none of this is important, just for looks
     B_SCRN.clearScreen();
@@ -26,22 +26,23 @@ void pre_auton(void) {
     // Print currently selected mode
     B_SCRN.print("%s", autons[auton_mode]);
 
-
     while (!(BTN_A.pressing())) {
         sides = side_pressed();
 
         // Update auton type
         if (auto_selector.value() == 0 || sides[X] == LEFT) {
             auton_mode++;
-            if (auton_mode > SKILLS) auton_mode = 0;
+            if (auton_mode > SKILLS)
+                auton_mode = TEST_AUTO;
+            B_SCRN.setCursor(B_SCRN_Y * 3 / 2, 1);
             B_SCRN.clearLine();
             B_SCRN.print("%s", autons[auton_mode]);
 
             // Wait for sensor to depress
-            while(auto_selector.value() == 0) {
+            while (auto_selector.value() == 0) {
                 int count = 0;
                 wait(1, vex::msec);
-                if(++count > 200)
+                if (++count > 200)
                     break;
             }
         }
@@ -57,6 +58,7 @@ void pre_auton(void) {
 
         wait(20, vex::msec);
     }
+    printf("locked");
 
     B_SCRN.setFillColor("#0000aa");
     B_SCRN.clearScreen();
