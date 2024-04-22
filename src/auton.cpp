@@ -6,7 +6,7 @@
 void release_antenna(void);
 
 void autonomous(void) {
-    auton_mode = FAR_HI;
+    auton_mode = NEAR_HI;
 
     // Ensure inerital is calibrated
     while (imu.isCalibrating())

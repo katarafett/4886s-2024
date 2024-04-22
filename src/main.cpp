@@ -21,7 +21,7 @@ const bool run_main = true;
 int main() {
     if (run_main) {
         Competition.autonomous(autonomous);
-        Competition.drivercontrol(autonomous);
+        Competition.drivercontrol(opcontrol);
     }
     else {
         master.ButtonY.pressed(tune_fast_pid);
