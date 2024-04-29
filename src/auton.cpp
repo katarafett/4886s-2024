@@ -6,7 +6,7 @@
 void release_antenna(void);
 
 void autonomous(void) {
-    auton_mode = NEAR_HI;
+    // auton_mode = NEAR_LO;
 
     // Ensure inerital is calibrated
     while (imu.isCalibrating())
@@ -29,7 +29,7 @@ void autonomous(void) {
 
         // Rush triball
         vex::thread t1([] {
-            drive_straight(46.5, 84, 200);
+            drive_straight(48, 84, 200);
         });
         while (pos_drive_l() < 4) // wait until we've moved ten inches
             vex::wait(10, vex::msec);
@@ -87,7 +87,7 @@ void autonomous(void) {
 
         // Touch bar
         wing_fl.set(0);
-        drive_straight(30, 84, 200);
+        drive_straight(35, 84, 200);
         break;
 
     case FAR_LO:
@@ -104,27 +104,26 @@ void autonomous(void) {
 
         // Flip out of corner
         wing_fr.set(1);
-        drive_turn(-90, -WHEEL_TO_WHEEL_DIST - 6, 60, 60);  
+        drive_turn(-90, -WHEEL_TO_WHEEL_DIST - 6, 65, 80);  
         intake.spin(DIR_FWD, -100, VEL_PCT);
+
+        // Ram under
         vex::thread t1([] {  // bad way to do this, but im short on time
-            drive_straight(10, 84, 200);
+            drive_straight(12, 84, 200);
         });
-        wait(800, vex::msec);
+        wait(500, vex::msec);
         t1.interrupt();
-        drive_straight(-2, 84, 200);
+        drive_straight(-4, 84, 200);
         wing_fr.set(0);
         turn_pid(-160, -1, 1);
         vex::thread t2([] {  // bad way to do this, but im short on time
-            drive_straight(-17, 84, 2000);
+            drive_straight(-19, 84, 2000);
         });
         wait(850, vex::msec);
         t2.interrupt();
-        drive_straight(3, 84, 2000);
-        drive_full.spin(DIR_FWD, -100, VEL_PCT);
-        wait(250, vex::msec);
 
         // Reset imu
-        drive_straight(12, 84, 200);
+        drive_straight(8, 84, 200);
         turn_pid(60, -1, 1);
         drive_full.spin(DIR_FWD, -35, VEL_PCT);
         wait(850, vex::msec);
@@ -133,32 +132,35 @@ void autonomous(void) {
 
         // Grab mid-bar
         drive_straight(6, 84, 200);
-        turn_pid(18, -1, 1);
+        turn_pid(17.7, -1, 1);
         intake.spin(DIR_FWD, 100, VEL_PCT);
-        drive_straight(44, 84, 200);
+        drive_straight(45, 84, 200);
         wait(200, vex::msec);
         drive_straight(-2, 84, 200);
+
         // Spit
         turn_pid(140, -1, 1);
         intake.spin(DIR_FWD, -50, VEL_PCT);
         drive_straight(2, 84, 200);
         wait(250, vex::msec);
+
         // Grab mid-bar 2
-        turn_pid(-102, -1, 1);
+        turn_pid(-110, -1, 1);
         intake.spin(DIR_FWD, 100, VEL_PCT);
-        drive_straight(19, 84, 200);
-        wait(500, vex::msec);
+        drive_straight(20.25, 48, 200);
+        wait(400, vex::msec);
         drive_straight(-1.5, 84, 200);
         target_heading = 175;
         turn_pid(0, -1, 1);
+
         // Shove under
         wing_fr.set(1);
         wing_fl.set(1);
         intake.spin(DIR_FWD, -100, VEL_PCT);
         drive_straight(26, 84, 200);
-        drive_straight(-4, 84, 200);
         wing_fr.set(0);
         wing_fl.set(0);
+        drive_straight(-4, 84, 200);
 
         break;
     }
