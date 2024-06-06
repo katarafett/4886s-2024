@@ -11,6 +11,7 @@ extern vex::motor drive_l3;
 extern vex::motor drive_l4;
 
 extern vex::motor intake;
+extern vex::motor lift;
 
 extern vex::digital_out wing_fr;
 extern vex::digital_out wing_fl;

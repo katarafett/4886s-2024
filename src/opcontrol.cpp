@@ -16,50 +16,33 @@ void opcontrol(void) {
         opdrive(TSA, spd_mod, SENSITIVITY * sens_mod);
 
         // Shift button
-        shifted = btn_l2();
+        shifted = btn_down();
 
         // Unshifted
         if (!shifted) {
             // Intake
             intake.spin(DIR_FWD, (btn_r1() - btn_r2()) * BTN_TO_PCT, VEL_PCT);
-            // Toggle intake
-            if (BTN_L1.PRESSED)
-                intake_toggle.set(!intake_toggle.value());
+
+            if (BTN_L1.PRESSED) {
+                lift.setMaxTorque(100, PCT_PCT);
+
+                lift.spinToPosition(700, ROT_DEG, 100, VEL_PCT, false);
+            }
+
+             if (BTN_L2.PRESSED) {
+                lift.setMaxTorque(10, PCT_PCT);
+                lift.spinToPosition(0, ROT_DEG, 100, VEL_PCT, false);
+            }
         }
         // Shifted
         else {
-            // Toggle wings
-            if (BTN_L1.PRESSED)
-                wing_fl.set(!wing_fl.value());
-            if (BTN_R1.PRESSED)
-                wing_fr.set(!wing_fr.value());
-            if (BTN_R2.PRESSED) {
-                wing_fl.set(0);
-                wing_fr.set(0);
-            }
+            
         }
         // Both
 
         // Release hang
         if (BTN_Y.PRESSED)
             hang_release.set(!hang_release.value());
-        // Activate PTO
-        if (BTN_RIGHT.PRESSED) {
-            if (!pto.value()) {
-                hang_release.set(0);
-                intake_toggle.set(1);
-            }
-            pto.set(!pto.value());
-        }
-
-        if (hang_release.value() && !pto.value()) {
-            spd_mod = 0.5;
-            sens_mod = 0.6;
-        }
-        else {
-            spd_mod = 1.0;
-            sens_mod = 1.0;
-        }
         
         wait(20, vex::msec);
     }

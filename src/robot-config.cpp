@@ -38,17 +38,12 @@ vex::motor drive_l3 = vex::motor(PORT6, DRIVE_INSERT, true);
 // vex::motor drive_l4 = vex::motor(PORT8, DRIVE_INSERT, false);
 
 // Subsystem 3
-vex::motor intake = vex::motor(PORT8, INTAKE_INSERT, false);
+vex::motor intake = vex::motor(PORT8, INTAKE_INSERT, true);
+vex::motor lift = vex::motor(PORT7, vex::gearSetting::ratio18_1, false);
 #endif
 
 // Wings
-vex::digital_out wing_fl = vex::digital_out(PORTD);
-vex::digital_out wing_fr = vex::digital_out(PORTC);
-
 vex::digital_out hang_release = vex::digital_out(PORTA);
-vex::digital_out intake_toggle = vex::digital_out(PORTE);
-vex::digital_out pto = vex::digital_out(PORTB);
-
 // Sensors
 vex::inertial imu = vex::inertial(PORT20);
 
