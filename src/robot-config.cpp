@@ -47,6 +47,9 @@ vex::digital_out hang_release = vex::digital_out(PORTA);
 // Sensors
 vex::inertial imu = vex::inertial(PORT20);
 
+vex::vision::signature red_ring = vex::vision::signature (3, 7579, 10923, 9251, -891, -433, -662, 4, 0);
+vex::vision vision1 = vex::vision(PORT10, 17, red_ring);
+
 vex::motor_group drive_r = vex::motor_group(drive_r1, drive_r2, drive_r3);
 vex::motor_group drive_l = vex::motor_group(drive_l1, drive_l2, drive_l3);
 vex::motor_group drive_full = vex::motor_group(drive_r1, drive_r2, drive_r3, drive_l1, drive_l2, drive_l3);

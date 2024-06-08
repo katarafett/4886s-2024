@@ -17,16 +17,8 @@ void opcontrol(void) {
 
         // Shift button
         shifted = btn_left();
-        float lt = lift.torque();
-        if (lt >= 0.05){
-            printf("Lift torque %lf \n", lt);
 
-        }
-
-        lift.spin(DIR_FWD, (btn_up() - btn_down()) * BTN_TO_PCT, VEL_PCT);
-
-
-
+        //lift.spin(DIR_FWD, (btn_up() - btn_down()) * BTN_TO_PCT, VEL_PCT);
 
         // Unshifted
         if (!shifted) {
@@ -35,15 +27,15 @@ void opcontrol(void) {
 
 
             if (BTN_L1.PRESSED) {
-                lift.setMaxTorque(100, PCT_PCT);
-
+                lift.setTimeout(1250, vex::msec);
                 lift.spinToPosition(700, ROT_DEG, 100, VEL_PCT, false);
             }
 
              if (BTN_L2.PRESSED) {
-                lift.setMaxTorque(10, PCT_PCT);
+                lift.setTimeout(1250, vex::msec);
                 lift.spinToPosition(0, ROT_DEG, 100, VEL_PCT, false);
             }
+            
         }
         // Shifted
         else {

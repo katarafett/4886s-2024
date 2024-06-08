@@ -21,6 +21,8 @@ extern vex::digital_out intake_toggle;
 extern vex::digital_out pto;
 
 extern vex::inertial imu;
+extern vex::vision::signature red_ring;
+extern vex::vision vision1;
 
 extern vex::motor_group drive_r;
 extern vex::motor_group drive_l;
