@@ -16,12 +16,23 @@ void opcontrol(void) {
         opdrive(TSA, spd_mod, SENSITIVITY * sens_mod);
 
         // Shift button
-        shifted = btn_down();
+        shifted = btn_left();
+        float lt = lift.torque();
+        if (lt >= 0.05){
+            printf("Lift torque %lf \n", lt);
+
+        }
+
+        lift.spin(DIR_FWD, (btn_up() - btn_down()) * BTN_TO_PCT, VEL_PCT);
+
+
+
 
         // Unshifted
         if (!shifted) {
             // Intake
             intake.spin(DIR_FWD, (btn_r1() - btn_r2()) * BTN_TO_PCT, VEL_PCT);
+
 
             if (BTN_L1.PRESSED) {
                 lift.setMaxTorque(100, PCT_PCT);

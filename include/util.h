@@ -63,6 +63,10 @@ void draw_colored_pixel(int r, int c, vex::color color);
  */
 void graph_pid();
 
+/**
+ * @brief limmits the torque of lift and tells it to stop
+*/
+void lift_limit_torque(void);
 
 
 // Shorthand functions
