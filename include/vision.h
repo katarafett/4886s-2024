@@ -1,0 +1,1 @@
+void alt(void);

@@ -10,8 +10,10 @@ void opcontrol(void) {
 
     float spd_mod = 1.0;
     float sens_mod = 1.0;
+    bool do_vision_follow = 0;
 
     while (1) {
+        // master.rumble(".");
         // Drive control
         opdrive(TSA, spd_mod, SENSITIVITY * sens_mod);
 
@@ -42,10 +44,18 @@ void opcontrol(void) {
             
         }
         // Both
+        printf("%i \n", do_vision_follow);
 
         // Release hang
         if (BTN_Y.PRESSED)
             hang_release.set(!hang_release.value());
+
+        if (BTN_RIGHT.PRESSED)
+            do_vision_follow = !do_vision_follow;
+            
+        if (do_vision_follow) {
+            alt();
+        }
         
         wait(20, vex::msec);
     }
