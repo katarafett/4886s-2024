@@ -10,7 +10,8 @@ void opcontrol(void) {
 
     float spd_mod = 1.0;
     float sens_mod = 1.0;
-    bool do_vision_follow = 0;
+    bool do_red_chase = false;
+    bool do_blue_run = false;
 
     while (1) {
         // master.rumble(".");
@@ -44,17 +45,23 @@ void opcontrol(void) {
             
         }
         // Both
-        printf("%i \n", do_vision_follow);
+        printf("%i \n", do_red_chase);
 
         // Release hang
         if (BTN_Y.PRESSED)
             hang_release.set(!hang_release.value());
 
+        // Toggles chase red 
         if (BTN_RIGHT.PRESSED)
-            do_vision_follow = !do_vision_follow;
-            
-        if (do_vision_follow) {
-            alt();
+            do_red_chase = !do_red_chase;
+        if (do_red_chase) {
+            red_chase();
+        }
+        // Toggles run from blue
+        if (BTN_DOWN.PRESSED)
+            do_blue_run = !do_blue_run;
+        if (do_blue_run) {
+            blue_run();
         }
         
         wait(20, vex::msec);
