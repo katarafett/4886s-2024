@@ -61,6 +61,8 @@ void opcontrol(void) {
         if (BTN_DOWN.PRESSED)
             do_blue_run = !do_blue_run;
         if (do_blue_run) {
+                    printf("hi");
+
             blue_run();
         }
         
