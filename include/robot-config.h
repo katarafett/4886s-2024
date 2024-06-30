@@ -23,6 +23,7 @@ extern vex::digital_out pto;
 extern vex::inertial imu;
 extern vex::vision::signature red_ring;
 extern vex::vision::signature blue_ring;
+extern vex::vision::signature neutral_post;
 extern vex::vision vision1;
 
 extern vex::motor_group drive_r;
