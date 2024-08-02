@@ -1,16 +1,16 @@
 {
 	"extension": {
-		"version": "0.4.2",
+		"version": "0.6.0",
 		"json": 1
 	},
 	"project": {
 		"name": "4886s-2024",
 		"description": "",
-		"creationDate": "5/17/2023, 3:37:44 PM",
+		"creationDate": "Wed, 10 Jul 2024 18:41:27 GMT",
 		"platform": "V5",
 		"language": "cpp",
 		"slot": 1,
-		"sdkVersion": "V5_20220726_10_00_00",
+		"sdkVersion": "V5_20240223_11_00_00",
 		"cpp": {
 			"includePath": []
 		}

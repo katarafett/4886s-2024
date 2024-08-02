@@ -10,7 +10,9 @@ extern vex::motor drive_l2;
 extern vex::motor drive_l3;
 extern vex::motor drive_l4;
 
-extern vex::motor intake;
+extern vex::motor intakeLow;
+extern vex::motor intakeHigh;
+extern vex::motor intakeMid;
 extern vex::motor lift;
 
 extern vex::digital_out wing_fr;
@@ -29,6 +31,8 @@ extern vex::vision vision1;
 extern vex::motor_group drive_r;
 extern vex::motor_group drive_l;
 extern vex::motor_group drive_full;
+extern vex::motor_group intake;
+
 
 // extern vex::motor_group intake;
 

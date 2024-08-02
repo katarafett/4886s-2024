@@ -3,7 +3,7 @@
 #include "vex_thread.h"
 
 // Driver macros
-void opredcontrol(void) {
+void opcontrol(void) {
     drive_l.stop(vex::brakeType::coast);
     drive_r.stop(vex::brakeType::coast);
     bool shifted = false;
@@ -37,7 +37,12 @@ void opredcontrol(void) {
                 lift.setTimeout(1250, vex::msec);
                 lift.spinToPosition(0, ROT_DEG, 100, VEL_PCT, false);
             }
-
+/*
+            if (BTN_X.pressing()) {
+                imuTurn(180);
+                printf("-\n");
+            }
+*/
         }
         // Shifted
         else {
@@ -54,7 +59,7 @@ void opredcontrol(void) {
             do_neutral_line_up = !do_neutral_line_up;
         
         if (do_neutral_line_up) {
-            neutral_line_up();
+           // neutral_line_up();
         }
 
         wait(20, vex::msec);
@@ -74,8 +79,23 @@ void opdrive(int control_mode, float drive_mod, float turn_mod) {
     case TSA:
         float lspeed = LEFT_STICK_Y;
         float rspeed = RIGHT_STICK_X * turn_mod;
-        drive_r.spin(DIR_FWD, (lspeed - rspeed) * drive_mod, VEL_PCT);
-        drive_l.spin(DIR_FWD, (lspeed + rspeed) * drive_mod, VEL_PCT);
+        drive_r.spin(DIR_FWD, (lspeed + rspeed) * drive_mod, VEL_PCT);
+        drive_l.spin(DIR_FWD, (lspeed - rspeed) * drive_mod, VEL_PCT);
         break;
+
     }
 }
+
+/**
+ * turnGoal is the desired rotation in degrees
+ */
+/*
+void imuTurn(int turnGoal){
+    printf(".\n");
+    while (imu.rotation() <= turnGoal) {
+        drive_l.spin(DIR_FWD, -20, VEL_PCT);
+        drive_r.spin(DIR_FWD, 20, VEL_PCT);
+    }
+    drive_full.stop();
+}
+*/
