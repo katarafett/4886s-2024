@@ -1,8 +1,8 @@
 #include "../include/main.h"
 #include "stddefs.h"
 
+// Use to drive straight
 void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
-    inches *= 27.5 / 24.0 * 36 / 42.0 * 50 / 41.0;
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
 
@@ -69,6 +69,8 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
  * to turn right, degrees > 0 and reversed = false
  * to turn left, degrees < 0 and reversed = true
  */
+
+// Use for arc
 void drive_turn(float degrees, float outer_radius, float target_ips, float ipss, bool reversed) {
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
@@ -156,6 +158,8 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ipss,
     drive_r.stop(vex::brakeType::brake);
 }
 
+// degrees, -1, 1
+//Turn in place
 void turn_pid(float degrees, float ratio, int direction) {
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
@@ -198,6 +202,7 @@ void turn_pid(float degrees, float ratio, int direction) {
     wait(4, vex::msec); // without this, drive_straight() immediately after veers right
 }
 
+// Don't use
 void straight_pid(float dist) {
     const int TICKS_PER_SEC = 50;
     const int MSEC_PER_TICK = 1000 / TICKS_PER_SEC;
@@ -227,6 +232,7 @@ void straight_pid(float dist) {
     }
 }
 
+//Dont Use
 void drive_turn(float x, float y) {
     // Calculate angle of turn in radians
     // equations at https://www.desmos.com/calculator/xcsx1pssaq

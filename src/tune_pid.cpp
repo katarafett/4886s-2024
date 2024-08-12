@@ -34,6 +34,10 @@ void tune_dir_pid() {
 }
 
 void tune_accel_pid() {
+    imu.calibrate();
+    while (imu.isCalibrating())
+        vex::wait(20, vex::msec);
+    master.rumble(".");
     const float TUNER = 0.025;
     // Make PID objects
     PID rd = PID(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
@@ -48,9 +52,9 @@ void tune_accel_pid() {
             target_heading = imu_rotation();
             // Go back to opcontrol if y pressed again
             while (!BTN_Y.PRESSED) {
-                // Drive forward  500 rpm
-                drive_r.spin(DIR_FWD, 500 + rd.adjust(500, drive_r.velocity(VEL_RPM)) - dir.adjust(target_heading, imu_rotation()), VEL_RPM);
-                drive_l.spin(DIR_FWD, 500 + ld.adjust(500, drive_l.velocity(VEL_RPM)) + dir.adjust(target_heading, imu_rotation()), VEL_RPM);
+                // Drive forward  300 rpm
+                drive_r.spin(DIR_FWD, 300 + rd.adjust(300, drive_r.velocity(VEL_RPM)) - dir.adjust(target_heading, imu_rotation()), VEL_RPM);
+                drive_l.spin(DIR_FWD, 300 + ld.adjust(300, drive_l.velocity(VEL_RPM)) + dir.adjust(target_heading, imu_rotation()), VEL_RPM);
                 wait(20, vex::msec);
             }
         }
@@ -75,7 +79,7 @@ void tune_fast_pid() {
     while (true) {
         // drive_r.setStopping(vex::coast);
         // drive_l.setStopping(vex::coast);
-        opdrive(TNK, 1, SENSITIVITY);
+        opdrive(TSA, 1, SENSITIVITY);
         if (BTN_R1.PRESSED) {
             target_heading = imu_rotation();
             vex::thread t(graph_pid);

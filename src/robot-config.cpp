@@ -27,7 +27,7 @@ vex::motor intakeMid = vex::motor(PORT11, INTAKE_INSERT, false);
 vex::motor lift = vex::motor(PORT7, vex::gearSetting::ratio18_1, false);
 
 // Wings
-vex::digital_out hang_release = vex::digital_out(PORTA);
+vex::digital_out mogo_clamp = vex::digital_out(PORTA);
 // Sensors
 vex::inertial imu = vex::inertial(PORT20);
 

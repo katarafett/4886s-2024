@@ -52,7 +52,7 @@ void opcontrol(void) {
 
         // Release hang
         if (BTN_Y.PRESSED)
-            hang_release.set(!hang_release.value());
+            mogo_clamp.set(!mogo_clamp.value());
 
         // Toggles chase neutral post
         if (BTN_RIGHT.PRESSED)
@@ -79,8 +79,8 @@ void opdrive(int control_mode, float drive_mod, float turn_mod) {
     case TSA:
         float lspeed = LEFT_STICK_Y;
         float rspeed = RIGHT_STICK_X * turn_mod;
-        drive_r.spin(DIR_FWD, (lspeed + rspeed) * drive_mod, VEL_PCT);
-        drive_l.spin(DIR_FWD, (lspeed - rspeed) * drive_mod, VEL_PCT);
+        drive_r.spin(DIR_FWD, (lspeed - rspeed) * drive_mod, VEL_PCT);
+        drive_l.spin(DIR_FWD, (lspeed + rspeed) * drive_mod, VEL_PCT);
         break;
 
     }

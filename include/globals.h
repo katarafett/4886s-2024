@@ -1,10 +1,9 @@
 // Drive gear ratio
 #define DRIVE_GEARING (GEAR_36 / GEAR_48)
 // Connversion factor from motor revolutions to inches travelled
-#define DRIVE_REV_TO_IN (DRIVE_GEARING * PI * MED_WHEEL_DIAM)
+#define DRIVE_REV_TO_IN (DRIVE_GEARING * PI * MED_OMNI_DIAM)
 #define WHEEL_TO_WHEEL_DIST (10.75)
 
-// Autonmous paths
 #define TEST_AUTO 0
 #define NEAR_HI 1
 #define NEAR_LO 2
@@ -26,7 +25,7 @@
 #define DOWN 2
 
 // Correct inertial sensor error
-#define IMU_CORRECTION (3600 / 3591.9)
+#define IMU_CORRECTION (3600 / 3593.81)
 // Height in pixels of default characters on brain
 #define CHAR_HI 20
 #define CHAR_WI 12

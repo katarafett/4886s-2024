@@ -37,7 +37,7 @@
 #define MED_OMNI_DIAM 3.25
 #define SML_OMNI_DIAM 2.75
 #define LRG_WHEEL_DIAM 5.0
-#define MED_WHEEL_DIAM 4.0
+#define MED_WHEEL_DIAM 3.25
 #define SML_WHEEL_DIAM 2.75
 #define TRACT_WHEEL_DIAM 3.25
 
