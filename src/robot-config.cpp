@@ -23,7 +23,7 @@ vex::motor drive_l3 = vex::motor(PORT6, DRIVE_INSERT, true);
 // Subsystem 3
 vex::motor intakeLow = vex::motor(PORT8, INTAKE_INSERT, true);
 vex::motor intakeHigh = vex::motor(PORT9, INTAKE_INSERT, true);
-vex::motor intakeMid = vex::motor(PORT11, INTAKE_INSERT, true);
+vex::motor intakeMid = vex::motor(PORT11, INTAKE_INSERT, false);
 vex::motor lift = vex::motor(PORT7, vex::gearSetting::ratio18_1, false);
 
 // Wings
@@ -40,7 +40,7 @@ vex::vision vision1 = vex::vision(PORT10, 17, red_ring, blue_ring, neutral_post)
 vex::motor_group drive_r = vex::motor_group(drive_r1, drive_r2, drive_r3);
 vex::motor_group drive_l = vex::motor_group(drive_l1, drive_l2, drive_l3);
 vex::motor_group drive_full = vex::motor_group(drive_r1, drive_r2, drive_r3, drive_l1, drive_l2, drive_l3);
-vex::motor_group intake = vex::motor_group(intakeLow, intakeHigh);
+vex::motor_group intake = vex::motor_group(intakeLow, intakeHigh, intakeMid);
 
 
 // vex::motor_group intake = vex::motor_group(intake_9, intake_10);
