@@ -15,9 +15,6 @@ extern vex::motor intakeHigh;
 extern vex::motor intakeMid;
 extern vex::motor lift;
 
-extern vex::digital_out wing_fr;
-extern vex::digital_out wing_fl;
-
 extern vex::digital_out mogo_clamp;
 extern vex::digital_out intake_toggle;
 extern vex::digital_out pto;

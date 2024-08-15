@@ -19,9 +19,8 @@ void autonomous(void) {
     turn_pid(-175, -1, 1);
     drive_straight(18, 30, 50);
     intake.spin(DIR_FWD, 12, VLT_VLT);
-    wait(500, TIME_MSEC);
+    wait(700, TIME_MSEC);
     turn_pid(-45, -1, 1);
-    drive_straight(5, 30, 50);
 
 
 

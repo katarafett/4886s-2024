@@ -11,6 +11,8 @@ void opcontrol(void) {
     float spd_mod = 1.0;
     float sens_mod = 1.0;
     bool do_neutral_line_up = false;
+    lift.setStopping(vex::brakeType::hold);
+
 
     while (1) {
         // master.rumble(".");
@@ -20,14 +22,27 @@ void opcontrol(void) {
         // Shift button
         shifted = btn_left();
 
-        //lift.spin(DIR_FWD, (btn_up() - btn_down()) * BTN_TO_PCT, VEL_PCT);
-
         // Unshifted
         if (!shifted) {
-            // Intake
-            intake.spin(DIR_FWD, (btn_r1() - btn_r2()) * BTN_TO_PCT, VEL_PCT);
 
+        //Lift
+        if (lift.position(ROT_DEG) <= 475 && lift.position(ROT_DEG) >= 0){
+            lift.spin(DIR_FWD, (btn_l1() - btn_l2()) * BTN_TO_PCT, VEL_PCT);
+        }
+        else{
+            lift.stop();
+        }
+        if (lift.position(ROT_DEG) > 475){
+            lift.spinToPosition(474, ROT_DEG, 100, VEL_PCT, false);
+        }
+        if (lift.position(ROT_DEG) < 0){
+            lift.spinToPosition(1, ROT_DEG, 100, VEL_PCT, true);
+        }
 
+        // Intake
+        intake.spin(DIR_FWD, (btn_r1() - btn_r2()) * BTN_TO_PCT, VEL_PCT);
+
+            /*
             if (BTN_L1.PRESSED) {
                 lift.setTimeout(1250, vex::msec);
                 lift.spinToPosition(700, ROT_DEG, 100, VEL_PCT, false);
@@ -37,6 +52,7 @@ void opcontrol(void) {
                 lift.setTimeout(1250, vex::msec);
                 lift.spinToPosition(0, ROT_DEG, 100, VEL_PCT, false);
             }
+            */
 /*
             if (BTN_X.pressing()) {
                 imuTurn(180);
