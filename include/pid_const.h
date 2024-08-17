@@ -9,9 +9,10 @@
 #define DRIVE_STRAIGHT_DR_KI 0.0
 #define DRIVE_STRAIGHT_DR_KD 0.3
 
-#define DRIVE_STRAIGHT_DIR_KP 3.65
+// Direction controll
+#define DRIVE_STRAIGHT_DIR_KP 2.94 
 #define DRIVE_STRAIGHT_DIR_KI 0.00
-#define DRIVE_STRAIGHT_DIR_KD 0.4
+#define DRIVE_STRAIGHT_DIR_KD 0.5
 
 
 // drive_turn() consts

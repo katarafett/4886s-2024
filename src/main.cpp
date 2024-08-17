@@ -11,7 +11,7 @@
 
 vex::competition Competition;
 
-//#define TEST_FUNCS
+#define TEST_FUNCS
 #ifdef TEST_FUNCS
 const bool run_main = false;
 #else
@@ -24,7 +24,7 @@ int main() {
         Competition.drivercontrol(opcontrol);
     }
     else {
-        master.ButtonY.pressed(tune_fast_pid);
+        master.ButtonY.pressed(tune_accel_pid);
         master.ButtonRight.pressed(autonomous);
     }
 

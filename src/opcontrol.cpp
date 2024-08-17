@@ -33,7 +33,7 @@ void opcontrol(void) {
             lift.stop();
         }
         if (lift.position(ROT_DEG) > 475){
-            lift.spinToPosition(474, ROT_DEG, 100, VEL_PCT, false);
+            lift.spinToPosition(474, ROT_DEG, 50, VEL_PCT, false);
         }
         if (lift.position(ROT_DEG) < 0){
             lift.spinToPosition(1, ROT_DEG, 100, VEL_PCT, true);
