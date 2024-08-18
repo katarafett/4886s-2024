@@ -6,6 +6,9 @@
 void release_antenna(void);
 
 void autonomous(void) {
+
+    /*
+    //Full AWP quad side
     //unravel
     intake.spinFor(10, ROT_REV, 100, VEL_PCT, false);
     lift.spinFor(350, ROT_DEG, 100, VEL_PCT, true);
@@ -49,10 +52,7 @@ void autonomous(void) {
     drive_straight(15, 30, 50, false);
     mogo_clamp.set(0);
     drive_straight(5, 30, 50);
-
-
-
-
+    */
 
     /*
     drive_straight(-10, 30, 50);
@@ -71,9 +71,96 @@ void autonomous(void) {
     */
 
 
+   // Skills
+   // Unravel and score on AS
+    intake.spinFor(8, ROT_REV, 100, VEL_PCT, false);
+    lift.spinFor(300, ROT_DEG, 100, VEL_PCT, true);
+    // go for MOGO
+    drive_straight(11, 30, 50);
+    turn_pid(90, -1, 1);
+    drive_straight(-24, 60, 50);
+    mogo_clamp.set(1);
+    // first ring
+    intake.spin(DIR_FWD, 12, VLT_VLT);
+    turn_pid(-90, -1, 1);
+    drive_straight(20, 50, 50);
+    // second
+    turn_pid(-90, -1, 1);
+    drive_straight(21, 50, 50);
+    // third
+    turn_pid(-60, -1, 1);
+    drive_straight(23, 50, 50);
+    // fourth
+    wait(300, TIME_MSEC);
+    drive_straight(-23, 50, 50);
+    turn_pid(-30, -1, 1);
+    drive_straight(21, 50, 50);
+    // fifth
+    drive_straight(12, 15, 50);
+    // put mogo in corner
+    turn_pid(-110, -1, 1);
+    mogo_clamp.set(0);
+    drive_straight(-10, 20, 50);
 
+    // second MOGO
+    drive_straight(27, 40, 50);
+    turn_pid(-155, -1, 1);
+    drive_straight(-56, 40, 50);
+    mogo_clamp.set(1);
+     // first ring
+    turn_pid(90, -1, 1);
+    drive_straight(18, 40, 50);
+    // second
+    turn_pid(90, -1, 1);
+    drive_straight(21, 40, 50);
+    // third
+    turn_pid(60, -1, 1);
+    drive_straight(23, 40, 50);
+    // fourth
+    wait(300, TIME_MSEC);
+    drive_straight(-23, 40, 50);
+    turn_pid(30, -1, 1);
+    drive_straight(21, 40, 50);
+    // fifth
+    drive_straight(12, 15, 50);
+    // put MOGO in corner
+    turn_pid(110, -1, 1);
+    mogo_clamp.set(0);
+    drive_straight(-10, 20, 50);
+    intake.stop();
 
-
+    // thrid MOGO
+    drive_straight(9, 40, 50);
+    turn_pid(66, -1, 1);
+    drive_straight(64, 40, 50, false);
+    // first ring
+    intake.spinFor(DIR_FWD, 10, ROT_REV, 100, VEL_PCT, false);
+    drive_straight(15, 20, 50);
+    wait(1000, TIME_MSEC);
+    // MOGO
+    turn_pid(122, -1, 1);
+    drive_straight(-56, 40, 50);
+    mogo_clamp.set(1);
+    lift.spinFor(-150, ROT_DEG, 100, VEL_PCT, false);
+    // second
+    intake.spin(DIR_FWD, 12, VLT_VLT);
+    
+    turn_pid(10, -1, 1);
+    drive_straight(31, 40, 50);
+    // third
+    turn_pid(90, -1, 1);
+    drive_straight(35, 40, 50);
+    // fourth
+    turn_pid(90, -1, 1);
+    drive_straight(35, 40, 50);
+    // fifth
+    lift.spinFor(250, ROT_DEG, 100, VEL_PCT, false);
+    turn_pid(-45, -1, 1);
+    drive_straight(35, 40, 50);
+    // put MOGO in corner
+    turn_pid(-105, -1, 1);
+    mogo_clamp.set(0);
+    drive_straight(-35, 40, 50);
 
 
     /*
