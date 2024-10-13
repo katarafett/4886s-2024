@@ -5,10 +5,10 @@
 #define WHEEL_TO_WHEEL_DIST (10.75)
 
 #define TEST_AUTO 0
-#define NEAR_HI 1
-#define NEAR_LO 2
-#define FAR_HI 3
-#define FAR_LO 4
+#define RED_RIGHT 1
+#define RED_LEFT 2
+#define BLUE_RIGHT 3
+#define BLUE_LEFT 4
 #define SKILLS 5
 
 // Operator control modes

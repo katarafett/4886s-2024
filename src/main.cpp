@@ -31,6 +31,6 @@ int main() {
     pre_auton();
 
     while (true) {
-        vex::task::sleep(20);
+        wait(20, TIME_MSEC);
     }
 }

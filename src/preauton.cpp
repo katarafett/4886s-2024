@@ -5,7 +5,7 @@ void pre_auton(void) {
     imu.calibrate();
 
     int *sides;
-    const char *autons[6] = {"TEST_AUTO", "NEAR_HI", "NEAR_LO", "FAR_HI", "FAR_LO", "SKILLS"};
+    const char *autons[6] = {"TEST_AUTO", "RedRight", "RedLeft", "BlueRight", "BlueLeft", "SKILLS"};
 
     // Create GUI - none of this is important, just for looks
     B_SCRN.clearScreen();

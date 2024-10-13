@@ -24,10 +24,12 @@ vex::motor drive_l3 = vex::motor(PORT6, DRIVE_INSERT, true);
 vex::motor intakeLow = vex::motor(PORT8, INTAKE_INSERT, true);
 vex::motor intakeHigh = vex::motor(PORT9, INTAKE_INSERT, true);
 vex::motor intakeMid = vex::motor(PORT11, INTAKE_INSERT, false);
-vex::motor lift = vex::motor(PORT7, vex::gearSetting::ratio18_1, false);
+vex::motor lift = vex::motor(PORT7, vex::gearSetting::ratio36_1, true);
 
-// Wings
+// 3 Wire Ports
 vex::digital_out mogo_clamp = vex::digital_out(PORTA);
+vex::digital_out Smith_Mech = vex::digital_out(PORTB);
+
 // Sensors
 vex::inertial imu = vex::inertial(PORT20);
 
@@ -42,8 +44,8 @@ vex::motor_group drive_l = vex::motor_group(drive_l1, drive_l2, drive_l3);
 vex::motor_group drive_full = vex::motor_group(drive_r1, drive_r2, drive_r3, drive_l1, drive_l2, drive_l3);
 vex::motor_group intake = vex::motor_group(intakeLow, intakeHigh, intakeMid);
 
+vex::rotation liftDegree = vex::rotation(PORT10);
 
-// vex::motor_group intake = vex::motor_group(intake_9, intake_10);
 
 // Auton switcher
 vex::digital_in auto_selector = vex::digital_in(PORTH);

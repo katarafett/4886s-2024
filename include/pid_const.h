@@ -29,13 +29,3 @@
 #define TURN_PID_KP 1.05
 #define TURN_PID_KI 0.0
 #define TURN_PID_KD 4.575
-
-
-// straight_pid() consts
-#define STRAIGHT_PID_KP 0
-#define STRAIGHT_PID_KI 0
-#define STRAIGHT_PID_KD 0
-
-#define STRAIGHT_PID_DIR_KP 0
-#define STRAIGHT_PID_DIR_KI 0
-#define STRAIGHT_PID_DIR_KD 0
