@@ -146,11 +146,10 @@ switch (auton_mode) {
 
         // Unravel and score on AS
         intake.spinFor(8, ROT_REV, 100, VEL_PCT, false);
-        lift.spinFor(300, ROT_DEG, 100, VEL_PCT, true);
         // go for MOGO
-        drive_straight(12, 30, 50);
+        drive_straight(13, 30, 50);
         turn_pid(90, -1, 1);
-        drive_straight(-24, 60, 50);
+        drive_straight(-22, 60, 50);
         mogo_clamp.set(1);
         // first ring
         intake.spin(DIR_FWD, 12, VLT_VLT);
@@ -180,11 +179,11 @@ switch (auton_mode) {
         // second MOGO
         drive_straight(27, 40, 50);
         turn_pid(-155, -1, 1);
-        drive_straight(-56, 40, 50);
+        drive_straight(-47, 40, 50);
         mogo_clamp.set(1);
         // first ring
         turn_pid(90, -1, 1);
-        drive_straight(18, 40, 50);
+        drive_straight(20, 40, 50);
         // second
         turn_pid(90, -1, 1);
         drive_straight(21, 40, 50);
@@ -215,7 +214,6 @@ switch (auton_mode) {
 
 
         // thrid MOGO
-        lift.spinToPosition(300, ROT_DEG, 100, VEL_PCT, false);
         drive_straight(73, 40, 50, false);
         mogo_clamp.set(0);
         // first ring
@@ -226,7 +224,6 @@ switch (auton_mode) {
         turn_pid(115, -1, 1);
         drive_straight(-56, 40, 50);
         mogo_clamp.set(1);
-        lift.spinToPosition(180, ROT_DEG, 100, VEL_PCT, false);
         // second
         intake.spin(DIR_FWD, 12, VLT_VLT);
         
@@ -239,7 +236,6 @@ switch (auton_mode) {
         turn_pid(90, -1, 1);
         drive_straight(35, 40, 50);
         // fifth
-        lift.spinToPosition(350, ROT_DEG, 100, VEL_PCT, false);
         turn_pid(-45, -1, 1);
         drive_straight(35, 40, 50);
         // put MOGO in corner

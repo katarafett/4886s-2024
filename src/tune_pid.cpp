@@ -2,6 +2,7 @@
 #include "stddefs.h"
 #include <thread>
 
+// Tunes side to side for drive straight
 void tune_dir_pid() {
     imu.calibrate();
     while (imu.isCalibrating())
@@ -9,30 +10,19 @@ void tune_dir_pid() {
     master.rumble(".");
 
     const float TUNER = 0.025;
-    PID rd = PID(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
-    PID ld = PID(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
-    PID dir = PID(DRIVE_STRAIGHT_DIR_KP, DRIVE_STRAIGHT_DIR_KI, DRIVE_STRAIGHT_DIR_KD);
+
     while (true) {
         opdrive(TSA, 1, SENSITIVITY);
         if (BTN_Y.PRESSED) {
             target_heading = imu_rotation();
-            while (!BTN_Y.PRESSED) {
-                float avg_vel = (raw_vel_dr() + raw_vel_dl()) / 2.0;
-                drive_r.spin(DIR_FWD, 350 - dir.adjust(target_heading, imu_rotation()), VEL_RPM);
-                drive_l.spin(DIR_FWD, 350 + dir.adjust(target_heading, imu_rotation()), VEL_RPM);
-
-                wait(20, vex::msec);
-            }
+            drive_straight(80, 65, 256);
         }
-        dir.tune_kP(btn_up() - btn_down(), TUNER);
-        dir.tune_kI(btn_right() - btn_left(), TUNER);
-        dir.tune_kD(btn_x() - btn_b(), TUNER);
-
         B_SCRN.printAt(8, 8, "\n%f\n\n", imu_rotation());
         wait(20, vex::msec);
     }
 }
 
+// Tunes acceleration for drive straight
 void tune_accel_pid() {
     imu.calibrate();
     while (imu.isCalibrating())
@@ -60,7 +50,6 @@ void tune_accel_pid() {
         }
         // Enable pid tuning
         ld.tune_kP(btn_up() - btn_down(), TUNER);
-        ld.tune_kI(btn_x() - btn_b(), TUNER);
         ld.tune_kD(btn_right() - btn_left(), TUNER);
         rd.tune_kP(btn_up() - btn_down(), TUNER);
         rd.tune_kI(btn_x() - btn_b(), TUNER);
@@ -70,10 +59,17 @@ void tune_accel_pid() {
     }
 }
 
+/*
+R1 and R2 are for tuning turn in place
+L1 and L2 are for tuning arc function
+
+Need to change the PID drive_pid in movement.cpp to move_kp...
+When done we need to swich it back to TURN_PID_KP...
+*/
 void tune_fast_pid() {
-    move_kp = DRIVE_TURN_KP;
-    move_ki = DRIVE_TURN_KI;
-    move_kd = DRIVE_TURN_KD;
+    move_kp = TURN_PID_KP;
+    move_ki = TURN_PID_KI;
+    move_kd = TURN_PID_KD;
     const float TUNER = 0.025;
 
     while (true) {
@@ -93,21 +89,20 @@ void tune_fast_pid() {
             t.interrupt();
         }
         if (BTN_L1.PRESSED) {
-            target_heading = imu_rotation();
+            //target_heading = imu_rotation();
             vex::thread t(graph_pid);
-            drive_turn(-90, WHEEL_TO_WHEEL_DIST, 60, 60, true);
+            drive_turn(-90, WHEEL_TO_WHEEL_DIST *2, 60, 60, true);
             // drive_straight(36, 66, 512);
             t.interrupt();
         }
         if (BTN_L2.PRESSED) {
-            target_heading = imu_rotation();
+            //target_heading = imu_rotation();
             vex::thread t(graph_pid);
-            drive_turn(90, WHEEL_TO_WHEEL_DIST, 60, 60, true);
+            drive_turn(90, WHEEL_TO_WHEEL_DIST *2, 60, 60, true);
             // drive_straight(108, 72, 72);
             t.interrupt();
         }
         move_kp += (btn_up() - btn_down()) * TUNER;
-        move_ki += (btn_right() - btn_left()) * TUNER;
         move_kd += (btn_x() - btn_b()) * TUNER;
 
         printf("\nkP: %f\nkI: %f\nkD: %f\n", move_kp, move_ki, move_kd);

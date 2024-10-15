@@ -15,4 +15,5 @@ float turn_ki_r = 0;
 float turn_kd_r = 4.575;
 
 float move_kp = 0, move_ki = 0, move_kd = 0;
-
+float drive_accel_kp = DRIVE_STRAIGHT_DIR_KP, drive_accel_ki = DRIVE_STRAIGHT_DIR_KI, drive_accel_kd = DRIVE_STRAIGHT_DIR_KD;
+float drive_dir_kp = 0, drive_dir_ki = 0, drive_dir_kd = 0;

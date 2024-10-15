@@ -12,7 +12,7 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
     drive_l.stop(vex::brakeType::coast);
 
     PID pid_drive_l = PID(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
-    PID pid_drive_r = PID(DRIVE_STRAIGHT_DR_KP, DRIVE_STRAIGHT_DR_KI, DRIVE_STRAIGHT_DR_KD);
+    PID pid_drive_r = PID(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
     PID pid_dir = PID(DRIVE_STRAIGHT_DIR_KP, DRIVE_STRAIGHT_DIR_KI, DRIVE_STRAIGHT_DIR_KD);
 
     float ips = 0, pos = 0;
@@ -170,13 +170,14 @@ void turn_pid(float degrees, float ratio, int direction) {
 
     target_heading += degrees;
     PID drive_pid = PID(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
+    //PID drive_pid = PID(move_kp, move_ki, move_kd);
 
     float speed_l;
     float speed_r;
 
     int time_still = 0;
     while (time_still < 60) {
-        if (within_range(imu_rotation(), target_heading, 2))
+        if (within_range(imu_rotation(), target_heading, 1.25))
             time_still += MSEC_PER_TICK;
         else
             time_still = 0;

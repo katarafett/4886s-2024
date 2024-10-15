@@ -22,13 +22,13 @@ int main() {
     if (run_main) {
         Competition.autonomous(autonomous);
         Competition.drivercontrol(opcontrol);
+        pre_auton();
     }
     else {
-        master.ButtonY.pressed(tune_accel_pid);
+        master.ButtonLeft.pressed(tune_fast_pid);
         master.ButtonRight.pressed(autonomous);
     }
 
-    pre_auton();
 
     while (true) {
         wait(20, TIME_MSEC);
