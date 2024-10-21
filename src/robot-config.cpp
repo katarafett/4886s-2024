@@ -29,6 +29,7 @@ vex::motor lift = vex::motor(PORT7, vex::gearSetting::ratio36_1, true);
 // 3 Wire Ports
 vex::digital_out mogo_clamp = vex::digital_out(PORTA);
 vex::digital_out Smith_Mech = vex::digital_out(PORTB);
+vex::digital_out intake_lift = vex::digital_out(PORTH);
 
 // Sensors
 vex::inertial imu = vex::inertial(PORT20);
@@ -45,7 +46,3 @@ vex::motor_group drive_full = vex::motor_group(drive_r1, drive_r2, drive_r3, dri
 vex::motor_group intake = vex::motor_group(intakeLow, intakeHigh, intakeMid);
 
 vex::rotation liftDegree = vex::rotation(PORT10);
-
-
-// Auton switcher
-vex::digital_in auto_selector = vex::digital_in(PORTH);

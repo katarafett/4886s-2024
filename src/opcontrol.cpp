@@ -16,7 +16,8 @@ void opcontrol(void) {
 
     int liftHeight = 1;
     bool liftOT = 1;
-/*
+    intake_lift.set(1);
+
     while (lift.current(PCT_PCT)<50){
         lift.spin(DIR_REV);
     }
@@ -24,11 +25,14 @@ void opcontrol(void) {
     lift.resetPosition();
 
     lift.setStopping(vex::brakeType::hold);
-*/
+
+
     while (1) {
         // master.rumble(".");
         // Drive control
         opdrive(TSA, spd_mod, SENSITIVITY * sens_mod);
+
+        Brain.Screen.drawImageFromFile("Graduation.png", 0, 0);
 
         // Shift button
         shifted = btn_left();
@@ -45,13 +49,20 @@ void opcontrol(void) {
             if (BTN_L2.PRESSED){
                 liftHeight = liftHeight-1;
             }
-
+            // To reset the lift
+            if (BTN_DOWN.PRESSED){
+                while (lift.current(PCT_PCT)<50){
+                    lift.spin(DIR_REV);
+                    }
+                    wait(100, TIME_MSEC);
+                lift.resetPosition();
+            }
             
             if (liftHeight == 1){
                 lift.spinToPosition(15 * 5/3, ROT_DEG, 100, VEL_PCT, false);
             }
             else if (liftHeight == 2){
-                lift.spinToPosition(49 * 5/3, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(51 * 5/3, ROT_DEG, 100, VEL_PCT, false);
                 liftOT = 0;
 
             }

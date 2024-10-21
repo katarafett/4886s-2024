@@ -30,21 +30,13 @@ void pre_auton(void) {
         sides = side_pressed();
 
         // Update auton type
-        if (auto_selector.value() == 0 || sides[X] == LEFT) {
+        if (sides[X] == LEFT) {
             auton_mode++;
             if (auton_mode > SKILLS)
                 auton_mode = TEST_AUTO;
             B_SCRN.setCursor(B_SCRN_Y * 3 / 2, 1);
             B_SCRN.clearLine();
             B_SCRN.print("%s", autons[auton_mode]);
-
-            // Wait for sensor to depress
-            while (auto_selector.value() == 0) {
-                int count = 0;
-                wait(1, vex::msec);
-                if (++count > 200)
-                    break;
-            }
         }
 
         // Lock auton
