@@ -16,7 +16,7 @@ void opcontrol(void) {
 
     int liftHeight = 1;
     bool liftOT = 1;
-    intake_lift.set(1);
+    intake_lift.set(0);
 
     while (lift.current(PCT_PCT)<50){
         lift.spin(DIR_REV);
@@ -59,10 +59,10 @@ void opcontrol(void) {
             }
             
             if (liftHeight == 1){
-                lift.spinToPosition(15 * 5/3, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(10 * 5/3, ROT_DEG, 100, VEL_PCT, false);
             }
             else if (liftHeight == 2){
-                lift.spinToPosition(51 * 5/3, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(35 * 5/3, ROT_DEG, 100, VEL_PCT, false);
                 liftOT = 0;
 
             }
@@ -73,7 +73,7 @@ void opcontrol(void) {
                     liftOT = 1;
                 }
 
-                lift.spinToPosition(137 * 5/3, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(140 * 5/3, ROT_DEG, 100, VEL_PCT, false);
                 }
                  // MOGO Mech
             if (BTN_Y.PRESSED){
@@ -83,6 +83,16 @@ void opcontrol(void) {
             // Smith Mech
             if (BTN_B.PRESSED)
                 Smith_Mech.set(!Smith_Mech.value());
+
+
+            // Intake lift
+            if (BTN_X.PRESSED)
+                intake_lift.set(!intake_lift.value());
+
+
+            // PTO
+            if (BTN_RIGHT.PRESSED)
+                PTO.set(!PTO.value());
 
 
             // Toggles chase neutral post

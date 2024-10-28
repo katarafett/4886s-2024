@@ -4,8 +4,9 @@ void pre_auton(void) {
     // Calibrate inertial
     imu.calibrate();
 
+    intake_lift.set(1);
     int *sides;
-    const char *autons[6] = {"TEST_AUTO", "RedRight", "RedLeft", "BlueRight", "BlueLeft", "SKILLS"};
+    const char *autons[8] = {"TestAuto", "RedRight", "RedLeft", "BlueRight", "BlueLeft", "SKILLS", "ElimsBlue", "ElimsRed"};
 
     // Create GUI - none of this is important, just for looks
     B_SCRN.clearScreen();
@@ -51,9 +52,13 @@ void pre_auton(void) {
         wait(20, vex::msec);
     }
     printf("locked");
+    Brain.Screen.clearScreen();
+    Brain.Screen.drawImageFromFile("GradNew.jpeg", 57.5, 0);
 
+/*
     B_SCRN.setFillColor("#0000aa");
     B_SCRN.clearScreen();
     B_SCRN.drawRectangle(0, B_SCRN_Y_MID, B_SCRN_X_MID, B_SCRN_Y_MID);
     B_SCRN.printAt(B_SCRN_X_MID - 200, (B_SCRN_Y * 3 / 4) - (CHAR_HI / 2), "debug()");
+*/
 }

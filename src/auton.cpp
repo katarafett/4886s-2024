@@ -10,7 +10,7 @@ void autonomous(void) {
 
         case BLUE_RIGHT: {
             // Score on the AWS
-            intake_lift.set(1);
+            intake_lift.set(0);
             intake.spinFor(3.75, ROT_REV, 600, VEL_RPM, false);
             wait(500, TIME_MSEC);
             turn_pid(180, -1, 1);
@@ -33,25 +33,22 @@ void autonomous(void) {
             // Third Ring
             turn_pid(-123, -1, 1);
             drive_straight(23, 75, 200);
+            wait(500, TIME_MSEC);
             // Fourth Ring
             turn_pid(-100, -1, 1);
-            drive_straight(13, 50, 50);
+            drive_straight(14, 50, 50);
             wait(500, TIME_MSEC);
-            // Fifth Ring
-            drive_straight(-15, 50, 50);
-            turn_pid(-25, -1, 1);
-            drive_straight(18, 50, 50);
+            drive_straight(-10, 50, 50);
             wait(500, TIME_MSEC);
-
-            // Touch Bar
-            turn_pid(-75, -1, 1);
-            drive_straight(35, 50, 50);
+            // Fifth ring
+            turn_pid(-50, -1, 1);
+            drive_straight(35, 40, 50);
             break;
         }
 
 
         case BLUE_LEFT: {
-            intake_lift.set(1);
+            intake_lift.set(0);
             //MOGO Rush
             drive_straight(-46, 75, 50);
             mogo_clamp.set(1);
@@ -90,7 +87,7 @@ void autonomous(void) {
 
 
         case RED_RIGHT:{
-            intake_lift.set(1);
+            intake_lift.set(0);
             //MOGO Rush
             drive_straight(-46, 75, 50);
             mogo_clamp.set(1);
@@ -126,7 +123,7 @@ void autonomous(void) {
 
         case RED_LEFT:{
             // Score on the AWS
-            intake_lift.set(1);
+            intake_lift.set(0);
             intake.spinFor(3.75, ROT_REV, 600, VEL_RPM, false);
             wait(500, TIME_MSEC);
             turn_pid(-180, -1, 1);
@@ -149,9 +146,10 @@ void autonomous(void) {
             // Third Ring
             turn_pid(123, -1, 1);
             drive_straight(23, 75, 200);
+            wait(500, TIME_MSEC);
             // Fourth Ring
-            turn_pid(100, -1, 1);
-            drive_straight(15, 50, 50);
+            turn_pid(130, -1, 1);
+            drive_straight(30, 50, 50);
             wait(500, TIME_MSEC);
             // Fifth Ring
             //drive_straight(-15, 50, 50);
@@ -166,9 +164,39 @@ void autonomous(void) {
         }
 
 
+        case ELIMS_RED:{
+            //MOGO
+            drive_straight(-24, 30, 50, false);
+            mogo_clamp.set(1);
+            drive_straight(-2, 30, 50);
+            wait(500, TIME_MSEC);
+            // Ring 1
+            turn_pid(90, -1, 1);
+            intake.spin(DIR_FWD, 12, VLT_VLT);
+            drive_straight(31, 75, 150);
+            intake.stop();
+            drive_straight(-1, 75, 150);
+            // Ring 2
+            turn_pid(100, -1, 1);
+            intake.spin(DIR_FWD, 12, VLT_VLT);
+            drive_straight(9, 30, 50);
+            // ring 3
+            turn_pid(-35, -1, 1);
+            drive_straight(-20, 30, 50, true);
+            wait(400, TIME_MSEC);
+            turn_pid(28, -1, 1);
+            drive_straight(20, 30, 50, true);
+            drive_straight(-36, 30, 50, true);
+            
+
+
+            break;
+        }
+
+
         case SKILLS:{
             // Unravel and score on AS
-            intake_lift.set(1);
+            intake_lift.set(0);
             intake.spinFor(8, ROT_REV, 100, VEL_PCT, false);
             // go for MOGO
             drive_straight(13, 30, 50);
@@ -198,8 +226,7 @@ void autonomous(void) {
             turn_pid(-110, -1, 1);
             mogo_clamp.set(0);
             drive_straight(-10, 20, 50);
-            turn_pid(-30, -1, 1);
-            turn_pid(30, -1, 1);
+            
 
 
             // second MOGO
@@ -226,8 +253,6 @@ void autonomous(void) {
             // put MOGO in corner
             turn_pid(110, -1, 1);
             mogo_clamp.set(0);
-            turn_pid(30, -1, 1);
-            turn_pid(-30, -1, 1);
             drive_straight(-10, 20, 50);
             wait(500, TIME_MSEC);
             intake.stop();

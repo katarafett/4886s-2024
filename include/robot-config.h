@@ -18,6 +18,7 @@ extern vex::motor lift;
 extern vex::digital_out mogo_clamp;
 extern vex::digital_out Smith_Mech;
 extern vex::digital_out intake_lift;
+extern vex::digital_out PTO;
 
 extern vex::inertial imu;
 extern vex::vision::signature red_ring;

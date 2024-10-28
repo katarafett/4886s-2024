@@ -10,6 +10,8 @@
 #define BLUE_RIGHT 3
 #define BLUE_LEFT 4
 #define SKILLS 5
+#define ELIMS_BLUE 6
+#define ELIMS_RED 7
 
 // Operator control modes
 #define TNK 0
