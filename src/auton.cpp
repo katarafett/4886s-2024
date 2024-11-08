@@ -8,6 +8,40 @@ void release_antenna(void);
 void autonomous(void) {
     switch (auton_mode) {
 
+        case FULL_AWP: {
+            // score on AWS
+            lift.spinToPosition(130*5, ROT_DEG, 200, VEL_RPM, false);
+            wait(150, TIME_MSEC);
+            drive_straight(5, 50, 50);
+            // pickup ring 2 with smith mech
+            drive_straight(-11, 50, 50);
+            lift.spinToPosition(-40, ROT_DEG, 200, VEL_RPM, false);
+            turn_pid(-25, -1, 1);
+            drive_straight(4, 50, 50);
+            Smith_Mech.set(1);
+            // push teamate
+            drive_straight(12, 50, 50);
+            // go for MOGO
+            drive_straight(-18, 50, 50);
+            drive_turn(95, -7, 75, 75, false);
+            intake.spin(DIR_FWD, 100, PCT_PCT);
+            drive_straight(-26, 75, 75);
+            mogo_clamp.set(1);
+            drive_straight(-3, 50, 50);
+            // go for ring 3
+            turn_pid(92, -1, 1);
+            drive_straight(25, 75, 75);
+            wait(300, TIME_MSEC);
+            drive_straight(-12, 75, 75);
+            // go to score ring 2
+            turn_pid(-158, -1, 1);
+            Smith_Mech.set(0);
+            wait(500, TIME_MSEC);
+            turn_pid(-20, -1, 1);
+            drive_straight(45, 25, 75);
+
+            break;
+        }
         case BLUE_RIGHT: {
             // Score on the AWS
             intake_lift.set(0);
@@ -179,15 +213,16 @@ void autonomous(void) {
             // Ring 2
             turn_pid(100, -1, 1);
             intake.spin(DIR_FWD, 12, VLT_VLT);
-            drive_straight(9, 30, 50);
+            drive_straight(12, 30, 50);
             // ring 3
             turn_pid(-35, -1, 1);
             drive_straight(-20, 30, 50, true);
             wait(400, TIME_MSEC);
-            turn_pid(28, -1, 1);
-            drive_straight(20, 30, 50, true);
+            turn_pid(30, -1, 1);
+            drive_straight(22, 30, 50, true);
             drive_straight(-36, 30, 50, true);
-            
+            turn_pid(-135, -1, 1);
+
 
 
             break;
@@ -195,123 +230,81 @@ void autonomous(void) {
 
 
         case SKILLS:{
-            // Unravel and score on AS
-            intake_lift.set(0);
-            intake.spinFor(8, ROT_REV, 100, VEL_PCT, false);
-            // go for MOGO
-            drive_straight(13, 30, 50);
-            turn_pid(90, -1, 1);
-            drive_straight(-22, 60, 50);
-            wait(150, TIME_MSEC);
-            mogo_clamp.set(1);
-            wait(150, TIME_MSEC);
-            // first ring
-            intake.spin(DIR_FWD, 12, VLT_VLT);
-            turn_pid(-90, -1, 1);
-            drive_straight(20, 50, 50);
-            // second
-            turn_pid(-90, -1, 1);
-            drive_straight(21, 50, 50);
-            // third
-            turn_pid(-60, -1, 1);
-            drive_straight(23, 50, 50);
-            // fourth
-            wait(300, TIME_MSEC);
-            drive_straight(-23, 50, 50);
-            turn_pid(-30, -1, 1);
-            drive_straight(21, 50, 50);
-            // fifth
-            drive_straight(12, 15, 50);
-            // put mogo in corner
-            turn_pid(-110, -1, 1);
-            mogo_clamp.set(0);
-            drive_straight(-10, 20, 50);
             
+            
+        // Unravel and score on AS
+        intake.spinFor(8, ROT_REV, 100, VEL_PCT, false);
+        wait(300, TIME_MSEC);
+        // go for MOGO
+        drive_straight(13, 30, 50);
+        turn_pid(90, -1, 1);
+        drive_straight(-22, 60, 50);
+        //mogo_clamp.set(1);
+        // first ring
+        intake.spin(DIR_FWD, 12, VLT_VLT);
+        turn_pid(-90, -1, 1);
+        drive_straight(20, 50, 50);
+        // second
+        turn_pid(-90, -1, 1);
+        drive_straight(21, 50, 50);
+        // third
+        turn_pid(-60, -1, 1);
+        drive_straight(23, 50, 50);
+        // fourth
+        wait(300, TIME_MSEC);
+        drive_straight(-23, 50, 50);
+        turn_pid(-30, -1, 1);
+        drive_straight(21, 50, 50);
+        // fifth
+        drive_straight(12, 15, 50);
+        // put mogo in corner
+        turn_pid(-110, -1, 1);
+        drive_straight(-10, 20, 50);
+        mogo_clamp.set(0);
+        
 
 
-            // second MOGO
-            drive_straight(27, 40, 50);
-            turn_pid(-157, -1, 1);
-            drive_straight(-47, 40, 50);
-            mogo_clamp.set(1);
-            // first ring
-            turn_pid(90, -1, 1);
-            drive_straight(20, 40, 50);
-            // second
-            turn_pid(90, -1, 1);
-            drive_straight(21, 40, 50);
-            // third
-            turn_pid(60, -1, 1);
-            drive_straight(23, 40, 50);
-            // fourth
-            wait(300, TIME_MSEC);
-            drive_straight(-23, 40, 50);
-            turn_pid(30, -1, 1);
-            drive_straight(21, 40, 50);
-            // fifth
-            drive_straight(12, 15, 50);
-            // put MOGO in corner
-            turn_pid(110, -1, 1);
-            mogo_clamp.set(0);
-            drive_straight(-10, 20, 50);
-            wait(500, TIME_MSEC);
-            intake.stop();
+        // second MOGO
+        drive_straight(27, 40, 50);
+        turn_pid(-155, -1, 1);
+        drive_straight(-50, 40, 50);
+        mogo_clamp.set(1);
+        // first ring
+        turn_pid(90, -1, 1);
+        drive_straight(20, 40, 50);
+        // second
+        turn_pid(90, -1, 1);
+        drive_straight(21, 40, 50);
+        // third
+        turn_pid(60, -1, 1);
+        drive_straight(23, 40, 50);
+        // fourth
+        wait(300, TIME_MSEC);
+        drive_straight(-23, 40, 50);
+        turn_pid(30, -1, 1);
+        drive_straight(21, 40, 50);
+        // fifth
+        drive_straight(12, 15, 50);
+        // put MOGO in corner
+        turn_pid(110, -1, 1);
+        drive_straight(-10, 20, 50);
+        mogo_clamp.set(0);
+        intakeHigh.stop();
+
 
             // reset imu
             drive_straight(8, 40, 50);
-            turn_pid(66, -1, 1);
+            turn_pid(70, -1, 1);
             mogo_clamp.set(1);
-            drive_full.spinFor(DIR_REV, 500, TIME_MSEC, 100, VEL_PCT);
-            wait(200, TIME_MSEC);
-            imu.setHeading(0, ROT_DEG);
-
-
-            // second MOGO
-            drive_straight(27, 40, 50);
-            turn_pid(-155, -1, 1);
-            drive_straight(-47, 40, 50);
-            mogo_clamp.set(1);
-            // first ring
-            turn_pid(90, -1, 1);
-            drive_straight(20, 40, 50);
-            // second
-            turn_pid(90, -1, 1);
-            drive_straight(21, 40, 50);
-            // third
-            turn_pid(60, -1, 1);
-            drive_straight(23, 40, 50);
-            // fourth
-            wait(300, TIME_MSEC);
-            drive_straight(-23, 40, 50);
-            turn_pid(30, -1, 1);
-            drive_straight(21, 40, 50);
-            // fifth
-            drive_straight(12, 15, 50);
-            // put MOGO in corner
-            turn_pid(110, -1, 1);
-            mogo_clamp.set(0);
-            drive_straight(-10, 20, 50);
-            turn_pid(-30, -1, 1);
-            turn_pid(30, -1, 1);
-            wait(500, TIME_MSEC);
-            intake.stop();
-
-            // reset imu
-            drive_straight(8, 40, 50);
-            turn_pid(66, -1, 1);
-            mogo_clamp.set(1);
-            drive_full.spinFor(DIR_REV, 500, TIME_MSEC, 100, VEL_PCT);
-            wait(200, TIME_MSEC);
-            imu.setHeading(0, ROT_DEG);
-
+            drive_full.spinFor(DIR_REV, 1000, TIME_MSEC, 30, VEL_PCT);
 
             // thrid MOGO
+            intakeLow.spin(DIR_FWD, 12, VLT_VLT);
             drive_straight(73, 40, 50, false);
             mogo_clamp.set(0);
             // first ring
-            intake.spinFor(DIR_FWD, 10, ROT_REV, 100, VEL_PCT, false);
             drive_straight(15, 20, 50);
-            wait(1000, TIME_MSEC);
+            wait(500, TIME_MSEC);
             // MOGO
             turn_pid(115, -1, 1);
             drive_straight(-56, 40, 50);
@@ -334,9 +327,11 @@ void autonomous(void) {
             turn_pid(-105, -1, 1);
             mogo_clamp.set(0);
             drive_straight(-35, 40, 50);
+            drive_straight(35, 40, 50);
             turn_pid(-80, -1, 1);
-            drive_straight(120, 40, 50);
-                break;
+            drive_straight(180, 40, 50);
+
+           break;
             }
         }
     }

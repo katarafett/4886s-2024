@@ -18,14 +18,17 @@ void opcontrol(void) {
     bool liftOT = 1;
     intake_lift.set(0);
 
-    while (lift.current(PCT_PCT)<50){
+    while (lift.current(PCT_PCT)<80){
         lift.spin(DIR_REV);
     }
     wait(100, TIME_MSEC);
     lift.resetPosition();
 
-    lift.setStopping(vex::brakeType::hold);
+    colorSort.setLightPower(100, PCT_PCT); 
+    colorSort.setLight(vex::ledState::on); 
 
+    lift.setStopping(vex::brakeType::hold);
+    intakeHigh.setPosition(6, ROT_REV);
 
     while (1) {
         // master.rumble(".");
@@ -37,6 +40,14 @@ void opcontrol(void) {
         // Shift button
         shifted = btn_left();
 
+        if( colorSort.color() == vex::color::blue){
+            intakeHigh.resetPosition();
+        }
+        if (intakeHigh.position(ROT_REV) >= 1.5 && intakeHigh.position(ROT_REV) <= 1.7){
+            intakeHigh.spinFor(-0.5, ROT_REV, 100, VEL_PCT, false);      
+            wait(100, TIME_MSEC);
+            intakeHigh.setPosition(6, ROT_REV);
+        }
         // Unshifted
         if (!shifted) {
 
@@ -51,7 +62,7 @@ void opcontrol(void) {
             }
             // To reset the lift
             if (BTN_DOWN.PRESSED){
-                while (lift.current(PCT_PCT)<50){
+                while (lift.current(PCT_PCT)<80){
                     lift.spin(DIR_REV);
                     }
                     wait(100, TIME_MSEC);
@@ -59,10 +70,10 @@ void opcontrol(void) {
             }
             
             if (liftHeight == 1){
-                lift.spinToPosition(10 * 5/3, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(10 * 5, ROT_DEG, 100, VEL_PCT, false);
             }
             else if (liftHeight == 2){
-                lift.spinToPosition(35 * 5/3, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(39 * 5, ROT_DEG, 100, VEL_PCT, false);
                 liftOT = 0;
 
             }
@@ -73,7 +84,7 @@ void opcontrol(void) {
                     liftOT = 1;
                 }
 
-                lift.spinToPosition(140 * 5/3, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(140 * 5, ROT_DEG, 100, VEL_PCT, false);
                 }
                  // MOGO Mech
             if (BTN_Y.PRESSED){

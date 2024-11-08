@@ -21,6 +21,7 @@ extern vex::digital_out intake_lift;
 extern vex::digital_out PTO;
 
 extern vex::inertial imu;
+extern vex::optical colorSort;
 extern vex::vision::signature red_ring;
 extern vex::vision::signature blue_ring;
 extern vex::vision::signature neutral_post;

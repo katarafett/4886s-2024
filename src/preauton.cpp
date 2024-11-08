@@ -6,7 +6,7 @@ void pre_auton(void) {
 
     intake_lift.set(1);
     int *sides;
-    const char *autons[8] = {"TestAuto", "RedRight", "RedLeft", "BlueRight", "BlueLeft", "SKILLS", "ElimsBlue", "ElimsRed"};
+    const char *autons[8] = {"FullAWP", "RedRight", "RedLeft", "BlueRight", "BlueLeft", "SKILLS", "ElimsBlue", "ElimsRed"};
 
     // Create GUI - none of this is important, just for looks
     B_SCRN.clearScreen();
@@ -33,8 +33,8 @@ void pre_auton(void) {
         // Update auton type
         if (sides[X] == LEFT) {
             auton_mode++;
-            if (auton_mode > SKILLS)
-                auton_mode = TEST_AUTO;
+            if (auton_mode > ELIMS_RED)
+                auton_mode = FULL_AWP;
             B_SCRN.setCursor(B_SCRN_Y * 3 / 2, 1);
             B_SCRN.clearLine();
             B_SCRN.print("%s", autons[auton_mode]);

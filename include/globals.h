@@ -4,7 +4,7 @@
 #define DRIVE_REV_TO_IN (DRIVE_GEARING * PI * MED_OMNI_DIAM)
 #define WHEEL_TO_WHEEL_DIST (10.75)
 
-#define TEST_AUTO 0
+#define FULL_AWP 0
 #define RED_RIGHT 1
 #define RED_LEFT 2
 #define BLUE_RIGHT 3
