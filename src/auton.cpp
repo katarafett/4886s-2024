@@ -152,7 +152,7 @@ void autonomous(void) {
             intakeHigh.stop();
 
             // reset imu
-            drive_straight(8, 40, 50);
+            drive_straight(10, 40, 50);
             turn_pid(70, -1, 1);
             mogo_clamp.set(1);
             drive_full.spinFor(DIR_REV, 1000, TIME_MSEC, 30, VEL_PCT);
