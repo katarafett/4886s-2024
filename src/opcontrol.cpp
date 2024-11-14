@@ -73,7 +73,7 @@ void opcontrol(void) {
                 lift.spinToPosition(10 * 5, ROT_DEG, 100, VEL_PCT, false);
             }
             else if (liftHeight == 2){
-                lift.spinToPosition(39 * 5, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(38 * 5, ROT_DEG, 100, VEL_PCT, false);
                 liftOT = 0;
 
             }

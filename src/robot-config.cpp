@@ -25,7 +25,7 @@ vex::motor intakeLow = vex::motor(PORT7, INTAKE_INSERT, false);
 vex::motor intakeHigh = vex::motor(PORT8, INTAKE_INSERT, true);
 vex::motor intakeMid = vex::motor(PORT9, INTAKE_INSERT, false);
 
-vex::motor lift = vex::motor(PORT10, vex::gearSetting::ratio18_1, true);
+vex::motor lift = vex::motor(PORT10, vex::gearSetting::ratio18_1, false);
 
 // 3 Wire Ports
 vex::digital_out mogo_clamp = vex::digital_out(PORTA);
