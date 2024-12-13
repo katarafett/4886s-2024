@@ -15,7 +15,7 @@ void autonomous(void) {
             drive_straight(5, 50, 50);
             // pickup ring 2 with smith mech
             drive_straight(-11, 50, 50);
-            lift.spinToPosition(-40, ROT_DEG, 200, VEL_RPM, false);
+            lift.spinToPosition(3*5, ROT_DEG, 200, VEL_RPM, false);
             turn_pid(-25, -1, 1);
             drive_straight(4, 50, 50);
             Smith_Mech.set(1);
@@ -70,8 +70,16 @@ void autonomous(void) {
 
 
         case ELIMS_RED:{
-            //MOGO
-            drive_straight(-24, 30, 50, false);
+
+            // score on AWS
+            lift.spinToPosition(130*5, ROT_DEG, 200, VEL_RPM, false);
+            wait(150, TIME_MSEC);
+            drive_straight(5, 50, 50);
+            // pickup ring 2 with smith mech
+            drive_straight(-12, 50, 50);
+            lift.spinToPosition(5*5, ROT_DEG, 200, VEL_RPM, false);
+            drive_turn(67, -7, 30, 50, false);
+            drive_straight(-30, 30, 50, false);
             mogo_clamp.set(1);
             drive_straight(-2, 30, 50);
             wait(500, TIME_MSEC);
@@ -79,20 +87,22 @@ void autonomous(void) {
             turn_pid(90, -1, 1);
             intake.spin(DIR_FWD, 12, VLT_VLT);
             drive_straight(27, 75, 150);
-            drive_straight(-12, 75, 150);
+            wait(300, TIME_MSEC);
+            drive_straight(-8, 75, 150);
             // Ring 2
-            turn_pid(60, -1, 1);
-            drive_straight(18, 30, 50);
+            turn_pid(70, -1, 1);
+            drive_straight(14, 30, 50);
             // ring 3
             drive_straight(-4, 30, 50);
             turn_pid(50, -1, 1);
-            drive_straight(-20, 30, 50, true);
-            wait(400, TIME_MSEC);
-            turn_pid(-30, -1, 1);
-            drive_straight(22, 30, 50, true);
             drive_straight(-15, 30, 50, true);
-            turn_pid(100, -1, 1);
-            drive_straight(65, 60, 50, true);
+            wait(400, TIME_MSEC);
+            turn_pid(-35, -1, 1);
+            drive_straight(17, 30, 50, true);
+            wait(500, TIME_MSEC);
+            drive_straight(-10, 30, 50, true);
+            drive_straight(3, 30, 50, true);
+            
 
             break;
         }
@@ -104,7 +114,7 @@ void autonomous(void) {
             lift.spinToPosition(125*5, ROT_DEG, 200, VEL_RPM);
             wait(150, TIME_MSEC);
             lift.spinToPosition(2*5, ROT_DEG, 200, VEL_RPM, false);
-            drive_straight(-20,75,75);
+            drive_straight(-21,30,30);
             mogo_clamp.set(1);
             turn_pid(-125, -1, 1); 
             intake.spin(DIR_FWD, 12, VLT_VLT);
@@ -129,15 +139,15 @@ void autonomous(void) {
 
 
             // second MOGO
-            drive_straight(27,  75, 75);
-            turn_pid(-157, -1, 1);
-            drive_straight(-54,  75, 75);
+            drive_straight(33,  75, 75);
+            turn_pid(-161, -1, 1);
+            drive_straight(-47.5,  50, 75);
             mogo_clamp.set(1);
             // first ring
-            turn_pid(90, -1, 1);
-            drive_straight(20,  75, 75);
+            turn_pid(88, -1, 1);
+            drive_straight(23,  75, 75);
             // second
-            turn_pid(90, -1, 1);
+            turn_pid(92, -1, 1);
             drive_straight(23,  75, 75);
             // third
             turn_pid(60, -1, 1);
@@ -153,12 +163,13 @@ void autonomous(void) {
             turn_pid(110, -1, 1);
             drive_straight(-10, 20, 75);
             mogo_clamp.set(0);
+            wait(250, TIME_MSEC);
+            //imu.setRotation(0, ROT_DEG);
             intakeHigh.stop();
 
             // reset imu
             drive_straight(8, 40, 75);
             turn_pid(70, -1, 1);
-
             mogo_clamp.set(1);
             drive_full.spinFor(DIR_REV, 1000, TIME_MSEC, 30, VEL_PCT);
             wait(200,TIME_MSEC);
@@ -170,15 +181,15 @@ void autonomous(void) {
             intake.spin(DIR_FWD, 12, VLT_VLT);
             drive_turn(90, 13, 50, 75);
             wait(1500, TIME_MSEC);
-            intake.stop();
             drive_straight(2, 40, 50);
+            intakeHigh.spinFor(-90, ROT_DEG, 100, VEL_PCT);
             lift.spinToPosition(140 * 5, ROT_DEG, 100, VEL_PCT);
-            lift.spinToPosition(2 * 5, ROT_DEG, 100, VEL_PCT, false);
+            lift.spinToPosition(5 * 5, ROT_DEG, 100, VEL_PCT, false);
             drive_straight(-13, 40, 50);
             turn_pid(-90, -1, 1);
             drive_straight(11, 40, 50);
 
-
+/*
 
             // thrid MOGO
             intakeLow.spin(DIR_FWD, 12, VLT_VLT);
@@ -211,7 +222,7 @@ void autonomous(void) {
             turn_pid(-90, -1, 1);
             drive_straight(25, 40, 50);
             drive_straight(150, 40, 50);
-
+*/
            break;
             }
         }

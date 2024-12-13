@@ -70,15 +70,19 @@ void opcontrol(void) {
             }
             
             if (liftHeight == 1){
-                lift.spinToPosition(10 * 5, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(15 * 5, ROT_DEG, 100, VEL_PCT, false);
+                lift.setStopping(vex::brakeType::coast);
             }
             else if (liftHeight == 2){
-                lift.spinToPosition(38 * 5, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(42 * 5, ROT_DEG, 100, VEL_PCT, false);
+                lift.setStopping(vex::brakeType::hold);
                 liftOT = 0;
 
             }
             else if (liftHeight == 3){
+                lift.setStopping(vex::brakeType::hold);
                 if (liftOT == 0){
+                    intake.spinFor(250, TIME_MSEC, 100, VEL_PCT);
                     intake.spinFor(-180, ROT_DEG, 100, VEL_PCT, false);
                     wait(200, TIME_MSEC);
                     liftOT = 1;
@@ -102,9 +106,15 @@ void opcontrol(void) {
 
 
             // PTO
-            if (BTN_RIGHT.PRESSED)
-                PTO.set(!PTO.value());
-
+            if (BTN_RIGHT.PRESSED){
+                lift.spinToPosition(125*5, ROT_DEG, 200, VEL_RPM);
+                wait(150, TIME_MSEC);
+                lift.spinToPosition(2*5, ROT_DEG, 200, VEL_RPM, false);
+                drive_straight(-21,45,100);
+                mogo_clamp.set(1);
+                turn_pid(-125, -1, 1); 
+                intake.spin(DIR_FWD, 12, VLT_VLT);
+            }
 
             // Toggles chase neutral post
             //if (BTN_RIGHT.PRESSED)
