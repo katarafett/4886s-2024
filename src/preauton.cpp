@@ -6,7 +6,7 @@ void pre_auton(void) {
 
     intake_lift.set(1);
     int *sides;
-    const char *autons[8] = {"FullAWP", "RedRight", "RedLeft", "BlueRight", "BlueLeft", "SKILLS", "ElimsBlue", "ElimsRed"};
+    const char *autons[8] = {"FullAWP", "RedRush", "RedQuad", "BlueQuad", "BlueRush", "SKILLS", "ElimsBlue", "ElimsRed"};
 
     // Create GUI - none of this is important, just for looks
     B_SCRN.clearScreen();

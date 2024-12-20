@@ -5,10 +5,10 @@
 #define WHEEL_TO_WHEEL_DIST (10.75)
 
 #define FULL_AWP 0
-#define RED_RIGHT 1
-#define RED_LEFT 2
-#define BLUE_RIGHT 3
-#define BLUE_LEFT 4
+#define RED_RUSH 1
+#define RED_QUAD 2
+#define BLUE_QUAD 3
+#define BLUE_RUSH 4
 #define SKILLS 5
 #define ELIMS_BLUE 6
 #define ELIMS_RED 7

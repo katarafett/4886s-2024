@@ -110,10 +110,6 @@ void opcontrol(void) {
                 lift.spinToPosition(125*5, ROT_DEG, 200, VEL_RPM);
                 wait(150, TIME_MSEC);
                 lift.spinToPosition(2*5, ROT_DEG, 200, VEL_RPM, false);
-                drive_straight(-21,45,100);
-                mogo_clamp.set(1);
-                turn_pid(-125, -1, 1); 
-                intake.spin(DIR_FWD, 12, VLT_VLT);
             }
 
             // Toggles chase neutral post
