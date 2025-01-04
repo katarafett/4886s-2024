@@ -148,6 +148,11 @@ double imu_rotation() {
     return imu.rotation() * IMU_CORRECTION;
 }
 
+void reset_imu_rotation() {
+    imu.resetRotation();
+    target_heading = 0;
+}
+
 // Controller joystick shorthand
 double axis_rx() {
     return master.Axis1.position();

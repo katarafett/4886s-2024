@@ -88,7 +88,7 @@ void opcontrol(void) {
                     liftOT = 1;
                 }
 
-                lift.spinToPosition(140 * 5, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(143 * 5, ROT_DEG, 100, VEL_PCT, false);
                 }
                  // MOGO Mech
             if (BTN_Y.PRESSED){

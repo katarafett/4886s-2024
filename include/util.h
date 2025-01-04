@@ -107,6 +107,11 @@ double raw_vel_dl(void);
 double imu_rotation(void);
 
 /**
+ * @brief Resets the imu heading
+ */
+void reset_imu_rotation(void);
+
+/**
  * @brief Get right stick horizontal axis value
  *
  * @return Return value between -100 and 100
