@@ -22,7 +22,7 @@ vex::motor drive_l3 = vex::motor(PORT6, DRIVE_INSERT, true);
 
 // Subsystem 3
 vex::motor intakeLow = vex::motor(PORT9, INTAKE_INSERT, false);
-vex::motor intakeHigh = vex::motor(PORT8, INTAKE_INSERT, true);
+vex::motor intakeHigh = vex::motor(PORT7, INTAKE_INSERT, true);
 
 vex::motor lift = vex::motor(PORT10, vex::gearSetting::ratio18_1, false);
 
