@@ -26,7 +26,7 @@ int main() {
     }
     else {
         imu.calibrate();
-        master.ButtonLeft.pressed(tune_fast_pid);
+        master.ButtonLeft.pressed(tune_accel_pid);
         master.ButtonRight.pressed(autonomous);
     }
 

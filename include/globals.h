@@ -2,7 +2,7 @@
 #define DRIVE_GEARING (GEAR_36 / GEAR_48)
 // Connversion factor from motor revolutions to inches travelled
 #define DRIVE_REV_TO_IN (DRIVE_GEARING * PI * MED_OMNI_DIAM)
-#define WHEEL_TO_WHEEL_DIST (10.75)
+#define WHEEL_TO_WHEEL_DIST (11.5)
 
 #define FULL_AWP 0
 #define RED_RUSH 1

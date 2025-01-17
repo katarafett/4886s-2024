@@ -29,7 +29,7 @@ void autonomous(void) {
             wait(200, TIME_MSEC);
             mogo_clamp.set(1);
             wait(200, TIME_MSEC);
-            drive_straight(-1, 20, 50);
+            drive_straight(-2, 20, 50);
             // quad stack
             turn_pid(180, -1, 1);
             drive_straight(-5, 20, 50);
@@ -127,19 +127,19 @@ void autonomous(void) {
             wait(1000, TIME_MSEC);
             mogo_clamp.set(0);
             // MOGO 2
-            drive_straight(5, 50, 50);
+            drive_straight(4, 50, 50);
             turn_pid(90, -1, 1);
-            drive_straight(-20, 50, 50);
+            drive_straight(-19, 50, 50);
             mogo_clamp.set(1);
             // corner
             drive_straight(20, 50, 50);
-            turn_pid(-19, -1, 1);
+            turn_pid(-20, -1, 1);
             Smith_Mech.set(1);
-            drive_straight(50, 30, 50);
+            drive_straight(47, 30, 50);
             turn_pid(100, -1, 1);
             Smith_Mech.set(0);
             turn_pid(-20, -1, 1);
-            drive_straight(15, 50, 50);
+            drive_straight(15, 75, 100);
             turn_pid(-45, -1, 1);
             drive_straight(-40, 50, 50);
             break;
@@ -284,7 +284,7 @@ wait(200,TIME_MSEC);
 reset_imu_rotation();
 
 // wall stake 
-lift.spinToPosition(36 * 5, ROT_DEG, 100, VEL_PCT, false);
+lift.spinToPosition(39 * 5, ROT_DEG, 100, VEL_PCT, false);
 drive_straight(55, 40, 50);
 intake.spin(DIR_FWD, 12, VLT_VLT);
 drive_turn(90, 13, 50, 75);
