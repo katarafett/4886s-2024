@@ -11,182 +11,151 @@ void autonomous(void) {
     }
     switch (auton_mode) {
         case FULL_AWP: {
-            // score on AWS
-            lift.spinToPosition(130*5, ROT_DEG, 200, VEL_RPM, false);
-            wait(150, TIME_MSEC);
-            drive_straight(5, 50, 50);
-            // pickup ring 2 with smith mech
-            drive_straight(-11, 50, 50);
-            lift.spinToPosition(3*5, ROT_DEG, 200, VEL_RPM, false);
-            turn_pid(-25, -1, 1);
-            // push teammate
-            drive_straight(16, 50, 50);
-            // go for MOGO
-            drive_straight(-12, 50, 50);
-            drive_turn(90, -6, 40, 75, false);
-            drive_full.spinFor(DIR_FWD, 700, TIME_MSEC, 50, VEL_PCT);
-            drive_straight(-33, 40, 100);
-            wait(200, TIME_MSEC);
-            mogo_clamp.set(1);
-            wait(200, TIME_MSEC);
-            drive_straight(-2, 20, 50);
-            // quad stack
-            turn_pid(180, -1, 1);
-            drive_straight(-5, 20, 50);
-            intake.spin(DIR_FWD, 100, PCT_PCT);
-            drive_turn(-85, -24, 40, 75, false);
-            drive_straight(5, 20, 50);
-            drive_straight(-14, 20, 50);
-            // double stack
-            drive_turn(-190, -14, 75, 75, false);
-            drive_straight(30, 65, 100);
+
+intakeLow.spin(DIR_FWD, 100, PCT_PCT);
+wait(250, TIME_MSEC);
+drive_straight(-6, 30, 70);
+turn_pid(65, -1, 1);
+drive_straight(5, 30, 70);
+lift.spinToPosition(170 * 4, ROT_DEG, 200, VEL_RPM);
+drive_straight(-15, 30, 70);
+lift.spinToPosition(-40 * 4, ROT_DEG, 200, VEL_RPM, false);
+turn_pid(47, -1, 1);
+drive_straight(-24, 30, 70);
+mogo_clamp.set(1);
+wait(250, TIME_MSEC);
+intake.spin(DIR_FWD, 100, PCT_PCT);
+turn_pid(95, -1, 1);
+drive_straight(20, 30, 70);
+drive_straight(-20, 30, 70);
+// push teamnate
+turn_pid(70, -1, 1);
+drive_straight(-36, 30, 70);
+turn_pid(-85, -1, 1);
+drive_straight(-23, 75, 70);
+drive_straight(5, 30, 70);
+turn_pid(110, -1, 1);
+lift.spinToPosition(180 * 4, ROT_DEG, 200, VEL_RPM, false);
+drive_straight(23, 30, 70);
+
+
 
             break;
         }
         case BLUE_QUAD: {
-            // score on AWS
-            lift.spinToPosition(130*5, ROT_DEG, 200, VEL_RPM, false);
-            wait(150, TIME_MSEC);
-            drive_straight(5, 50, 50);
-            // pickup ring 2 with smith mech
-            drive_straight(-11, 50, 50);
-            lift.spinToPosition(3*5, ROT_DEG, 200, VEL_RPM, false);
-            turn_pid(25, -1, 1);
-            // push teammate
-            drive_straight(16, 50, 50);
-            // go for MOGO
-            drive_straight(-14, 50, 50);
-            drive_turn(-90, 6, 40, 75, false);
-            drive_full.spinFor(DIR_FWD, 400, TIME_MSEC, 30, VEL_PCT);
-            drive_straight(-34.5, 40, 100);
-            intake.spin(DIR_FWD, 100, PCT_PCT);
-            wait(250, TIME_MSEC);
-            mogo_clamp.set(1);
-            // quad stack
-            turn_pid(-180, -1, 1);
-            drive_straight(-2, 20, 50);
-            drive_turn(85, 23, 40, 75, false);
-            drive_straight(5, 20, 50);
-            drive_straight(-14, 20, 50);
-            // double stack
-            drive_turn(185, 14, 75, 75, false);
-            drive_straight(32, 65, 100);
+            
+// score on AWS
+drive_straight(3, 50, 50);
+lift.spinToPosition(164 * 4, ROT_DEG, 150, VEL_RPM);
+// pickup ring 2 with smith mech
+drive_straight(-12, 50, 50);
+lift.spinToPosition(-40 * 4, ROT_DEG, 200, VEL_RPM, false);
+turn_pid(65, -1, 1);
+// push teammate
+drive_straight(16, 50, 50);
+drive_straight(-5, 50, 50);
+// go for MOGO
+turn_pid(-80, -1, 1);
+drive_straight(-36, 50, 100);
+wait(250, TIME_MSEC);
+mogo_clamp.set(1);
+drive_straight(-1, 20, 50);
+intake.spin(DIR_FWD, 100, PCT_PCT);
+// quad stack
+turn_pid(140, -1, 1);
+drive_straight(-8, 20, 50);
+drive_turn(90, 18, 40, 75, false);
+drive_straight(10, 20, 50);
+drive_straight(-14, 20, 50);
+// double stack
+drive_turn(185, 14, 75, 75, false);
+drive_straight(31, 65, 100);
+
             break;
         }
 
 
         case BLUE_RUSH: {
-            // score on AWS
-            lift.spinToPosition(130*5, ROT_DEG, 200, VEL_RPM, false);
-            wait(150, TIME_MSEC);
-            drive_straight(5, 50, 50);
-            // pickup ring 2 with smith mech
-            drive_straight(-4, 50, 50);
-            lift.spinToPosition(3*5, ROT_DEG, 200, VEL_RPM, false);
-            turn_pid(52, -1, 1);
-            drive_straight(-36, 50, 50);
-            intake.spin(DIR_FWD, 100, PCT_PCT);
-            mogo_clamp.set(1);
-            turn_pid(110, -1, 1);
-            drive_straight(25, 75, 100);
-            drive_straight(-11, 50, 50);
-            wait(1000, TIME_MSEC);
-            mogo_clamp.set(0);
-            drive_straight(5, 50, 50);
-            turn_pid(-90, -1, 1);
-            drive_straight(-17, 50, 50);
-            mogo_clamp.set(1);
-            turn_pid(-10, -1, 1);
-            Smith_Mech.set(1);
-            drive_straight(-56, 50, 50);
-            turn_pid(-90, -1, 1);
-            turn_pid(20, -1, 1);
-            drive_straight(10, 50, 50);
-            drive_straight(-6, 50, 50);
 
             break;
         }
 
 
         case RED_RUSH:{
-            // score on AWS
-            lift.spinToPosition(130*5, ROT_DEG, 200, VEL_RPM, false);
-            wait(150, TIME_MSEC);
-            drive_straight(5, 50, 50);
-            // MOGO
-            drive_straight(-4, 50, 50);
-            lift.spinToPosition(3*5, ROT_DEG, 200, VEL_RPM, false);
-            turn_pid(-52, -1, 1);
-            drive_straight(-36, 50, 50);
-            mogo_clamp.set(1);
-            intake.spin(DIR_FWD, 100, PCT_PCT);
-            // second ring
-            turn_pid(-105, -1, 1);
-            drive_straight(25, 75, 100);
-            drive_straight(-9, 50, 50);
-            wait(1000, TIME_MSEC);
-            mogo_clamp.set(0);
-            // MOGO 2
-            drive_straight(4, 50, 50);
-            turn_pid(90, -1, 1);
-            drive_straight(-19, 50, 50);
-            mogo_clamp.set(1);
-            // corner
-            drive_straight(20, 50, 50);
-            turn_pid(-20, -1, 1);
-            Smith_Mech.set(1);
-            drive_straight(47, 30, 50);
-            turn_pid(100, -1, 1);
-            Smith_Mech.set(0);
-            turn_pid(-20, -1, 1);
-            drive_straight(15, 75, 100);
-            turn_pid(-45, -1, 1);
-            drive_straight(-40, 50, 50);
+
+lift.spinToPosition(145 * 4, ROT_DEG, 200, VEL_RPM, false);
+drive_straight(38.5, 75, 100);
+lift.spinToPosition(190 * 4, ROT_DEG, 200, VEL_RPM, true);
+drive_straight(-5, 30, 70);
+turn_pid(55, -1, 1);
+// goal 2
+drive_straight(-18, 30, 70);
+lift.spinToPosition(-45 * 4, ROT_DEG, 200, VEL_RPM, false);
+mogo_clamp.set(1);
+wait(250, TIME_MSEC);
+intake.spin(DIR_FWD, 100, PCT_PCT);
+turn_pid(10, -1, 1);
+drive_straight(28, 75, 70);
+// ring 3
+turn_pid(143, -1, 1);
+drive_straight(41, 75, 70);
+Smith_Mech.set(1);
+drive_straight(-10, 75, 70);
+Smith_Mech.set(0);
+wait(200, TIME_MSEC);
+turn_pid(25, -1, 1);
+lift.spinToPosition(0 * 4, ROT_DEG, 200, VEL_RPM, false);
+drive_straight(15, 75, 70);
+drive_straight(-10, 75, 70);
+turn_pid(-56, -1, 1);
+drive_straight(17, 75, 70);
+intake.stop();
+lift.spinToPosition(170 * 4, ROT_DEG, 200, VEL_RPM);
+drive_straight(-18, 75, 70);
+lift.spinToPosition(160 * 4, ROT_DEG, 200, VEL_RPM);
+turn_pid(90, -1, 1);
+drive_straight(18, 30, 70);
+
             break;
         }
 
 
         case RED_QUAD:{
-            // score on AWS
-            lift.spinToPosition(130*5, ROT_DEG, 200, VEL_RPM, false);
-            wait(150, TIME_MSEC);
-            drive_straight(5, 50, 50);
-            // pickup ring 2 with smith mech
-            drive_straight(-11, 50, 50);
-            lift.spinToPosition(3*5, ROT_DEG, 200, VEL_RPM, false);
-            turn_pid(-25, -1, 1);
-            // push teammate
-            drive_straight(16, 50, 50);
-            // go for MOGO
-            drive_straight(-14, 50, 50);
-            drive_turn(90, -6, 40, 75, false);
-            drive_full.spinFor(DIR_FWD, 500, TIME_MSEC, 60, VEL_PCT);
-            drive_straight(-32, 75, 100);
-            intake.spin(DIR_FWD, 100, PCT_PCT);
-            wait(250, TIME_MSEC);
-            mogo_clamp.set(1);
-            drive_straight(-2, 20, 50);
-            // quad stack
-            turn_pid(180, -1, 1);
-            drive_straight(-5, 20, 50);
-            drive_turn(-85, -23, 40, 75, false);
-            drive_straight(5, 20, 50);
-            drive_straight(-14, 20, 50);
-            // double stack
-            drive_turn(-185, -14, 75, 75, false);
-            drive_straight(32, 65, 100);
+
+// score on AWS
+drive_straight(3, 50, 50);
+lift.spinToPosition(164 * 4, ROT_DEG, 150, VEL_RPM);
+// pickup ring 2 with smith mech
+drive_straight(-15, 50, 50);
+lift.spinToPosition(-40 * 4, ROT_DEG, 200, VEL_RPM, false);
+turn_pid(50, -1, 1);
+drive_straight(-27, 30, 100);
+mogo_clamp.set(1);
+drive_straight(-1, 20, 50);
+wait(250, TIME_MSEC);
+intake.spin(DIR_FWD, 100, PCT_PCT);
+// quad stack
+turn_pid(130, -1, 1);
+drive_straight(14, 20, 50);
+turn_pid(-45, -1, 1);
+drive_straight(15, 20, 50);
+turn_pid(-90, -1, 1);
+drive_straight(25, 40, 50);
+
+
+break;
         }
 
 
         case ELIMS_RED:{
 
             // score on AWS
-            lift.spinToPosition(130*5, ROT_DEG, 200, VEL_RPM, false);
+            lift.spinToPosition(130*4, ROT_DEG, 200, VEL_RPM, false);
             wait(150, TIME_MSEC);
             drive_straight(5, 50, 50);
             // pickup ring 2 with smith mech
             drive_straight(-11, 50, 50);
-            lift.spinToPosition(3*5, ROT_DEG, 200, VEL_RPM, false);
+            lift.spinToPosition(3*4, ROT_DEG, 200, VEL_RPM, false);
             turn_pid(-25, -1, 1);
             drive_straight(4, 50, 50);
             Smith_Mech.set(1);
@@ -219,12 +188,12 @@ void autonomous(void) {
 case SKILLS:{
 
 // first ring
-lift.spinToPosition(125*5, ROT_DEG, 200, VEL_RPM);
-wait(150, TIME_MSEC);
-lift.spinToPosition(2*5, ROT_DEG, 200, VEL_RPM, false);
-drive_straight(-21,50,50);
+lift.spinToPosition(162 * 4, ROT_DEG, 150, VEL_RPM);
+drive_straight(-20, 50, 50);
 mogo_clamp.set(1);
-turn_pid(-125, -1, 1); 
+wait(350, TIME_MSEC);
+lift.spinToPosition(-40 * 4, ROT_DEG, 200, VEL_RPM, false);
+turn_pid(-135, -1, 1); 
 intake.spin(DIR_FWD, 12, VLT_VLT);
 drive_straight(20,75,75);
 turn_pid(-90, -1, 1);
@@ -243,16 +212,21 @@ drive_straight(12, 15, 75);
 turn_pid(-110, -1, 1);
 drive_straight(-10, 20, 75);
 mogo_clamp.set(0);
+intake.spin(DIR_REV, 12, VLT_VLT);
+
 
 
 
 // second MOGO
+intake.stop();
 drive_straight(33,  75, 75);
 turn_pid(-159, -1, 1);
 drive_straight(-48,  50, 75);
 mogo_clamp.set(1);
+wait(350, TIME_MSEC);
 // first ring
 turn_pid(88, -1, 1);
+intake.spin(DIR_FWD, 12, VLT_VLT);
 drive_straight(21,  75, 75);
 // second
 turn_pid(92, -1, 1);
@@ -273,7 +247,8 @@ drive_straight(-10, 20, 75);
 mogo_clamp.set(0);
 wait(250, TIME_MSEC);
 //imu.setRotation(0, ROT_DEG);
-intakeHigh.stop();
+intake.spin(DIR_REV, 12, VLT_VLT);
+
 
 // reset imu
 drive_straight(5, 40, 75);
@@ -284,7 +259,7 @@ wait(200,TIME_MSEC);
 reset_imu_rotation();
 
 // wall stake 
-lift.spinToPosition(39 * 5, ROT_DEG, 100, VEL_PCT, false);
+lift.spinToPosition(4 * 4, ROT_DEG, 100, VEL_PCT, false);
 drive_straight(55, 40, 50);
 intake.spin(DIR_FWD, 12, VLT_VLT);
 drive_turn(90, 13, 50, 75);
@@ -292,12 +267,15 @@ wait(1000, TIME_MSEC);
 drive_straight(2, 40, 50);
 drive_full.spinFor(DIR_FWD, 500, TIME_MSEC, 20, VEL_PCT);
 intakeHigh.spinFor(-90, ROT_DEG, 100, VEL_PCT);
-lift.spinToPosition(140 * 5, ROT_DEG, 100, VEL_PCT);
-lift.spinToPosition(5 * 5, ROT_DEG, 100, VEL_PCT, false);
+lift.spinToPosition(150 * 4, ROT_DEG, 100, VEL_PCT, false);
+wait(500, TIME_MSEC);
+drive_straight(-2, 40, 50);
+drive_straight(2, 40, 50);
 drive_straight(-13, 40, 50);
+lift.spinToPosition(-40 * 4, ROT_DEG, 100, VEL_PCT, false);
 turn_pid(-90, -1, 1);
 drive_straight(11, 40, 50);
-
+intake.stop();
 
 // thrid MOGO
 intakeLow.spin(DIR_FWD, 12, VLT_VLT);
@@ -309,6 +287,7 @@ wait(500, TIME_MSEC);
 turn_pid(115, -1, 1);
 drive_straight(-56, 40, 50);
 mogo_clamp.set(1);
+wait(350, TIME_MSEC);
 // second
 intake.spin(DIR_FWD, 12, VLT_VLT);
 
@@ -332,8 +311,10 @@ drive_straight(-34, 40, 50);
 intake.spin(DIR_REV, 12, VLT_VLT);
 drive_straight(23, 40, 50);
 turn_pid(-90, -1, 1);
-drive_straight(122, 50, 1000);
-           break;
+drive_straight(120, 50, 1000);
+drive_straight(-10, 75, 1000);
+
+break;
             }
         }
 }

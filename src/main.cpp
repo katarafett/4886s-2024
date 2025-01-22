@@ -20,13 +20,13 @@ const bool run_main = true;
 
 int main() {
     if (run_main) {
+        pre_auton();
         Competition.autonomous(autonomous);
         Competition.drivercontrol(opcontrol);
-        pre_auton();
     }
     else {
         imu.calibrate();
-        master.ButtonLeft.pressed(tune_accel_pid);
+        master.ButtonLeft.pressed(tune_fast_pid);
         master.ButtonRight.pressed(autonomous);
     }
 

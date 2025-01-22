@@ -82,7 +82,7 @@ void opcontrol(void) {
 
             else if (liftHeight == 3){
                 lift.setStopping(vex::brakeType::hold);
-                lift.spinToPosition(180 * 4, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(182 * 4, ROT_DEG, 100, VEL_PCT, false);
                 }
 
                 else if (liftHeight == 4){

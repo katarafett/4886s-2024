@@ -13,7 +13,7 @@
 
 
 // drive_turn() consts
-#define DRIVE_TURN_KP 10.0
+#define DRIVE_TURN_KP 0.0
 #define DRIVE_TURN_KI 0.0
 #define DRIVE_TURN_KD 0.0
 
@@ -23,6 +23,6 @@
 
 
 // turn_pid() consts
-#define TURN_PID_KP 2.2505
+#define TURN_PID_KP 0.6
 #define TURN_PID_KI 0.0
-#define TURN_PID_KD 9.65
+#define TURN_PID_KD 2.425

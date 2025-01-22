@@ -67,7 +67,7 @@ void tune_accel_pid() {
         rd.tune_kP(btn_up() - btn_down(), TUNER);
         rd.tune_kD(btn_x() - btn_b(), TUNER);
         
-move_kp += (btn_up() - btn_down()) * TUNER;
+        move_kp += (btn_up() - btn_down()) * TUNER;
         move_kd += (btn_x() - btn_b()) * TUNER;
         wait(20, vex::msec);
     }
