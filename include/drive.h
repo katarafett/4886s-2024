@@ -13,6 +13,26 @@ enum DriveType {
 	TANK,
 };
 
+typedef struct _driver_config_t {
+	DriveType drive_type;
+	double rot_mod;
+	double speed_mod;
+} driver_config_t;
+
+typedef struct _pid_consts_t {
+	double kp;
+	double ki;
+	double kd;
+} pid_consts_t;
+
+typedef struct _pid_configs_t {
+	pid_consts_t move_accel;
+	pid_consts_t move_dir;
+	pid_consts_t linear;
+	pid_consts_t rotate;
+	pid_consts_t arc;
+} pid_configs_t;
+
 /**
  * @brief A class to control the drivetrain of a robot
  */
@@ -24,29 +44,15 @@ private:
 	/* A motor group for the right half of the drive */
 	vex::motor_group right;
 
-	/* A control scheme for the driver */
-	DriveType drive_type;
+	driver_config_t drive_conf;
 
-	/* The rotational speed modifier for opdrive() */
-	double rot_mod;
-
-	/* The linear speed modifier for opdrive() */
-	double speed_mod;
-
-	/* The PID object used by move() for speed control */
-	Pid move_accel_pid;
-
-	/* The PID object used by move() for direction control */
-	Pid move_dir_pid;
-
-	/* The PID object used by rotate() */
-	Pid rotate_pid;
-
-	/* The PID object used by arc() */
-	Pid arc_pid;
+	pid_configs_t pid_confs;
 
 public:
 	Drive();
+
+	Drive(vex::motor_group left, vex::motor_group right,
+			driver_config_t driver_conf, pid_configs_t pid_confs);
 
 	/**
 	 * @brief Constructor
@@ -130,7 +136,7 @@ public:
 	 * Always positive.
 	 * @param do_decel Whether to decelerate at the end of the function
 	 */
-	void move(double in, double ips, double ipss, bool do_decel);
+	void linear(double in, double ips, double ipss, bool do_decel);
 
 	/**
 	 * @brief PID aided forward/backward movement. PID is used to maintain 
@@ -146,7 +152,7 @@ public:
 	 * @param lockout Whether to lock out the user from other actions until the
 	 * function has finished running. Equivalent to vex`s `waitForCompletion`.
 	 */
-	void move(double in, double ips, double ipss, bool do_decel, bool lockout);
+	void linear(double in, double ips, double ipss, bool do_decel, bool lockout);
 
 	/**
 	 * @brief PID aided rotation in place. PID maintain direction and 

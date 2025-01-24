@@ -10,20 +10,39 @@
 vex::brain Brain;
 vex::controller master;
 
+
+/* START OF DRIVE CONFIG */
+
+// Drive motors
 vex::motor drive_r1 = vex::motor(PORT14, DRIVE_INSERT, false);
 vex::motor drive_r2 = vex::motor(PORT15, DRIVE_INSERT, false);
 vex::motor drive_r3 = vex::motor(PORT16, DRIVE_INSERT, true);
-// vex::motor drive_r4 = vex::motor(PORT4, DRIVE_INSERT, true);
-
 vex::motor drive_l1 = vex::motor(PORT11, DRIVE_INSERT, false);
 vex::motor drive_l2 = vex::motor(PORT12, DRIVE_INSERT, true);
 vex::motor drive_l3 = vex::motor(PORT13, DRIVE_INSERT, true);
-// vex::motor drive_l4 = vex::motor(PORT8, DRIVE_INSERT, false);
 
+// Drive halves
 vex::motor_group drive_r = vex::motor_group(drive_r1, drive_r2, drive_r3);
 vex::motor_group drive_l = vex::motor_group(drive_l1, drive_l2, drive_l3);
 
-Drive drive = Drive(drive_l, drive_r, TWO_STICK_ARCADE, 1.0, 1.0);
+// Config for the driver
+driver_config_t driver_conf = {TWO_STICK_ARCADE, 0.6, 1.0};
+
+// Individual PID constants
+pid_consts_t move_accel = {1.0, 0.0, 0.0};
+pid_consts_t move_dir = {1.0, 0.0, 0.0};
+pid_consts_t linear = {1.0, 0.0, 0.0};
+pid_consts_t rotate = {1.0, 0.0, 0.0};
+pid_consts_t arc = {1.0, 0.0, 0.0};
+
+// All PID configs
+pid_configs_t pid_confs = {move_accel, move_dir, linear, rotate, arc};
+
+// The drive object
+Drive drive = Drive(drive_r, drive_l, driver_conf, pid_confs);
+
+/* END OF Drive drive CONFIG */
+
 
 // Subsystem 3
 vex::motor intakeLow = vex::motor(PORT1, INTAKE_INSERT, true);
