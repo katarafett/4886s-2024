@@ -6,7 +6,6 @@
 void opcontrol(void) {
     drive_l.stop(vex::brakeType::coast);
     drive_r.stop(vex::brakeType::coast);
-    intake.stop(vex::brakeType::brake);
     bool shifted = false;
 
     float spd_mod = 1.0;
@@ -59,7 +58,7 @@ void opcontrol(void) {
                 liftHeight = liftHeight+1;
             }
             if (BTN_L2.PRESSED){
-                liftHeight = 1;
+                liftHeight = liftHeight-1;
             }
             // To reset the lift
             if (BTN_DOWN.PRESSED){
@@ -71,23 +70,25 @@ void opcontrol(void) {
             }
             
             if (liftHeight == 1){
-                lift.spinToPosition(2 * 4, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(15 * 5, ROT_DEG, 100, VEL_PCT, false);
                 lift.setStopping(vex::brakeType::coast);
             }
-
             else if (liftHeight == 2){
-                lift.spinToPosition(54 * 4, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(42 * 5, ROT_DEG, 100, VEL_PCT, false);
                 lift.setStopping(vex::brakeType::hold);
-            }
+                liftOT = 0;
 
+            }
             else if (liftHeight == 3){
                 lift.setStopping(vex::brakeType::hold);
-                lift.spinToPosition(182 * 4, ROT_DEG, 100, VEL_PCT, false);
+                if (liftOT == 0){
+                    intake.spinFor(250, TIME_MSEC, 100, VEL_PCT);
+                    intake.spinFor(-180, ROT_DEG, 100, VEL_PCT, false);
+                    wait(200, TIME_MSEC);
+                    liftOT = 1;
                 }
 
-                else if (liftHeight == 4){
-                lift.spinToPosition(280 * 4, ROT_DEG, 100, VEL_PCT, false);
-                lift.setStopping(vex::brakeType::hold);
+                lift.spinToPosition(143 * 5, ROT_DEG, 100, VEL_PCT, false);
                 }
                  // MOGO Mech
             if (BTN_Y.PRESSED){

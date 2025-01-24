@@ -15,10 +15,6 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
     PID pid_drive_r = PID(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
     PID pid_dir = PID(DRIVE_STRAIGHT_DIR_KP, DRIVE_STRAIGHT_DIR_KI, DRIVE_STRAIGHT_DIR_KD);
 
-    //PID pid_dir = PID(move_kp, move_ki, move_kd);
-    //PID pid_drive_l = PID(move_kp, move_ki, move_kd);
-    //PID pid_drive_r = PID(move_kp, move_ki, move_kd);
-    
     float ips = 0, pos = 0;
     float pos_start_l = pos_drive_l(), pos_start_r = pos_drive_r();
     float pos_l, pos_r;
@@ -83,8 +79,8 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ipss,
 
     target_heading += degrees; // update target heading
 
-    //PID pid_drive_l = PID(move_kp, move_ki, move_kd);
-    //PID drive_r = PID(move_kp, move_ki, move_kd);
+    // PID pid_drive_l = PID(move_kp, move_ki, move_kd);
+    // PID pid_drive_r = PID(move_kp, move_ki, move_kd);
 
     float pid_adjustment_l;
     float pid_adjustment_r;

@@ -76,6 +76,20 @@ drive_straight(31, 65, 100);
 
 
         case BLUE_RUSH: {
+turn_pid(90, -1, 1);
+printf("\n%f, %f \n", target_heading, imu_rotation());
+turn_pid(-90, -1, 1);
+printf("\n%f, %f \n", target_heading, imu_rotation());
+drive_straight(10, 30, 100);
+turn_pid(90, -1, 1);
+printf("\n%f, %f \n", target_heading, imu_rotation());
+turn_pid(90, -1, 1);
+printf("\n%f, %f \n", target_heading, imu_rotation());
+turn_pid(90, -1, 1);
+printf("\n%f, %f \n", target_heading, imu_rotation());
+turn_pid(90, -1, 1);
+printf("\n%f, %f \n", target_heading, imu_rotation());
+drive_straight(-10, 30, 100);
 
             break;
         }
@@ -122,25 +136,39 @@ drive_straight(18, 30, 70);
 
         case RED_QUAD:{
 
+/*
 // score on AWS
+printf("\n%f, %f \n", target_heading, imu_rotation());
 drive_straight(3, 50, 50);
 lift.spinToPosition(164 * 4, ROT_DEG, 150, VEL_RPM);
 // pickup ring 2 with smith mech
 drive_straight(-15, 50, 50);
 lift.spinToPosition(-40 * 4, ROT_DEG, 200, VEL_RPM, false);
+printf("%f, %f \n", target_heading, imu_rotation());
 turn_pid(50, -1, 1);
-drive_straight(-27, 30, 100);
+*/
+imu.calibrate(2);
+wait(3000, TIME_MSEC);
+drive_straight(-20, 30, 100);
 mogo_clamp.set(1);
 drive_straight(-1, 20, 50);
 wait(250, TIME_MSEC);
 intake.spin(DIR_FWD, 100, PCT_PCT);
 // quad stack
-turn_pid(130, -1, 1);
-drive_straight(14, 20, 50);
-turn_pid(-45, -1, 1);
-drive_straight(15, 20, 50);
-turn_pid(-90, -1, 1);
-drive_straight(25, 40, 50);
+printf("%f, %f \n", target_heading, imu_rotation());
+turn_pid(140, -1, 1);
+printf("%f, %f \n", target_heading, imu_rotation());
+wait(100, TIME_MSEC);
+drive_straight(22, 20, 50);
+drive_straight(-22, 20, 50);
+turn_pid(-60, -1, 1);
+printf("%f, %f \n", target_heading, imu_rotation());
+drive_straight(25, 20, 50);
+drive_straight(-8, 20, 50);
+turn_pid(90, -1, 1);
+printf("%f, %f \n", target_heading, imu_rotation());
+drive_straight(20, 40, 50);
+drive_straight(-20, 40, 50);
 
 
 break;

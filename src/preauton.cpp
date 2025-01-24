@@ -53,7 +53,7 @@ void pre_auton(void) {
     }
     printf("locked");
     Brain.Screen.clearScreen();
-    Brain.Screen.drawImageFromFile("GradNew.jpeg", 57.5, 0);
+    //Brain.Screen.drawImageFromFile("GradNew.jpeg", 57.5, 0);
 
 /*
     B_SCRN.setFillColor("#0000aa");

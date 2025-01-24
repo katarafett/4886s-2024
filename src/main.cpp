@@ -11,7 +11,7 @@
 
 vex::competition Competition;
 
-#define TEST_FUNCS
+//#define TEST_FUNCS
 #ifdef TEST_FUNCS
 const bool run_main = false;
 #else
@@ -20,13 +20,13 @@ const bool run_main = true;
 
 int main() {
     if (run_main) {
-        pre_auton();
         Competition.autonomous(autonomous);
         Competition.drivercontrol(opcontrol);
+        pre_auton();
     }
     else {
         imu.calibrate();
-        master.ButtonLeft.pressed(tune_fast_pid);
+        master.ButtonLeft.pressed(tune_dir_pid);
         master.ButtonRight.pressed(autonomous);
     }
 

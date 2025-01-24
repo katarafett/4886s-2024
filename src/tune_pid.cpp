@@ -10,9 +10,6 @@ void tune_dir_pid() {
     master.rumble(".");
 
     const float TUNER = 0.025;
-    move_kp = DRIVE_STRAIGHT_DIR_KP;
-    move_ki = DRIVE_STRAIGHT_DIR_KI;
-    move_kd = DRIVE_STRAIGHT_DIR_KD;
 
     while (true) {
         opdrive(TSA, 1, SENSITIVITY);
@@ -20,17 +17,7 @@ void tune_dir_pid() {
             target_heading = imu_rotation();
             drive_straight(80, 65, 256);
         }
-
-        move_kp += (btn_up() - btn_down()) * TUNER;
-        move_kd += (btn_x() - btn_b()) * TUNER;
-        
-        printf("\nkP: %f\nkI: %f\nkD: %f\n", move_kp, move_ki, move_kd);
-
-        B_SCRN.clearScreen();
-        B_SCRN.printAt(0, 20, "kP: %.3f", move_kp);
-        B_SCRN.printAt(0, 40, "kI: %.3f", move_ki);
-        B_SCRN.printAt(0, 60, "kD: %.3f", move_kd);
-        B_SCRN.printAt(0, 100, "imu: %.3f", imu_rotation());        
+        B_SCRN.printAt(8, 8, "\n%f\n\n", imu_rotation());
         wait(20, vex::msec);
     }
 }
@@ -63,12 +50,11 @@ void tune_accel_pid() {
         }
         // Enable pid tuning
         ld.tune_kP(btn_up() - btn_down(), TUNER);
-        ld.tune_kD(btn_x() - btn_b(), TUNER);
+        ld.tune_kD(btn_right() - btn_left(), TUNER);
         rd.tune_kP(btn_up() - btn_down(), TUNER);
-        rd.tune_kD(btn_x() - btn_b(), TUNER);
-        
-        move_kp += (btn_up() - btn_down()) * TUNER;
-        move_kd += (btn_x() - btn_b()) * TUNER;
+        rd.tune_kI(btn_x() - btn_b(), TUNER);
+        rd.tune_kD(btn_right() - btn_left(), TUNER);
+
         wait(20, vex::msec);
     }
 }
@@ -89,6 +75,7 @@ void tune_fast_pid() {
     while (true) {
         // drive_r.setStopping(vex::coast);
         // drive_l.setStopping(vex::coast);
+        master.rumble(".");
         opdrive(TSA, 1, SENSITIVITY);
         if (BTN_R1.PRESSED) {
             target_heading = imu_rotation();
