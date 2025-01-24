@@ -7,31 +7,16 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-#include "../include/main.h"
+#include "main.h"
 
 vex::competition Competition;
 
-#define TEST_FUNCS
-#ifdef TEST_FUNCS
-const bool run_main = false;
-#else
-const bool run_main = true;
-#endif
-
 int main() {
-    if (run_main) {
-        pre_auton();
-        Competition.autonomous(autonomous);
-        Competition.drivercontrol(opcontrol);
-    }
-    else {
-        imu.calibrate();
-        master.ButtonLeft.pressed(tune_fast_pid);
-        master.ButtonRight.pressed(autonomous);
-    }
-
+    Competition.autonomous(autonomous);
+    Competition.drivercontrol(opcontrol);
+    pre_auton();
 
     while (true) {
-        wait(20, TIME_MSEC);
+        wait(20, vex::msec);
     }
 }

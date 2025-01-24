@@ -1,4 +1,4 @@
-#include "../include/main.h"
+#include "main.h"
 #include "vex_global.h"
 #include "vex_imu.h"
 

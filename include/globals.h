@@ -1,3 +1,5 @@
+#pragma once
+
 // Drive gear ratio
 #define DRIVE_GEARING (GEAR_36 / GEAR_48)
 // Connversion factor from motor revolutions to inches travelled

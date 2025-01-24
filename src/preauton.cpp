@@ -1,8 +1,8 @@
-#include "../include/main.h"
+#include "main.h"
 
 void pre_auton(void) {
     // Calibrate inertial
-    imu.calibrate();
+    imu.calibrate(2);
 
     intake_lift.set(1);
     int *sides;
@@ -55,10 +55,10 @@ void pre_auton(void) {
     Brain.Screen.clearScreen();
     Brain.Screen.drawImageFromFile("GradNew.jpeg", 57.5, 0);
 
-/*
+    /*
     B_SCRN.setFillColor("#0000aa");
     B_SCRN.clearScreen();
     B_SCRN.drawRectangle(0, B_SCRN_Y_MID, B_SCRN_X_MID, B_SCRN_Y_MID);
     B_SCRN.printAt(B_SCRN_X_MID - 200, (B_SCRN_Y * 3 / 4) - (CHAR_HI / 2), "debug()");
-*/
+	*/
 }

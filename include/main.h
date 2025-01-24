@@ -1,10 +1,11 @@
+#pragma once
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <cstdlib>
 #include <string>
-#include <thread>
 #include <iostream>
 #include <cmath>
 
@@ -17,12 +18,13 @@
 
 #include "pid_const.h"
 #include "pid.h"
+#include "drive.h"
 #include "util.h"
 #include "movement.h"
 #include "robot-config.h"
 #include "opcontrol.h"
 #include "tune_pid.h"
-#include "vision.h"
+
 
 
 // Main function declarations

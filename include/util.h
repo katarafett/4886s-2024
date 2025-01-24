@@ -1,3 +1,5 @@
+#pragma once
+
 /**
  * @brief detects when a value is within range of a base value
  *

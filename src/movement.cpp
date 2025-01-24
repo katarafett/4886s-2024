@@ -1,4 +1,4 @@
-#include "../include/main.h"
+#include "main.h"
 #include "stddefs.h"
 
 // Oooh, this is a change!
@@ -11,9 +11,9 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
     drive_r.stop(vex::brakeType::coast);
     drive_l.stop(vex::brakeType::coast);
 
-    PID pid_drive_l = PID(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
-    PID pid_drive_r = PID(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
-    PID pid_dir = PID(DRIVE_STRAIGHT_DIR_KP, DRIVE_STRAIGHT_DIR_KI, DRIVE_STRAIGHT_DIR_KD);
+    Pid pid_drive_l = Pid(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
+    Pid pid_drive_r = Pid(DRIVE_STRAIGHT_DL_KP, DRIVE_STRAIGHT_DL_KI, DRIVE_STRAIGHT_DL_KD);
+    Pid pid_dir = Pid(DRIVE_STRAIGHT_DIR_KP, DRIVE_STRAIGHT_DIR_KI, DRIVE_STRAIGHT_DIR_KD);
 
     //PID pid_dir = PID(move_kp, move_ki, move_kd);
     //PID pid_drive_l = PID(move_kp, move_ki, move_kd);
@@ -173,7 +173,7 @@ void turn_pid(float degrees, float ratio, int direction) {
     // float ratio = (radius - WHEEL_TO_WHEEL_DIST) / radius;
 
     target_heading += degrees;
-    PID drive_pid = PID(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
+    Pid drive_pid = Pid(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
     //PID drive_pid = PID(move_kp, move_ki, move_kd);
 
     float speed_l;

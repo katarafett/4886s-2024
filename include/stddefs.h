@@ -1,5 +1,4 @@
-#ifndef _STDDEFS_H_
-#define _STDDEFS_H_
+#pragma once
 
 // Important Numbers
 #define PI 3.1415926535897932384626433832795
@@ -139,5 +138,3 @@
 #define VEL_DPS vex::velocityUnits::dps
 #define VLT_VLT vex::voltageUnits::volt
 #define VLT_MVLT vex::voltageUnits::mV
-
-#endif // _STDDEFS_H_

@@ -1,4 +1,4 @@
-#include "../include/main.h"
+#include "main.h"
 
 // Which auton will run
 int auton_mode = RED_QUAD;
