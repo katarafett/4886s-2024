@@ -33,8 +33,11 @@ private:
 	/* The linear speed modifier for opdrive() */
 	double speed_mod;
 
-	/* The PID object used by move() */
-	Pid move_pid;
+	/* The PID object used by move() for speed control */
+	Pid move_accel_pid;
+
+	/* The PID object used by move() for direction control */
+	Pid move_dir_pid;
 
 	/* The PID object used by rotate() */
 	Pid rotate_pid;
@@ -73,8 +76,8 @@ public:
 	 * @param arc_pid The PID object to control the arc function
 	 */
 	Drive(vex::motor_group left, vex::motor_group right, DriveType drive_type,
-		  double rot_mod, double speed_mod, Pid &move_pid, Pid &rotate_pid,
-		  Pid &arc_pid);
+		  double rot_mod, double speed_mod, Pid &move_accel_pid,
+		  Pid &move_dir_pid, Pid &rotate_pid, Pid &arc_pid);
 
 	/**
 	 * @brief Sets the driver control scheme
@@ -114,6 +117,20 @@ public:
 	 * @param pct The percentage of max velocity at which to move
 	 */
 	void ram(vex::directionType dir, double msec, double pct);
+
+	/**
+	 * @brief PID aided forward/backward movement. PID is used to maintain 
+	 * speed and direction.
+	 *
+	 * @param in The number of inches to move. Positive values go forward, 
+	 * negative values go backward.
+	 * @param ips The velocity (in inches per second) to travel. Always
+	 * positive.
+	 * @param ipss The acceleration (in inches per second squared) to travel.
+	 * Always positive.
+	 * @param do_decel Whether to decelerate at the end of the function
+	 */
+	void move(double in, double ips, double ipss, bool do_decel);
 
 	/**
 	 * @brief PID aided forward/backward movement. PID is used to maintain 

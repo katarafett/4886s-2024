@@ -26,11 +26,11 @@ void opcontrol(void) {
 	lift.setStopping(vex::brakeType::hold);
 	intakeHigh.setPosition(6, ROT_REV);
 
+	Brain.Screen.drawImageFromFile("Graduation.png", 0, 0);
 	while (1) {
 		// Drive control
 		drive.opdrive();
 
-		Brain.Screen.drawImageFromFile("Graduation.png", 0, 0);
 
 		// Shift button
 		shifted = btn_left();

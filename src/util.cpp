@@ -72,7 +72,7 @@ void draw_colored_pixel(int r, int c, vex::color color) {
 
 void graph_pid() {
     int setpoint = target_heading;
-    int correction = IMU_CORRECTION;
+    double correction = IMU_CORRECTION;
     vex::inertial sensor = imu;
 
     B_SCRN.clearScreen();
@@ -115,8 +115,18 @@ void lift_limit_torque() {
         lift.stop();
     }
 }
-    
 
+double clamp_max(double value, double clamp) {
+	if (value > clamp)
+		return clamp;
+	else return value;
+}
+
+double clamp_min(double value, double clamp) {
+	if (value < clamp)
+		return clamp;
+	else return value;
+}
 
 // Shorthand functions
 

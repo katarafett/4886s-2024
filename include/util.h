@@ -70,6 +70,24 @@ void graph_pid();
 */
 void lift_limit_torque(void);
 
+/**
+ * @brief Clamps a value to a maximum
+ *
+ * @param value The value to clamp
+ * @param clamp The maximum value
+ * @return Value if the value is less than the clamp, otherwise the clamp
+ */
+double clamp_max(double value, double clamp);
+
+/**
+ * @brief Clamps a value to a minimum
+ *
+ * @param value The value to clamp
+ * @param clamp The minimum value
+ * @return Value if the value is greater than the clamp, otherwise the clamp
+ */
+double clamp_min(double value, double clamp);
+
 
 // Shorthand functions
 
