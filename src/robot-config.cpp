@@ -35,7 +35,7 @@ vex::digital_out PTO = vex::digital_out(PORTC);
 
 // Sensors
 vex::inertial imu = vex::inertial(PORT20);
-vex::optical colorSort = vex::optical(PORT12);
+vex::optical colorSort = vex::optical(PORT2);
 
 vex::vision::signature red_ring = vex::vision::signature (3, 7579, 10923, 9251, -891, -433, -662, 4, 0);
 vex::vision::signature blue_ring = vex::vision::signature (2, -3329, -2595, -2962, 5431, 6685, 6058, 5.8, 0);
