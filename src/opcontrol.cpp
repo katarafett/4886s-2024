@@ -8,6 +8,9 @@ void opcontrol(void) {
     drive_r.stop(vex::brakeType::coast);
     intake.stop(vex::brakeType::brake);
     bool shifted = false;
+    void red_sort(void);
+    void blue_sort(void);
+
 
     float spd_mod = 1.0;
     float sens_mod = 1.0;
@@ -69,9 +72,6 @@ void opcontrol(void) {
             } else if (liftHeight == 3) {
                 lift.setStopping(vex::brakeType::hold);
                 lift.spinToPosition(183 * 4, ROT_DEG, 100, VEL_PCT, false);
-            } else if (liftHeight == 4) {
-                lift.spinToPosition(280 * 4, ROT_DEG, 100, VEL_PCT, false);
-                lift.setStopping(vex::brakeType::hold);
             }
         }
 
