@@ -249,128 +249,119 @@ drive_straight(80, 75, 500);
 
 
 case SKILLS: {
+
 // first ring
 lift.spinToPosition(162 * 4, ROT_DEG, 150, VEL_RPM);
-drive_straight(-18, 50, 50);
+drive_straight(-16, 50, 50);
 mogo_clamp.set(1);
 wait(200, TIME_MSEC);
-lift.spinToPosition(-40 * 4, ROT_DEG, 200, VEL_RPM, false);
-turn_pid(-135, -1, 1);
+turn_pid(-137, -1, 1);
 intake.spin(DIR_FWD, 12, VLT_VLT);
-drive_straight(20, 75, 75);
-turn_pid(-90, -1, 1);
-drive_straight(20, 75, 75);
-// third
-turn_pid(-60, -1, 1);
-drive_straight(23, 75, 75);
-// fourth
-wait(300, TIME_MSEC);
-drive_straight(-23, 75, 75);
-turn_pid(-30, -1, 1);
-drive_straight(21, 75, 75);
-// fifth
-drive_straight(12, 15, 75);
-// put mogo in corner
-turn_pid(-110, -1, 1);
-drive_straight(-14, 20, 75);
-mogo_clamp.set(0);
-
-
-// second MOGO
-intakeHigh.stop();
-drive_straight(34, 75, 75);
-turn_pid(-155, -1, 1);
-drive_straight(-48, 50, 75);
-mogo_clamp.set(1);
-wait(350, TIME_MSEC);
-// first ring
-turn_pid(88, -1, 1);
+lift.spinToPosition(0 * 4, ROT_DEG, 200, VEL_RPM, false);
+drive_straight(28, 75, 75);
+// NWS
+turn_pid(-58, -1, 1);
+drive_straight(28, 50, 75);
+turn_pid(-32, -1, 1);
+drive_straight(4, 20, 50);
+lift.spinToPosition(120 * 4, ROT_DEG, 200, VEL_RPM, false);
+intake.spinFor(-90, ROT_DEG, 100, VEL_PCT);
+drive_full.spinFor(DIR_FWD, 300, TIME_MSEC, 30, VEL_PCT);
 intake.spin(DIR_FWD, 12, VLT_VLT);
-drive_straight(21, 75, 75);
-// second
-turn_pid(92, -1, 1);
-drive_straight(20, 75, 75);
-// third
-turn_pid(60, -1, 1);
-drive_straight(23, 75, 75);
-// fourth
-wait(300, TIME_MSEC);
-drive_straight(-22, 75, 75);
-turn_pid(30, -1, 1);
-drive_straight(21, 75, 75);
-// fifth
-drive_straight(12, 15, 75);
-// put MOGO in corner
-turn_pid(110, -1, 1);
-drive_straight(-14, 20, 75);
-mogo_clamp.set(0);
+drive_straight(-4, 75, 75);
+wait(200, TIME_MSEC);
+intake.spin(DIR_FWD, 12, VLT_VLT);
+// Rings
+drive_straight(-5, 75, 75);
+turn_pid(-86, -1, 1);
+drive_straight(65, 20, 75);
+drive_straight(-4, 75, 75);
 wait(250, TIME_MSEC);
-//imu.setRotation(0, ROT_DEG);
-intakeHigh.spinFor(-180, ROT_DEG, 100, VEL_PCT);
-
-
-// reset imu
-drive_straight(4, 40, 75);
-turn_pid(70, -1, 1);
-drive_full.spinFor(DIR_REV, 500, TIME_MSEC, 30, VEL_PCT);
+drive_turn(90, -15, 30, 75, true);
+drive_straight(23, 75, 75);
+drive_full.spinFor(DIR_FWD, 200, TIME_MSEC, 30, VEL_PCT);
 wait(200, TIME_MSEC);
 reset_imu_rotation();
-
-// wall stake
-lift.spinToPosition(4 * 4, ROT_DEG, 100, VEL_PCT, false);
-drive_straight(50, 40, 50);
-intake.spin(DIR_FWD, 12, VLT_VLT);
-drive_turn(90, 17, 50, 75);
-drive_straight(-2, 40, 50);
-drive_straight(2, 40, 50);
-wait(1000, TIME_MSEC);
-drive_full.spinFor(DIR_FWD, 200, TIME_MSEC, 20, VEL_PCT);
-intakeHigh.spinFor(-90, ROT_DEG, 100, VEL_PCT);
-lift.spinToPosition(140 * 4, ROT_DEG, 100, VEL_PCT, false);
-wait(700, TIME_MSEC);
-drive_straight(-4, 40, 50);
-drive_straight(2, 40, 50);
-drive_straight(-11, 40, 50);
-lift.spinToPosition(-40 * 4, ROT_DEG, 100, VEL_PCT, false);
-turn_pid(-90, -1, 1);
-drive_straight(11, 40, 50);
-intake.stop();
-
-// thrid MOGO
-intakeLow.spin(DIR_FWD, 12, VLT_VLT);
-// first ring
-drive_straight(15, 20, 50);
-wait(500, TIME_MSEC);
-// MOGO
-turn_pid(115, -1, 1);
-drive_straight(-56, 40, 50);
-wait(350, TIME_MSEC);
-mogo_clamp.set(1);
-// second
-intake.spin(DIR_FWD, 12, VLT_VLT);
-turn_pid(20, -1, 1);
-drive_straight(31, 40, 50);
-// third
-turn_pid(90, -1, 1);
-wait(500, TIME_MSEC);
-drive_straight(33, 40, 50);
-// fourth
-turn_pid(90, -1, 1);
-drive_straight(33, 40, 50);
-// fifth
-turn_pid(-45, -1, 1);
-drive_straight(35, 40, 50);
-// put MOGO in corner
-turn_pid(-105, -1, 1);
-intake.spin(DIR_REV, 12, VLT_VLT);
+drive_straight(-15, 75, 75);
+turn_pid(135, -1, 1);
+drive_straight(-20, 75, 75);
 mogo_clamp.set(0);
-drive_straight(-34, 70, 100);
-intake.spin(DIR_REV, 12, VLT_VLT);
-drive_straight(23, 40, 50);
+intake.spinFor(-90, ROT_DEG, 100, VEL_PCT);
+
+// Goal 2
+drive_straight(14, 75, 75);
+turn_pid(-135, -1, 1);
+drive_straight(-78, 75, 75);
+mogo_clamp.set(1);
+wait(200, TIME_MSEC);
+drive_straight(1, 20, 75);
+turn_pid(90, -1, 1);
+// rings
+intake.spin(DIR_FWD, 12, VLT_VLT);
+lift.spinToPosition(0 * 4, ROT_DEG, 200, VEL_RPM, false);
+drive_straight(28, 75, 75);
+// NWS
+turn_pid(58, -1, 1);
+drive_straight(28, 50, 75);
+turn_pid(32, -1, 1);
+drive_straight(4, 20, 50);
+lift.spinToPosition(120 * 4, ROT_DEG, 200, VEL_RPM, false);
+intake.spinFor(-90, ROT_DEG, 100, VEL_PCT);
+drive_full.spinFor(DIR_FWD, 300, TIME_MSEC, 30, VEL_PCT);
+intake.spin(DIR_FWD, 12, VLT_VLT);
+drive_straight(-4, 75, 75);
+wait(200, TIME_MSEC);
+intake.spin(DIR_FWD, 12, VLT_VLT);
+// Rings
+drive_straight(-5, 75, 75);
+turn_pid(88, -1, 1);
+drive_straight(65, 20, 75);
+drive_straight(-4, 75, 75);
+wait(250, TIME_MSEC);
+drive_turn(-90, 15, 30, 75, true);
+drive_straight(23, 75, 75);
+drive_full.spinFor(DIR_FWD, 200, TIME_MSEC, 30, VEL_PCT);
+wait(200, TIME_MSEC);
+reset_imu_rotation();
+drive_straight(-15, 75, 75);
+turn_pid(-134, -1, 1);
+drive_straight(-20, 75, 75);
+mogo_clamp.set(0);
+intake.spinFor(-90, ROT_DEG, 100, VEL_PCT);
+
+// Goal 3
+intakeLow.spin(DIR_FWD, 12, VLT_VLT);
+lift.spinToPosition(-40 * 4, ROT_DEG, 200, VEL_RPM, false);
+drive_straight(95, 75, 75);
+intakeHigh.spinFor(750, ROT_DEG, 100, VEL_PCT, false);
+drive_straight(20, 75, 75);
 turn_pid(-90, -1, 1);
-drive_straight(129, 75, 10000);
-drive_straight(3, 75, 1000);
-drive_straight(-10, 75, 1000);
+lift.spinToPosition(0 * 4, ROT_DEG, 200, VEL_RPM, false);
+drive_straight(-36, 75, 75);
+mogo_clamp.set(1);
+intake.spin(DIR_FWD, 12, VLT_VLT);
+turn_pid(135, -1, 1);
+drive_straight(20, 75, 75);
+drive_full.spinFor(DIR_FWD, 300, TIME_MSEC, 30, VEL_PCT);
+wait(200, TIME_MSEC);
+reset_imu_rotation();
+drive_straight(-7.5, 75, 75);
+intakeHigh.spinFor(-50, ROT_DEG, 100, VEL_PCT, false);
+lift.spinToPosition(162 * 4, ROT_DEG, 200, VEL_RPM);
+drive_straight(-4, 75, 75);
+turn_pid(125, -1, 1);
+intake.spin(DIR_FWD, 12, VLT_VLT);
+lift.spinToPosition(100 * 4, ROT_DEG, 200, VEL_RPM, false);
+drive_straight(27, 75, 75);
+turn_pid(-35, -1, 1);
+drive_straight(17, 75, 75);
+drive_turn(-185, -20, 30, 75);
+drive_straight(-14, 75, 75);
+mogo_clamp.set(0);
+drive_straight(200, 75, 10000);
+
+
+
 
         break;
     }
@@ -382,7 +373,7 @@ void blue_sort() {
     while (true){
         intakeHigh.spin(DIR_FWD, 100, VEL_PCT);
         if (colorSort.isNearObject() && colorSort.color() == vex::color::red) {
-            intakeHigh.spinFor(-60, ROT_DEG, 100, VEL_PCT);
+            intakeHigh.spinFor(-120, ROT_DEG, 100, VEL_PCT);
         }
     wait(20, TIME_MSEC);
     }
@@ -393,7 +384,7 @@ void red_sort() {
     while (true){
         intakeHigh.spin(DIR_FWD, 100, VEL_PCT);
         if (colorSort.isNearObject() && colorSort.color() == vex::color::blue)
-            intakeHigh.spinFor(-60, ROT_DEG, 100, VEL_PCT);
+            intakeHigh.spinFor(-120, ROT_DEG, 100, VEL_PCT);
     wait(20, TIME_MSEC);
     }
 }
