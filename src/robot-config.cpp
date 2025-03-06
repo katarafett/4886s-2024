@@ -28,7 +28,8 @@ vex::motor lift = vex::motor(PORT3, vex::gearSetting::ratio18_1, false);
 
 // 3 Wire Ports
 vex::digital_out mogo_clamp = vex::digital_out(PORTA);
-vex::digital_out Smith_Mech = vex::digital_out(PORTB);
+vex::digital_out Smith_MechR = vex::digital_out(PORTB);
+vex::digital_out Smith_MechL = vex::digital_out(PORTC);
 vex::digital_out intake_lift = vex::digital_out(PORTD);
 vex::digital_out PTO = vex::digital_out(PORTC);
 

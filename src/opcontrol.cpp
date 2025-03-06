@@ -4,9 +4,15 @@
 
 // Driver macros
 void opcontrol(void) {
+                    lift.setStopping(vex::brakeType::coast);
+
     drive_l.stop(vex::brakeType::coast);
     drive_r.stop(vex::brakeType::coast);
     intake.stop(vex::brakeType::brake);
+    colorSort.setLightPower(100, PCT_PCT);
+    colorSort.setLight(vex::ledState::on);
+
+
     bool shifted = false;
     void red_sort(void);
     void blue_sort(void);
@@ -18,21 +24,19 @@ void opcontrol(void) {
 
     const int LIFT_BUFFER = 110;
 
-    int liftHeight = 1;
+    int liftHeight = 0;
     bool liftOT = 0;
+    bool liftSA = 0;
     intake_lift.set(0);
     bool sort = 1;
 
     while (lift.current(PCT_PCT) < 95) {
-        lift.spin(DIR_REV, 85, PCT_PCT);
+        lift.spin(DIR_REV, 90, PCT_PCT);
     }
     wait(100, TIME_MSEC);
     lift.resetPosition();
+    lift.stop();
 
-    colorSort.setLightPower(100, PCT_PCT);
-    colorSort.setLight(vex::ledState::on);
-
-    lift.setStopping(vex::brakeType::hold);
 
     while (1) {
         // master.rumble(".");
@@ -43,7 +47,7 @@ void opcontrol(void) {
 
         if (BTN_L2.pressing()) {
             lift.spinToPosition(280 * 4, ROT_DEG, 100, VEL_PCT, false);
-            liftOT = 1;
+            liftSA = 1;
         }
         if (BTN_L1.PRESSED)
             liftHeight = liftHeight + 1;
@@ -62,16 +66,21 @@ void opcontrol(void) {
             }
             lift.resetPosition();
         }
-        if (liftOT == 0) {
+        if (liftSA == 0) {
             if (liftHeight == 1) {
-                lift.spinToPosition(2 * 4, ROT_DEG, 100, VEL_PCT, false);
+                lift.spinToPosition(3 * 4, ROT_DEG, 100, VEL_PCT, false);
                 lift.setStopping(vex::brakeType::coast);
-            } else if (liftHeight == 2) {
-                lift.spinToPosition(54 * 4, ROT_DEG, 100, VEL_PCT, false);
-                lift.setStopping(vex::brakeType::hold);
-            } else if (liftHeight == 3) {
-                lift.setStopping(vex::brakeType::hold);
-                lift.spinToPosition(183 * 4, ROT_DEG, 100, VEL_PCT, false);
+                liftOT = 0;
+            } 
+            else if (liftHeight == 2) {
+                lift.spinToPosition(40 * 4, ROT_DEG, 100, VEL_PCT, false);
+            } 
+            else if (liftHeight == 3) {
+                lift.spinToPosition(164 * 4, ROT_DEG, 100, VEL_PCT, false);
+                if (liftOT == 0){
+                    intakeHigh.setStopping(vex::brakeType::coast);
+                    liftOT = 1;
+                }
             }
         }
 
@@ -82,23 +91,17 @@ void opcontrol(void) {
         }
         // Smith Mech
         if (BTN_B.PRESSED)
-            Smith_Mech.set(!Smith_Mech.value());
+            Smith_MechR.set(!Smith_MechR.value());
         // Intake lift
-        if (BTN_X.PRESSED)
-            intake_lift.set(!intake_lift.value());
-
 
         // AWS in skills
         if (BTN_RIGHT.PRESSED) {
-            lift.spinToPosition(165 * 4, ROT_DEG, 200, VEL_RPM);
+            lift.spinToPosition(168 * 4, ROT_DEG, 150, VEL_RPM);
             wait(150, TIME_MSEC);
-            drive_full.spinFor(DIR_REV, 400, TIME_MSEC, 50, VEL_PCT);
-
-            while (lift.current(PCT_PCT) < 95) {
-                lift.spin(DIR_REV, 85, PCT_PCT);
-            }
-        lift.resetPosition();
-        mogo_clamp.set(1);
+            drive_full.spinFor(DIR_REV, 300, TIME_MSEC, 50, VEL_PCT);
+            lift.spinToPosition(-23 * 4, ROT_DEG, 200, VEL_RPM);    
+            lift.resetPosition();
+            mogo_clamp.set(1);
         }
 
         // Toggles chase neutral post
@@ -108,14 +111,18 @@ void opcontrol(void) {
         if (do_neutral_line_up) {
             // neutral_line_up();
         }
-        liftOT = 0;
+        liftSA = 0;
         wait(20, vex::msec);
 
     // Intake
-    intake.spin(DIR_FWD, (btn_r1() - btn_r2()) * BTN_TO_PCT, VEL_PCT);
+    intakeLow.spin(DIR_FWD, (btn_r1() - btn_r2()) * BTN_TO_PCT, VEL_PCT);
+    if (!BTN_X.pressing()){    
+        intakeHigh.spin(DIR_FWD, (btn_r1() - btn_r2()) * BTN_TO_PCT, VEL_PCT);
+    }
+    else {
+                    intakeLow.spin(DIR_FWD, 12, VLT_VLT);
 
     }
-
 
     /*
                 if (BTN_L1.PRESSED) {
@@ -129,6 +136,7 @@ void opcontrol(void) {
                 }
                 */
     // Shifted
+}
 }
 
 
