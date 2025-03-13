@@ -1,24 +1,15 @@
 #pragma once
 
+extern const double PI;
+
+extern const int TICKS_PER_MSEC;
+extern const int MSEC_PER_TICK;
+
 // Drive gear ratio
-#define DRIVE_GEARING (GEAR_36 / GEAR_48)
+extern const double DRIVE_GEARING;
 // Connversion factor from motor revolutions to inches travelled
-#define DRIVE_REV_TO_IN (DRIVE_GEARING * PI * MED_OMNI_DIAM)
-#define WHEEL_TO_WHEEL_DIST (11.5)
-
-#define FULL_AWP 0
-#define RED_RUSH 1
-#define RED_QUAD 2
-#define BLUE_QUAD 3
-#define BLUE_RUSH 4
-#define SKILLS 5
-#define ELIMS_BLUE 6
-#define ELIMS_RED 7
-
-// Operator control modes
-#define TNK 0
-#define OSA 1
-#define TSA 2
+extern const double DRIVE_REV_TO_IN;
+extern const float WHEEL_TO_WHEEL_DIST;
 
 // Brain sides and coordinates
 #define X 0
@@ -34,8 +25,15 @@
 #define CHAR_HI 20
 #define CHAR_WI 12
 
-// Multiplier for turn sensitivty
-#define SENSITIVITY 0.60
+enum autons {
+	FULL_AWP,
+	BLUE_QUAD,
+	BLUE_RUSH,
+	RED_QUAD,
+	RED_RUSH,
+	ELIMS_RED,
+	SKILLS,
+};
 
 // Global variable declarations
 extern int auton_mode;

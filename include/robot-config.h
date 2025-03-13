@@ -1,5 +1,7 @@
 #pragma once
 
+#include "main.h"
+
 extern vex::brain Brain;
 extern vex::controller master;
 
@@ -30,3 +32,5 @@ extern vex::inertial imu;
 extern vex::optical colorSort;
 
 extern vex::motor_group intake;
+
+extern vex::timer timer;

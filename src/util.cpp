@@ -6,7 +6,7 @@
 
 // Returns whether a value is within range of a base value
 bool within_range(double value, double base_value, double range) {
-    return ((value <= base_value + range) && (value >= base_value - range));
+    return ((value <= base_value + range / 2.0) && (value >= base_value - range / 2.0));
 }
 
 // Derived from standard acceleration formula

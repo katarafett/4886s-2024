@@ -1,8 +1,5 @@
 #pragma once
 
-// Important Numbers
-#define PI 3.1415926535897932384626433832795
-
 // Conversion
 // multiple to convert from first to second
 // divide to convert from second to first
@@ -98,43 +95,3 @@
 #define PORTF Brain.ThreeWirePort.F
 #define PORTG Brain.ThreeWirePort.G
 #define PORTH Brain.ThreeWirePort.H
-
-#define PORT1 vex::PORT1
-#define PORT2 vex::PORT2
-#define PORT3 vex::PORT3
-#define PORT4 vex::PORT4
-#define PORT5 vex::PORT5
-#define PORT6 vex::PORT6
-#define PORT7 vex::PORT7
-#define PORT8 vex::PORT8
-#define PORT9 vex::PORT9
-#define PORT10 vex::PORT10
-#define PORT11 vex::PORT11
-#define PORT12 vex::PORT12
-#define PORT13 vex::PORT13
-#define PORT14 vex::PORT14
-#define PORT15 vex::PORT15
-#define PORT16 vex::PORT16
-#define PORT17 vex::PORT17
-#define PORT18 vex::PORT18
-#define PORT19 vex::PORT19
-#define PORT20 vex::PORT20
-
-// Shorthand parameters
-#define DIR_FWD vex::directionType::fwd
-#define DIR_REV vex::directionType::rev
-#define PCT_PCT vex::percentUnits::pct
-#define ROT_DEG vex::rotationUnits::deg
-#define ROT_REV vex::rotationUnits::rev
-#define ROT_RAW vex::rotationUnits::raw
-#define TRQ_NM vex::torqueUnits::Nm
-#define TRQ_INLB vex::torqueUnits::InLb
-#define TIME_SEC vex::timeUnits::sec
-#define TIME_MSEC vex::timeUnits::msec
-#define TMP_C vex::temperatureUnits::celsius
-#define TMP_F vex::temperatureUnits::fahrenheit
-#define VEL_PCT vex::velocityUnits::pct
-#define VEL_RPM vex::velocityUnits::rpm
-#define VEL_DPS vex::velocityUnits::dps
-#define VLT_VLT vex::voltageUnits::volt
-#define VLT_MVLT vex::voltageUnits::mV

@@ -49,14 +49,14 @@ void drive_straight(float inches, float target_ips, float ipss, bool do_decel) {
         pos_r = pos_drive_r() - pos_start_r;
 
         // Maintain speed
-        pid_adjustment_l = pid_drive_l.adjust(pos, pos_l);
-        pid_adjustment_r = pid_drive_r.adjust(pos, pos_r);
-        pid_adjustment_dir = pid_dir.adjust(target_heading, imu_rotation());
+        pid_adjustment_l = pid_drive_l.calc(pos, pos_l);
+        pid_adjustment_r = pid_drive_r.calc(pos, pos_r);
+        pid_adjustment_dir = pid_dir.calc(target_heading, imu_rotation());
 
         vel_rpm = ips / DRIVE_REV_TO_IN * 60;
 
-        drive_l.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_l + pid_adjustment_dir, VEL_RPM);
-        drive_r.spin(DIR_FWD, dir_mod * vel_rpm + pid_adjustment_r - pid_adjustment_dir, VEL_RPM);
+        drive_l.spin(vex::fwd, dir_mod * vel_rpm + pid_adjustment_l + pid_adjustment_dir, vex::rpm);
+        drive_r.spin(vex::fwd, dir_mod * vel_rpm + pid_adjustment_r - pid_adjustment_dir, vex::rpm);
 
         wait(MSEC_PER_TICK, vex::msec);
     }
@@ -138,20 +138,20 @@ void drive_turn(float degrees, float outer_radius, float target_ips, float ipss,
             // pid_adjustment_l = pid_drive_l.adjust(inner_pos, pos_l);
             // pid_adjustment_r = -1 * pid_drive_r.adjust(outer_pos, pos_r);
 
-            // drive_l.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_l, VEL_RPM);
-            // drive_r.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_r, VEL_RPM);
+            // drive_l.spin(vex::fwd, inner_vel_rpm + pid_adjustment_l, vex::rpm);
+            // drive_r.spin(vex::fwd, outer_vel_rpm + pid_adjustment_r, vex::rpm);
 
-            drive_l.spin(DIR_FWD, inner_vel_rpm, VEL_RPM);
-            drive_r.spin(DIR_FWD, outer_vel_rpm, VEL_RPM);
+            drive_l.spin(vex::fwd, inner_vel_rpm, vex::rpm);
+            drive_r.spin(vex::fwd, outer_vel_rpm, vex::rpm);
         } else { // right is inner side
             // pid_adjustment_l = -1 * pid_drive_l.adjust(outer_pos, pos_l);
             // pid_adjustment_r = pid_drive_r.adjust(inner_pos, pos_r);
 
-            // drive_l.spin(DIR_FWD, outer_vel_rpm + pid_adjustment_l, VEL_RPM);
-            // drive_r.spin(DIR_FWD, inner_vel_rpm + pid_adjustment_r, VEL_RPM);
+            // drive_l.spin(vex::fwd, outer_vel_rpm + pid_adjustment_l, vex::rpm);
+            // drive_r.spin(vex::fwd, inner_vel_rpm + pid_adjustment_r, vex::rpm);
 
-            drive_l.spin(DIR_FWD, outer_vel_rpm, VEL_RPM);
-            drive_r.spin(DIR_FWD, inner_vel_rpm, VEL_RPM);
+            drive_l.spin(vex::fwd, outer_vel_rpm, vex::rpm);
+            drive_r.spin(vex::fwd, inner_vel_rpm, vex::rpm);
         }
 
         // Exit if we're past the desired angle
@@ -186,7 +186,7 @@ void turn_pid(float degrees, float ratio, int direction) {
         else
             time_still = 0;
 
-        speed_l = drive_pid.adjust(target_heading, imu_rotation()) * direction;
+        speed_l = drive_pid.calc(target_heading, imu_rotation()) * direction;
         speed_r = speed_l * ratio;
 
         // Limit to max speed
@@ -199,8 +199,8 @@ void turn_pid(float degrees, float ratio, int direction) {
         // else if (speed_r < -12 * std::abs(ratio))
         //     speed_r = -12 * std::abs(ratio);
 
-        drive_l.spin(DIR_FWD, speed_l, VLT_VLT);
-        drive_r.spin(DIR_FWD, speed_r, VLT_VLT);
+        drive_l.spin(vex::fwd, speed_l, vex::volt);
+        drive_r.spin(vex::fwd, speed_r, vex::volt);
 
         wait(MSEC_PER_TICK, vex::msec);
     }
