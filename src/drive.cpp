@@ -59,13 +59,21 @@ void Drive::opdrive() {
 }
 
 void Drive::linear(double dist, double vel, double accel) {
-	double pos = (get_lpos() + get_rpos()) / 2;
 	Pid pid_left = Pid(pid_confs.linear_accel);
 	Pid pid_right = Pid(pid_confs.linear_accel);
 	Pid pid_dir = Pid(pid_confs.linear_dir);
 
-	const double start_l = get_lpos();
-	const double start_r = get_rpos();
+	const double travel_deg = dist / PI / drive_conf.wheeldiam * 360;
+	const double final_lpos = get_lpos() + travel_deg;
+	const double final_rpos = get_rpos() + travel_deg;
+	const double final_pos = (final_lpos + final_rpos) / 2.0;
+
+	double pos = (get_lpos() + get_rpos()) / 2;
+	int current_vel = 0;
+	while (pos < final_pos) {
+		if (final_pos > stop_dist(current_vel, accel))
+			current_vel = vel;
+	}
 }
 
 void Drive::fast_linear(const double dist, const int short_time = 60,
@@ -85,6 +93,8 @@ void Drive::fast_linear(const double dist, const int short_time = 60,
 			within_range(get_rpos(), final_rpos, range)) {
 			time_still += MSEC_PER_TICK;
 		}
+		else
+			time_still = 0;
 
 		left.spin(vex::fwd, pid_l.calc(final_lpos, get_lpos()), vex::pct);
 		right.spin(vex::fwd, pid_r.calc(final_rpos, get_rpos()), vex::pct);

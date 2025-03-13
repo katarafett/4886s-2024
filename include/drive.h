@@ -58,6 +58,8 @@ private:
 	op_config_t op_conf;
 	/* The PID configurations for drive functions */
 	dr_pid_configs_t pid_confs;
+	/* The heading to aim for in move functions */
+	double target_heading;
 
 public:
 	Drive();
